@@ -22,14 +22,14 @@ bool ModulePlayer::Start()
 
 	// Car properties ----------------------------------------
 	car.chassis_size.Set(1, 0.5, 2);
-	car.chassis_offset.Set(0, 1.5, 0);
-	car.chassis2_size.Set(1, 0.4, 1);
-	car.chassis2_offset.Set(0, 1.9, -0.1);
-	car.mass = 500.0f;
-	car.suspensionStiffness = 10.88f;
+	car.chassis_offset.Set(0, 1.7, 0);
+	car.chassis2_size.Set(0.90, 0.4, 1);
+	car.chassis2_offset.Set(0, 2.1, -0.1);
+	car.mass =250.0f;
+	car.suspensionStiffness = 100.88f;
 	car.suspensionCompression = 0.83f;
-	car.suspensionDamping = 0.88f;
-	car.maxSuspensionTravelCm = 100.0f;
+	car.suspensionDamping = 1.88f;
+	car.maxSuspensionTravelCm = 500;
 	car.frictionSlip = 50.5;
 	car.maxSuspensionForce = 1000.0f;
 
@@ -100,7 +100,7 @@ bool ModulePlayer::Start()
 	car.wheels[3].steering = false;
 
 	vehicle = App->physics->AddVehicle(car);
-	vehicle->SetPos(0, 12, 10);
+	vehicle->SetPos(0, 6, 1);
 	
 	return true;
 }

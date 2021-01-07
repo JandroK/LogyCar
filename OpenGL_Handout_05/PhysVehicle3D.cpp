@@ -32,9 +32,12 @@ void PhysVehicle3D::Render()
 		wheel.radius = info.wheels[0].radius;
 		wheel.height = info.wheels[0].width;
 
+	
+
 		vehicle->updateWheelTransform(i);
 		vehicle->getWheelInfo(i).m_worldTransform.getOpenGLMatrix(&wheel.transform);
-
+		if (i==3 || i == 2)wheel.color.Set(0.8f,0.4f,0,0.5f);
+		else wheel.color = Blue;
 		wheel.Render();
 	}
 
@@ -65,13 +68,16 @@ void PhysVehicle3D::Render()
 // ----------------------------------------------------------------------------
 void PhysVehicle3D::ApplyEngineForce(float force)
 {
-	for(int i = 0; i < vehicle->getNumWheels(); ++i)
-	{
-		if(info.wheels[i].drive == true)
-		{
-			vehicle->applyEngineForce(force, i);
-		}
-	}
+	//for(int i = 0; i < vehicle->getNumWheels(); ++i)
+	//{
+	//	if(info.wheels[i].drive == true)
+	//	{
+	//		vehicle->applyEngineForce(force, i);
+	//	}
+	//}
+	vehicle->applyEngineForce(force, 2);
+	vehicle->applyEngineForce(force, 3);
+
 }
 
 // ----------------------------------------------------------------------------

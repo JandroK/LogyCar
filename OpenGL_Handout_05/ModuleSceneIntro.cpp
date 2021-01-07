@@ -64,6 +64,7 @@ bool ModuleSceneIntro::Start()
 	App->physics->AddBody(wall5, 0);
 
 	wall6.SetPos(-80, 2, 10);
+	wall6.SetRotation(30, { -80, 2, 10 });
 	wall6.size = { 4,3,80 };
 	wall6.color = Red;
 
