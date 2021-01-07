@@ -18,6 +18,8 @@ struct Wheel
 	bool drive; // does this wheel received engine power ?
 	bool brake; // does breakes affect this wheel ?
 	bool steering; // does this wheel turns ?
+	float mass;
+
 };
 
 struct VehicleInfo

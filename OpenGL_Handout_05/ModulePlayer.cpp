@@ -26,12 +26,12 @@ bool ModulePlayer::Start()
 	car.chassis2_size.Set(1, 0.4, 1);
 	car.chassis2_offset.Set(0, 1.9, -0.1);
 	car.mass = 500.0f;
-	car.suspensionStiffness = 15.88f;
+	car.suspensionStiffness = 10.88f;
 	car.suspensionCompression = 0.83f;
 	car.suspensionDamping = 0.88f;
-	car.maxSuspensionTravelCm = 1000.0f;
+	car.maxSuspensionTravelCm = 100.0f;
 	car.frictionSlip = 50.5;
-	car.maxSuspensionForce = 6000.0f;
+	car.maxSuspensionForce = 1000.0f;
 
 	// Wheel properties ---------------------------------------
 	float connection_height = car.chassis_size.y*5;
@@ -61,6 +61,7 @@ bool ModulePlayer::Start()
 	car.wheels[0].drive = true;
 	car.wheels[0].brake = false;
 	car.wheels[0].steering = true;
+
 
 	// FRONT-RIGHT ------------------------
 	car.wheels[1].connection.Set(-half_width + 0.3f * wheel_width, connection_height, half_length - wheel_radius);
@@ -163,11 +164,11 @@ update_status ModulePlayer::Update(float dt)
 	float distanceCamara2CM = -9;
 
 	myCamera.x = vehicle->body->getCenterOfMassPosition().getX() + vehicle->vehicle->getForwardVector().x()* distanceCamara2CM;
-	myCamera.y = vehicle->body->getCenterOfMassPosition().getY() + 5;
+	myCamera.y = vehicle->body->getCenterOfMassPosition().getY() + 6;
 	myCamera.z = vehicle->body->getCenterOfMassPosition().getZ() + vehicle->vehicle->getForwardVector().z()* distanceCamara2CM;
 	
 	myCameraLook.x = vehicle->body->getCenterOfMassPosition().getX();
-	myCameraLook.y = vehicle->body->getCenterOfMassPosition().getY()+5;
+	myCameraLook.y = vehicle->body->getCenterOfMassPosition().getY()+2;
 	myCameraLook.z = vehicle->body->getCenterOfMassPosition().getZ();
 
 	App->camera->Position = myCamera;
