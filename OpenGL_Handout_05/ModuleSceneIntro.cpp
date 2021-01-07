@@ -20,6 +20,18 @@ bool ModuleSceneIntro::Start()
 	App->camera->Move(vec3(1.0f, 1.0f, 0.0f));
 	App->camera->LookAt(vec3(0, 0, 0));
 
+	// Big plane as ground
+	{
+		btCollisionShape* colShape = new btStaticPlaneShape(btVector3(0, 1, 0), 0);
+
+		btDefaultMotionState* myMotionState = new btDefaultMotionState();
+		btRigidBody::btRigidBodyConstructionInfo rbInfo(0.0f, myMotionState, colShape);
+
+		btRigidBody* body = new btRigidBody(rbInfo);
+		App->physics->world->addRigidBody(body);
+		
+	}
+
 	return ret;
 }
 
