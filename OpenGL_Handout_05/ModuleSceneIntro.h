@@ -43,4 +43,11 @@ public:
 	PhysMotor3D* right_wheel;
 
 	Cube wall1;
+	Cube wall2;
+	Cube wall3;
+	Cube wall4;
+	Cube wall5;
+	Cube wall6;
+	Cube wall7;
+	Cube wall8;
 };
