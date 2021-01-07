@@ -149,22 +149,30 @@ update_status ModulePlayer::Update(float dt)
 	sprintf_s(title, "%.1f Km/h", vehicle->GetKmh());
 	App->window->SetTitle(title);
 
-	//App->camera->LookAt(vec3(vehicle->vehicle->getForwardVector().x()+vehicle->vehicle->getChassisWorldTransform().getOrigin().x(), vehicle->vehicle->getForwardVector().y()+vehicle->vehicle->getChassisWorldTransform().getOrigin().y(), vehicle->vehicle->getForwardVector().z()+vehicle->vehicle->getChassisWorldTransform().getOrigin().z()));
 	//App->camera->LookAt(vec3(vehicle->vehicle->getChassisWorldTransform().getOrigin().x(), vehicle->vehicle->getChassisWorldTransform().getOrigin().y(), vehicle->vehicle->getChassisWorldTransform().getOrigin().z()));
 	
 	vec3 myCamera;
-	myCamera.x = vehicle->body->getCenterOfMassPosition().getX() + 0;
-	myCamera.y = vehicle->body->getCenterOfMassPosition().getY() + 3;
-	myCamera.z = vehicle->body->getCenterOfMassPosition().getZ() - 5;
+	vec3 myCameraLook;
+	float distanceCamara2CM = -6;
+
+	myCamera.x = vehicle->body->getCenterOfMassPosition().getX() + vehicle->vehicle->getForwardVector().x()* distanceCamara2CM;
+	myCamera.y = vehicle->body->getCenterOfMassPosition().getY() + 5;
+	myCamera.z = vehicle->body->getCenterOfMassPosition().getZ() + vehicle->vehicle->getForwardVector().z()* distanceCamara2CM;
+	
+	myCameraLook.x = vehicle->body->getCenterOfMassPosition().getX();
+	myCameraLook.y = vehicle->body->getCenterOfMassPosition().getY()+2;
+	myCameraLook.z = vehicle->body->getCenterOfMassPosition().getZ();
 
 	App->camera->Position = myCamera;
+	App->camera->LookAt(myCameraLook);
+	//vec3 dirCam;
+	//dirCam.x = vehicle->body->getCenterOfMassPosition().getX();
+	//dirCam.y = vehicle->body->getCenterOfMassPosition().getY();
+	//dirCam.z = vehicle->body->getCenterOfMassPosition().getZ();
 
-	vec3 dirCam;
-	dirCam.x = vehicle->body->getCenterOfMassPosition().getX();
-	dirCam.y = vehicle->body->getCenterOfMassPosition().getY();
-	dirCam.z = vehicle->body->getCenterOfMassPosition().getZ();
+	//App->camera->LookAt(vec3(vehicle->vehicle->getForwardVector().x() + vehicle->vehicle->getChassisWorldTransform().getOrigin().x(), vehicle->vehicle->getForwardVector().y()+vehicle->vehicle->getChassisWorldTransform().getOrigin().y(), vehicle->vehicle->getForwardVector().z()+vehicle->vehicle->getChassisWorldTransform().getOrigin().z()));
 
-	App->camera->LookAt(dirCam);
+	//App->camera->LookAt(dirCam);
 	return UPDATE_CONTINUE;
 }
 
