@@ -31,6 +31,12 @@ bool ModuleSceneIntro::Start()
 		App->physics->world->addRigidBody(body);
 		
 	}
+	
+	wall1.SetPos(0,2,10);
+	wall1.size = {20,4,20};
+	wall1.color = { (float)(239/255), (float)(127/255), (float)(26/255)};
+	
+	App->physics->AddBody(wall1,0);
 
 	return ret;
 }
@@ -49,7 +55,8 @@ update_status ModuleSceneIntro::Update(float dt)
 	Plane p(0, 1, 0, 0);
 	p.axis = true;
 	p.Render();
-	
+	wall1.Render();
+
 	return UPDATE_CONTINUE;
 }
 
