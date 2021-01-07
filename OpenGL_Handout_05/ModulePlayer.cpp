@@ -117,9 +117,13 @@ update_status ModulePlayer::Update(float dt)
 {
 	turn = acceleration = brake = 0.0f;
 
+
+	if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)vel = MAX_ACCELERATION * 2;
+	else vel = MAX_ACCELERATION;
+
 	if(App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT || App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
 	{
-		acceleration = MAX_ACCELERATION;
+		acceleration = vel;
 	}
 
 	if(App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT || App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
@@ -134,9 +138,14 @@ update_status ModulePlayer::Update(float dt)
 			turn -= TURN_DEGREES;
 	}
 
-	if(App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT || App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
+	if(App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT || App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT)
 	{
 		brake = BRAKE_POWER;
+	}
+
+	if(App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT || App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
+	{
+		acceleration = vel *-1;
 	}
 
 	vehicle->ApplyEngineForce(acceleration);
@@ -151,14 +160,14 @@ update_status ModulePlayer::Update(float dt)
 
 	vec3 myCamera;
 	vec3 myCameraLook;
-	float distanceCamara2CM = -6;
+	float distanceCamara2CM = -9;
 
 	myCamera.x = vehicle->body->getCenterOfMassPosition().getX() + vehicle->vehicle->getForwardVector().x()* distanceCamara2CM;
 	myCamera.y = vehicle->body->getCenterOfMassPosition().getY() + 5;
 	myCamera.z = vehicle->body->getCenterOfMassPosition().getZ() + vehicle->vehicle->getForwardVector().z()* distanceCamara2CM;
 	
 	myCameraLook.x = vehicle->body->getCenterOfMassPosition().getX();
-	myCameraLook.y = vehicle->body->getCenterOfMassPosition().getY()+2;
+	myCameraLook.y = vehicle->body->getCenterOfMassPosition().getY()+5;
 	myCameraLook.z = vehicle->body->getCenterOfMassPosition().getZ();
 
 	App->camera->Position = myCamera;
@@ -166,6 +175,17 @@ update_status ModulePlayer::Update(float dt)
 
 	return UPDATE_CONTINUE;
 }
+
+//btVector3 ModulePlayer::Norm(btVector3 vec)
+//{
+//	btVector3 vecNorm = vec;
+//
+//	
+//	vecNorm.x= vecNorm.x/(sqrt((vecNorm.x* vecNorm.x)+(vecNorm.y* vecNorm.y)+(vecNorm.z* vecNorm.z)));
+//	vecNorm.y = vecNorm.y / (sqrt((vecNorm.x * vecNorm.x) + (vecNorm.y * vecNorm.y) + (vecNorm.z * vecNorm.z)));;
+//	vecNorm.z = vecNorm.z / (sqrt((vecNorm.x * vecNorm.x) + (vecNorm.y * vecNorm.y) + (vecNorm.z * vecNorm.z)));;
+//	return vecNorm;
+//}
 
 
 

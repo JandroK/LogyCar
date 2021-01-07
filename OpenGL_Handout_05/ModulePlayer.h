@@ -18,6 +18,7 @@ public:
 	bool Start();
 	update_status Update(float dt);
 	bool CleanUp();
+	btVector3 Norm(btVector3 vec);
 
 public:
 
@@ -25,4 +26,6 @@ public:
 	float turn;
 	float acceleration;
 	float brake;
+private:
+	int vel;
 };
