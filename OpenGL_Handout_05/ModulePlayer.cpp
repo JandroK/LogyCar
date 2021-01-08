@@ -26,12 +26,13 @@ bool ModulePlayer::Start()
 	car.chassis2_size.Set(0.90, 0.4, 1);
 	car.chassis2_offset.Set(0, 2.1, -0.1);
 	car.mass =250.0f;
-	car.suspensionStiffness = 100.88f;
-	car.suspensionCompression = 0.83f;
-	car.suspensionDamping = 1.88f;
+	car.suspensionStiffness = 10.88f;
+	car.suspensionCompression = 5.83f;
+	car.suspensionDamping = 0.88f;
 	car.maxSuspensionTravelCm = 500;
 	car.frictionSlip = 50.5;
 	car.maxSuspensionForce = 1000.0f;
+
 
 	// Wheel properties ---------------------------------------
 	float connection_height = car.chassis_size.y*5;

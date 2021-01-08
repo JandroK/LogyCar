@@ -57,7 +57,7 @@ bool ModuleSceneIntro::Start()
 
 	// Platforms
 	{
-		wall1.SetPos(-50, 1, -110);
+		wall1.SetPos(-50, 1.5, -110);
 		wall1.size = { 10,15,2 };
 		wall1.color = White;
 		wall1.SetRotation(90-20, { 1,0,0 });
