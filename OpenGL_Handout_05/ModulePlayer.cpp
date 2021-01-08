@@ -100,7 +100,7 @@ bool ModulePlayer::Start()
 	car.wheels[3].steering = false;
 
 	vehicle = App->physics->AddVehicle(car);
-	vehicle->SetPos(0, 6, 1);
+	vehicle->SetPos(-50, 6, -150);
 	
 	return true;
 }
@@ -117,6 +117,11 @@ bool ModulePlayer::CleanUp()
 update_status ModulePlayer::Update(float dt)
 {
 	turn = acceleration = brake = 0.0f;
+
+	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_REPEAT) vehicle->SetPos(-50, 6, -150);
+	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_REPEAT) vehicle->SetPos(40, 14, -90);
+	if (App->input->GetKey(SDL_SCANCODE_2) == KEY_REPEAT) vehicle->SetPos(40, 20, 15);
+	if (App->input->GetKey(SDL_SCANCODE_3) == KEY_REPEAT) vehicle->SetPos(-110, 12, -10);
 
 
 	if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)vel = MAX_ACCELERATION * 2;

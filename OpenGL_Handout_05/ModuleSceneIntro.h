@@ -42,6 +42,10 @@ public:
 	PhysMotor3D* left_wheel;
 	PhysMotor3D* right_wheel;
 
+	Cube Limit1;
+	Cube Limit2;
+	Cube Limit3;
+	Cube Limit4;
 	Cube wall1;
 	Cube wall2;
 	Cube wall3;
@@ -50,4 +54,19 @@ public:
 	Cube wall6;
 	Cube wall7;
 	Cube wall8;
+	Cube wall9;
+
+	Cube rotationPlt1;
+	Cube rotationPlt2;
+
+	Cube wall10;
+	Cube wall11;
+
+
+	Cylinder cylinder1;
+
+
+
+
+	// MapPrimitives
 };

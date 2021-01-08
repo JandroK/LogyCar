@@ -31,11 +31,174 @@ bool ModuleSceneIntro::Start()
 		App->physics->world->addRigidBody(body);
 		
 	}
-	
+
+	// Limits
+	{
+		Limit1.SetPos(0, 5, 200);
+		Limit1.size = { 400,10,10 };
+		Limit1.color = Red;
+		App->physics->AddBody(Limit1, 0);
+
+		Limit2.SetPos(200, 5, 0);
+		Limit2.size = { 10,10,400 };
+		Limit2.color = Red;
+		App->physics->AddBody(Limit2, 0);
+
+		Limit3.SetPos(-200, 5, 0);
+		Limit3.size = { 10,10,400 };
+		Limit3.color = Red;
+		App->physics->AddBody(Limit3, 0);
+
+		Limit4.SetPos(0, 5, -200);
+		Limit4.size = { 400,10,10 };
+		Limit4.color = Red;
+		App->physics->AddBody(Limit4, 0);
+	}
+
+	// Platforms
+	{
+		wall1.SetPos(-50, 1, -110);
+		wall1.size = { 10,15,2 };
+		wall1.color = White;
+		wall1.SetRotation(90-20, { 1,0,0 });
+		App->physics->AddBody(wall1, 0);
+
+		wall2.SetPos(-50, 4, -90);
+		wall2.size = { 30,2,10 };
+		wall1.color = White;
+		App->physics->AddBody(wall2, 0);
+
+		/*cylinder1.SetPos(-10, 6.5f, -90);
+		cylinder1.radius = 5;
+		cylinder1.height = 50;
+		cylinder1.color = White;
+		cylinder1.SetRotation(15, { 0,0,1 });
+		App->physics->AddBody(cylinder1, 0);*/
+		wall3.SetPos(-10, 6.5f, -90);
+		wall3.size = { 5,50,5 };
+		wall3.color = White;
+		wall3.SetRotation(90-15, { 0,0,-1 });
+		App->physics->AddBody(wall3, 0);
+
+		wall4.SetPos(40, 10, -90);
+		wall4.size = { 20,2,15 };
+		wall4.color = White;
+		App->physics->AddBody(wall4, 0);
+
+		wall5.SetPos(50, 12.5f, -90);
+		wall5.size = { 2,5,15 };
+		wall5.color = White;
+		App->physics->AddBody(wall5, 0);
+
+		wall6.SetPos(40, 20, -50);
+		wall6.size = { 4,2.5,60 };
+		wall6.color = White;
+		wall6.SetRotation(20, { -1,0,0 });
+		App->physics->AddBody(wall6, 0);
+
+		wall7.SetPos(40, 10, -85);
+		wall7.size = { 5,2.5,10};
+		wall7.color = White;
+		wall7.SetRotation(20, { -1,0,0 });
+		App->physics->AddBody(wall7, 0);
+
+		wall8.SetPos(40, 18, 15);
+		wall8.size = { 20,4,20};
+		wall8.color = White;
+		App->physics->AddBody(wall8, 0);
+
+		wall9.SetPos(30, 19, 15);
+		wall9.size = { 20,2,20};
+		wall9.color = White;
+		wall9.SetRotation(20, { 0,0,-1 });
+		App->physics->AddBody(wall9, 0);
+
+		rotationPlt1.SetPos(-10, 19, 15);
+		rotationPlt1.size = { 20,2,20 };
+		rotationPlt1.color = White;
+		App->physics->AddBody(rotationPlt1, 0);
+
+		rotationPlt2.SetPos(-30, 13, -10);
+		rotationPlt2.size = { 20,2,20 };
+		rotationPlt2.color = White;
+		App->physics->AddBody(rotationPlt2, 0);
+
+		wall10.SetPos(-70, 10, -10);
+		wall10.size = { 60,2,7 };
+		wall10.color = White;
+		App->physics->AddBody(wall10, 0);
+
+		wall11.SetPos(-110, 10, -10);
+		wall11.size = { 20,2,20 };
+		wall11.color = White;
+		App->physics->AddBody(wall11, 0);
+	}
+
+
+	return ret;
+}
+
+// Load assets
+bool ModuleSceneIntro::CleanUp()
+{
+	LOG("Unloading Intro scene");
+
+	return true;
+}
+
+// Update
+update_status ModuleSceneIntro::Update(float dt)
+{
+	Plane p(0, 1, 0, 0);
+	p.axis = true;
+	p.Render();
+
+	// Limits
+	{
+		Limit1.Render();
+		Limit2.Render();
+		Limit3.Render();
+		Limit4.Render();
+	}
+
+	// Platforms
+	{
+		wall1.Render();
+		wall2.Render();
+		wall3.Render();
+		wall4.Render();
+		wall5.Render();
+		wall6.Render();
+		wall7.Render();
+		wall8.Render();
+		wall9.Render();
+		rotationPlt1.Render();
+		rotationPlt2.Render();
+
+		wall10.Render();
+		wall11.Render();
+
+	}
+	return UPDATE_CONTINUE;
+}
+
+void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
+{
+}
+
+/*wall1.Render();
+wall2.Render();
+wall3.Render();
+wall4.Render();
+wall5.Render();
+wall6.Render();
+wall7.Render();
+wall8.Render();
+
 	wall1.SetPos(-10,2,10);
 	wall1.size = {4,3,60};
 	wall1.color = Red;
-	
+
 	App->physics->AddBody(wall1,0);
 
 	wall2.SetPos(10, 2, 10);
@@ -55,7 +218,7 @@ bool ModuleSceneIntro::Start()
 	wall4.color = Red;
 
 	App->physics->AddBody(wall4, 0);
-	
+
 
 	wall5.SetPos(-60, 2, 10);
 	wall5.size = { 4,3,60 };
@@ -81,37 +244,4 @@ bool ModuleSceneIntro::Start()
 	//wall8.color = Red;
 
 	//App->physics->AddBody(wall8, 0);
-
-	return ret;
-}
-
-// Load assets
-bool ModuleSceneIntro::CleanUp()
-{
-	LOG("Unloading Intro scene");
-
-	return true;
-}
-
-// Update
-update_status ModuleSceneIntro::Update(float dt)
-{
-	Plane p(0, 1, 0, 0);
-	p.axis = true;
-	p.Render();
-	wall1.Render();
-	wall2.Render();
-	wall3.Render();
-	wall4.Render();
-	wall5.Render();
-	wall6.Render();
-	wall7.Render();
-	wall8.Render();
-
-	return UPDATE_CONTINUE;
-}
-
-void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
-{
-}
-
+*/
