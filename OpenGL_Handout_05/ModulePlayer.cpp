@@ -130,16 +130,22 @@ update_status ModulePlayer::Update(float dt)
 	turn = acceleration =0.0f;
 	AssistDirection(99.0f);
 
-	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_REPEAT) vehicle->SetPos(-50, 6, -150);
-	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_REPEAT) vehicle->SetPos(40, 14, -90);
-	if (App->input->GetKey(SDL_SCANCODE_2) == KEY_REPEAT) vehicle->SetPos(40, 20, 15);
-	if (App->input->GetKey(SDL_SCANCODE_3) == KEY_REPEAT) vehicle->SetPos(-110, 12, -10);
 
+	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_REPEAT || App->input->GetKey(SDL_SCANCODE_1) == KEY_REPEAT || App->input->GetKey(SDL_SCANCODE_2) == KEY_REPEAT || App->input->GetKey(SDL_SCANCODE_3) == KEY_REPEAT)
+	{
+		const float matrix[3] = { 0,1,0 };
+		vehicle->SetTransform(matrix);
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_REPEAT)vehicle->SetPos(-50, 6, -150);
+	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_REPEAT)vehicle->SetPos(40, 14, -90);
+	if (App->input->GetKey(SDL_SCANCODE_2) == KEY_REPEAT)vehicle->SetPos(40, 20, 15);
+	if (App->input->GetKey(SDL_SCANCODE_3) == KEY_REPEAT)vehicle->SetPos(-110, 12, -10);
 
 	if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)vel = MAX_ACCELERATION * 2;
 	else vel = MAX_ACCELERATION;
 
-	if(App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT || App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
+	if(App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
 	{
 			//vehicle->vehicle->getRigidBody()->applyCentralForce({0,-100,0});
 			if (vehicle->vehicle->getCurrentSpeedKmHour() <= -1) 
@@ -148,7 +154,7 @@ update_status ModulePlayer::Update(float dt)
 				acceleration = vel;
 	}
 	
-	if(App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT || App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
+	if(App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
 	{
 		//vehicle->vehicle->getRigidBody()->applyCentralForce({ 0,-500,0 });
 		if (vehicle->vehicle->getCurrentSpeedKmHour() > +1) 
@@ -159,14 +165,14 @@ update_status ModulePlayer::Update(float dt)
 	}
 
 
-	if(App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT || App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+	if(App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 	{
 		if(turn < TURN_DEGREES)
 			turn += (TURN_DEGREES) - assistDirection;
 		vehicle->vehicle->getRigidBody()->applyTorque({ vehicle->body->getCenterOfMassPosition().getX() + vehicle->vehicle->getForwardVector().x() * -500,0,0 });
 	}
 
-	if(App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT|| App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+	if(App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 	{
 		if(turn > -TURN_DEGREES) 
 			turn -= (TURN_DEGREES)- assistDirection;
@@ -198,23 +204,23 @@ update_status ModulePlayer::Update(float dt)
 	sprintf_s(title, "%.1f Km/h", vehicle->GetKmh());
 	App->window->SetTitle(title);
 
-	vec3 myCamera;
-	vec3 myCameraLook;
-	float distanceCamara2CM = -9;
+	if (!App->GetDebugMode())
+	{
+		vec3 myCamera;
+		vec3 myCameraLook;
+		float distanceCamara2CM = -9;
 
-	myCamera.x = vehicle->body->getCenterOfMassPosition().getX() + vehicle->vehicle->getForwardVector().x()* distanceCamara2CM;
-	myCamera.y = vehicle->body->getCenterOfMassPosition().getY() + 6;
-	myCamera.z = vehicle->body->getCenterOfMassPosition().getZ() + vehicle->vehicle->getForwardVector().z()* distanceCamara2CM ;
-	
+		myCamera.x = vehicle->body->getCenterOfMassPosition().getX() + vehicle->vehicle->getForwardVector().x() * distanceCamara2CM;
+		myCamera.y = vehicle->body->getCenterOfMassPosition().getY() + 6;
+		myCamera.z = vehicle->body->getCenterOfMassPosition().getZ() + vehicle->vehicle->getForwardVector().z() * distanceCamara2CM;
 
-	
+		myCameraLook.x = vehicle->body->getCenterOfMassPosition().getX();
+		myCameraLook.y = vehicle->body->getCenterOfMassPosition().getY() + 4;
+		myCameraLook.z = vehicle->body->getCenterOfMassPosition().getZ();
 
-	myCameraLook.x = vehicle->body->getCenterOfMassPosition().getX();
-	myCameraLook.y = vehicle->body->getCenterOfMassPosition().getY()+4;
-	myCameraLook.z = vehicle->body->getCenterOfMassPosition().getZ();
-
-	App->camera->Position = myCamera;
-	App->camera->LookAt(myCameraLook);
+		App->camera->Position = myCamera;
+		App->camera->LookAt(myCameraLook);
+	}
 
 	return UPDATE_CONTINUE;
 }

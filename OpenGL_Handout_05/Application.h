@@ -40,9 +40,13 @@ public:
 	update_status Update();
 	bool CleanUp();
 
+	bool GetDebugMode() { return debug; };
+	void SetDebugMode() { debug = !debug; };
 private:
 
 	void AddModule(Module* mod);
 	void PrepareUpdate();
 	void FinishUpdate();
+
+	bool debug = false;
 };
