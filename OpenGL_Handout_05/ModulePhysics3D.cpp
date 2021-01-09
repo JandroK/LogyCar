@@ -275,6 +275,7 @@ PhysVehicle3D* ModulePhysics3D::AddVehicle(const VehicleInfo& info)
 
 	btCollisionShape* chassis2 = new btBoxShape(btVector3(info.chassis_size.x * 0.5f, info.chassis_size.y * 0.5f, info.chassis_size.z * 0.5f));
 	shapes.add(chassis2);
+	
 
 	btTransform trans;
 	trans.setIdentity();

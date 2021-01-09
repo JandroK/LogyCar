@@ -36,8 +36,9 @@ void PhysVehicle3D::Render()
 
 		vehicle->updateWheelTransform(i);
 		vehicle->getWheelInfo(i).m_worldTransform.getOpenGLMatrix(&wheel.transform);
-		if (i==3 || i == 2)wheel.color.Set(0.8f,0.4f,0,0.5f);
-		else wheel.color = Blue;
+		//if (i==3 || i == 2)
+			wheel.color.Set(0.0f,0.0f,0.0f,0.2f);
+		//else wheel.color = Blue;
 		wheel.Render();
 	}
 
@@ -51,6 +52,7 @@ void PhysVehicle3D::Render()
 	chassis.transform.M[12] += offset.getX();
 	chassis.transform.M[13] += offset.getY();
 	chassis.transform.M[14] += offset.getZ();
+	chassis.color.Set(0.90f, 0.5f, 0.2f, 0.5f);
 
 	Cube chassis2(info.chassis2_size.x, info.chassis2_size.y, info.chassis2_size.z);
 	vehicle->getChassisWorldTransform().getOpenGLMatrix(&chassis2.transform);
@@ -60,6 +62,8 @@ void PhysVehicle3D::Render()
 	chassis2.transform.M[12] += offset2.getX();
 	chassis2.transform.M[13] += offset2.getY();
 	chassis2.transform.M[14] += offset2.getZ();
+	chassis2.color.Set(0.90f, 0.5f, 0.2f, 0.5f);
+
 
 	Cube chassis3(info.chassis3_size.x, info.chassis3_size.y, info.chassis3_size.z);
 	vehicle->getChassisWorldTransform().getOpenGLMatrix(&chassis3.transform);
@@ -69,11 +73,37 @@ void PhysVehicle3D::Render()
 	chassis3.transform.M[12] += offset3.getX();
 	chassis3.transform.M[13] += offset3.getY();
 	chassis3.transform.M[14] += offset3.getZ();
+	chassis3.color.Set(1.0f, 1.0f, 1.0f, 1.0f);
+
+
+	Cube chassis4(info.chassis4_size.x, info.chassis4_size.y, info.chassis4_size.z);
+	vehicle->getChassisWorldTransform().getOpenGLMatrix(&chassis4.transform);
+	btVector3 offset4(info.chassis4_offset.x, info.chassis4_offset.y, info.chassis4_offset.z);
+	offset4 = offset4.rotate(q.getAxis(), q.getAngle());
+
+	chassis4.transform.M[12] += offset4.getX();
+	chassis4.transform.M[13] += offset4.getY();
+	chassis4.transform.M[14] += offset4.getZ();
+	chassis4.color.Set(0.5f, 0.5f, 0.5f, 1.0f);
+
+
+	Cube chassis5(info.chassis5_size.x, info.chassis5_size.y, info.chassis5_size.z);
+	vehicle->getChassisWorldTransform().getOpenGLMatrix(&chassis5.transform);
+	btVector3 offset5(info.chassis5_offset.x, info.chassis5_offset.y, info.chassis5_offset.z);
+	offset5 = offset5.rotate(q.getAxis(), q.getAngle());
+
+	chassis5.transform.M[12] += offset5.getX();
+	chassis5.transform.M[13] += offset5.getY();
+	chassis5.transform.M[14] += offset5.getZ();
+	chassis5.color.Set(0.75f, 0.75f, 0.75f, 1.0f);
+
 
 
 	chassis.Render();
 	chassis2.Render();
 	chassis3.Render();
+	chassis4.Render();
+	chassis5.Render();
 }
 
 // ----------------------------------------------------------------------------

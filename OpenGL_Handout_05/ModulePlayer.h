@@ -30,6 +30,9 @@ public:
 	bool isJumped=false;
 
 private:
+
+	btVector3 forwardVector;
+	btVector3 aux;
 	int vel;
 	float assistDirection;
 	float calculate;

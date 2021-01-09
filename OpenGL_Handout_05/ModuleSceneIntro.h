@@ -42,6 +42,8 @@ public:
 	PhysMotor3D* left_wheel;
 	PhysMotor3D* right_wheel;
 
+	Cube ground;
+
 	Cube Limit1;
 	Cube Limit2;
 	Cube Limit3;

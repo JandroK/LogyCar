@@ -34,6 +34,12 @@ struct VehicleInfo
 
 	vec3 chassis3_size;
 	vec3 chassis3_offset;
+
+	vec3 chassis4_size;
+	vec3 chassis4_offset;
+
+	vec3 chassis5_size;
+	vec3 chassis5_offset;
 // -----------------------------------------------------------//
 
 	float mass;

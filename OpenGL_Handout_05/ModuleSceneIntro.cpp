@@ -31,6 +31,15 @@ bool ModuleSceneIntro::Start()
 		
 	}
 
+
+	float height = 0.1f;
+	ground.SetPos(0, -0.1f, 0);
+	ground.size = { 400,height ,400 };
+	ground.color.Set(0.7f,1.9f,0.5f);
+
+	//Limit1.color = Red;
+	App->physics->AddBody(ground, 0);
+
 	// Limits
 	{
 		float height = 10;
@@ -160,11 +169,13 @@ bool ModuleSceneIntro::CleanUp()
 // Update
 update_status ModuleSceneIntro::Update(float dt)
 {
-	if (App->input->GetKey(SDL_SCANCODE_F1))App->SetDebugMode();
+	if (App->input->GetKey(SDL_SCANCODE_F1)==KEY_DOWN)App->SetDebugMode();
 
 	Plane p(0, 1, 0, 0);
 	p.axis = true;
 	p.Render();
+
+	ground.Render();
 
 	// Limits
 	{
