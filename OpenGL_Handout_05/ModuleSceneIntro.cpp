@@ -33,10 +33,10 @@ bool ModuleSceneIntro::Start()
 
 	// Limits
 	{
-		float height = 105;
+		float height = 10;
 		Limit1.SetPos(0, height/2.0f, 200);
 		Limit1.size = { 400,height+1,2 };
-		Limit1.color = Red;
+		//Limit1.color = Red;
 		App->physics->AddBody(Limit1, 0);
 
 		Limit2.SetPos(200, height / 2.0f, 0);
@@ -46,7 +46,7 @@ bool ModuleSceneIntro::Start()
 
 		Limit3.SetPos(-200, height / 2.0f, 0);
 		Limit3.size = { 1,height+1,400 };
-		//Limit3.color = Red;
+		Limit3.color = Red;
 		App->physics->AddBody(Limit3, 0);
 
 		Limit4.SetPos(0, height / 2.0f, -200);
@@ -70,7 +70,7 @@ bool ModuleSceneIntro::Start()
 
 		// segunda rampa
 		wall12.SetPos(-40, 4.5f, -90);
-		wall12.size = { 5,1.5,5 };
+		wall12.size = { 5,1.7,5 };
 		wall12.color = White;
 		wall12.SetRotation(20, { 0,0,1 });
 
