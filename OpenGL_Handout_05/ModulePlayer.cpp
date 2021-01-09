@@ -29,7 +29,7 @@ bool ModulePlayer::Start()
 	car.chassis2_offset.Set(0, 0.85, car.chassis_offset.z -0.1);
 
 	car.chassis3_size.Set(1.10, 0.10, 0.20);
-	car.chassis3_offset.Set(0, 0.90, car.chassis_offset.z- car.chassis_size.z/2.2f);
+	car.chassis3_offset.Set(0, 0.90, car.chassis_offset.z- car.chassis_size.z/2.05f);
 	// Car properties ----------------------------------------
 
 
@@ -134,10 +134,10 @@ update_status ModulePlayer::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_REPEAT || App->input->GetKey(SDL_SCANCODE_1) == KEY_REPEAT || App->input->GetKey(SDL_SCANCODE_2) == KEY_REPEAT || App->input->GetKey(SDL_SCANCODE_3) == KEY_REPEAT)
 	{
 		const float matrix[3] = { 0,1,0 };
-		vehicle->SetTransform(matrix);
+		//vehicle->SetTransform(matrix);
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_REPEAT)vehicle->SetPos(-50, 6, -150);
+	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_REPEAT)vehicle->SetPos(-50.0f, 6.0f, -150.0f);
 	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_REPEAT)vehicle->SetPos(40, 14, -90);
 	if (App->input->GetKey(SDL_SCANCODE_2) == KEY_REPEAT)vehicle->SetPos(40, 20, 15);
 	if (App->input->GetKey(SDL_SCANCODE_3) == KEY_REPEAT)vehicle->SetPos(-110, 12, -10);

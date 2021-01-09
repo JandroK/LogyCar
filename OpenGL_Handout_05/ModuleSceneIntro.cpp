@@ -23,7 +23,6 @@ bool ModuleSceneIntro::Start()
 	// Big plane as ground
 	{
 		btCollisionShape* colShape = new btStaticPlaneShape(btVector3(0, 1, 0), 0);
-
 		btDefaultMotionState* myMotionState = new btDefaultMotionState();
 		btRigidBody::btRigidBodyConstructionInfo rbInfo(0.0f, myMotionState, colShape);
 
@@ -34,24 +33,25 @@ bool ModuleSceneIntro::Start()
 
 	// Limits
 	{
-		Limit1.SetPos(0, 5, 200);
-		Limit1.size = { 400,10,10 };
+		float height = 105;
+		Limit1.SetPos(0, height/2.0f, 200);
+		Limit1.size = { 400,height+1,2 };
 		Limit1.color = Red;
 		App->physics->AddBody(Limit1, 0);
 
-		Limit2.SetPos(200, 5, 0);
-		Limit2.size = { 10,10,400 };
+		Limit2.SetPos(200, height / 2.0f, 0);
+		Limit2.size = { 1,height+1,400 };
 		Limit2.color = Red;
 		App->physics->AddBody(Limit2, 0);
 
-		Limit3.SetPos(-200, 5, 0);
-		Limit3.size = { 10,10,400 };
-		Limit3.color = Red;
+		Limit3.SetPos(-200, height / 2.0f, 0);
+		Limit3.size = { 1,height+1,400 };
+		//Limit3.color = Red;
 		App->physics->AddBody(Limit3, 0);
 
-		Limit4.SetPos(0, 5, -200);
-		Limit4.size = { 400,10,10 };
-		Limit4.color = Red;
+		Limit4.SetPos(0, height / 2.0f, -200);
+		Limit4.size = { 400,height+1,1 };
+		//Limit4.color = Red;
 		App->physics->AddBody(Limit4, 0);
 	}
 
@@ -65,8 +65,16 @@ bool ModuleSceneIntro::Start()
 
 		wall2.SetPos(-50, 4, -85);
 		wall2.size = { 30,2,20 };
-		wall1.color = White;
+		wall2.color = White;
 		App->physics->AddBody(wall2, 0);
+
+		// segunda rampa
+		wall12.SetPos(-40, 4.5f, -90);
+		wall12.size = { 5,1.5,5 };
+		wall12.color = White;
+		wall12.SetRotation(20, { 0,0,1 });
+
+		App->physics->AddBody(wall12, 0);
 
 		/*cylinder1.SetPos(-10, 6.5f, -90);
 		cylinder1.radius = 5;
@@ -75,8 +83,9 @@ bool ModuleSceneIntro::Start()
 		cylinder1.SetRotation(15, { 0,0,1 });
 		App->physics->AddBody(cylinder1, 0);*/
 
-		wall3.SetPos(-5, 6.5f, -90);
-		wall3.size = { 2,40,10 };
+		// balanza
+		wall3.SetPos(-3, 6.5f, -90);
+		wall3.size = { 2,39,10 };
 		wall3.color = White;
 		wall3.SetRotation(90-15, { 0,0,-1 });
 		App->physics->AddBody(wall3, 0);
@@ -90,6 +99,7 @@ bool ModuleSceneIntro::Start()
 		wall5.size = { 2,5,15 };
 		wall5.color = White;
 		App->physics->AddBody(wall5, 0);
+
 
 		wall6.SetPos(40, 20, -50);
 		wall6.size = { 2.5,1,60 };
@@ -180,6 +190,7 @@ update_status ModuleSceneIntro::Update(float dt)
 
 		wall10.Render();
 		wall11.Render();
+		wall12.Render();
 
 	}
 	return UPDATE_CONTINUE;
