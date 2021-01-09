@@ -109,15 +109,16 @@ bool ModuleSceneIntro::Start()
 		wall5.color = White;
 		App->physics->AddBody(wall5, 0);
 
-
+		// Plancha
 		wall6.SetPos(40, 20, -50);
-		wall6.size = { 2.5,1,60 };
+		wall6.size = { 2.8,0.5,60 };
 		wall6.color = White;
 		wall6.SetRotation(20, { -1,0,0 });
 		App->physics->AddBody(wall6, 0);
 
-		wall7.SetPos(40, 10, -85);
-		wall7.size = { 5,2.5,10};
+		// rampa pequeña salto
+		wall7.SetPos(40, 11, -84);
+		wall7.size = { 5,1.5,5};
 		wall7.color = White;
 		wall7.SetRotation(20, { -1,0,0 });
 		App->physics->AddBody(wall7, 0);
@@ -127,7 +128,7 @@ bool ModuleSceneIntro::Start()
 		wall8.color = White;
 		App->physics->AddBody(wall8, 0);
 
-		wall9.SetPos(30, 19, 15);
+		wall9.SetPos(30, 20, 15);
 		wall9.size = { 20,2,20};
 		wall9.color = White;
 		wall9.SetRotation(20, { 0,0,-1 });
