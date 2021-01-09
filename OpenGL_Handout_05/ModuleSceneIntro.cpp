@@ -57,14 +57,14 @@ bool ModuleSceneIntro::Start()
 
 	// Platforms
 	{
-		wall1.SetPos(-50, 1.5, -110);
+		wall1.SetPos(-50, 1.8, -110);
 		wall1.size = { 10,15,2 };
 		wall1.color = White;
 		wall1.SetRotation(90-20, { 1,0,0 });
 		App->physics->AddBody(wall1, 0);
 
-		wall2.SetPos(-50, 4, -90);
-		wall2.size = { 30,2,10 };
+		wall2.SetPos(-50, 4, -85);
+		wall2.size = { 30,2,20 };
 		wall1.color = White;
 		App->physics->AddBody(wall2, 0);
 
@@ -74,8 +74,9 @@ bool ModuleSceneIntro::Start()
 		cylinder1.color = White;
 		cylinder1.SetRotation(15, { 0,0,1 });
 		App->physics->AddBody(cylinder1, 0);*/
-		wall3.SetPos(-10, 6.5f, -90);
-		wall3.size = { 5,50,5 };
+
+		wall3.SetPos(-5, 6.5f, -90);
+		wall3.size = { 2,40,10 };
 		wall3.color = White;
 		wall3.SetRotation(90-15, { 0,0,-1 });
 		App->physics->AddBody(wall3, 0);
@@ -91,7 +92,7 @@ bool ModuleSceneIntro::Start()
 		App->physics->AddBody(wall5, 0);
 
 		wall6.SetPos(40, 20, -50);
-		wall6.size = { 4,2.5,60 };
+		wall6.size = { 2.5,1,60 };
 		wall6.color = White;
 		wall6.SetRotation(20, { -1,0,0 });
 		App->physics->AddBody(wall6, 0);

@@ -20,29 +20,37 @@ bool ModulePlayer::Start()
 
 	VehicleInfo car;
 
+	
+// ----------------------------------------Vehicle chassis----//
+	car.chassis_size.Set(1, 0.5f, 2);
+	car.chassis_offset.Set(0, 0.5f, -0.25);
+
+	car.chassis2_size.Set(0.90, 0.35, 1);
+	car.chassis2_offset.Set(0, 0.85, car.chassis_offset.z -0.1);
+
+	//car.chassis3_size.Set(1.10, 0.10, 0.50);
+	//car.chassis3_offset.Set(0, 1.7, 3);
 	// Car properties ----------------------------------------
-	car.chassis_size.Set(1, 0.5, 2);
-	car.chassis_offset.Set(0, 1.7, 0);
-	car.chassis2_size.Set(0.90, 0.4, 1);
-	car.chassis2_offset.Set(0, 2.1, -0.1);
-	car.mass =250.0f;
-	car.suspensionStiffness = 10.88f;
-	car.suspensionCompression = 5.83f;
-	car.suspensionDamping = 0.88f;
-	car.maxSuspensionTravelCm = 500;
+
+
+	car.mass =120.0f;
+	car.suspensionStiffness = 3.80f;
+	car.suspensionCompression = 0.2f;
+	car.suspensionDamping =1.0f;
+	car.maxSuspensionTravelCm = 110;
 	car.frictionSlip = 50.5;
 	car.maxSuspensionForce = 1000.0f;
 
 
 	// Wheel properties ---------------------------------------
-	float connection_height = car.chassis_size.y*5;
+	float connection_height = car.chassis_size.y+0.75;
 	float wheel_radius = 0.6f;
-	float wheel_width = 0.5f;
-	float suspensionRestLength = 1.2f;
+	float wheel_width = 0.85f;
+	float suspensionRestLength = 1.25f;
 
 	// Don't change anything below this line ------------------
 
-	float half_width = car.chassis_size.x;
+	float half_width = car.chassis_size.x+0.2f;
 	float half_length = car.chassis_size.z*0.6f;
 	
 	vec3 direction(0,-1,0);
@@ -52,7 +60,7 @@ bool ModulePlayer::Start()
 	car.wheels = new Wheel[4];
 
 	// FRONT-LEFT ------------------------
-	car.wheels[0].connection.Set(half_width - 0.3f * wheel_width, connection_height, half_length - wheel_radius);
+	car.wheels[0].connection.Set(half_width - 0.3f * wheel_width, connection_height, half_length - wheel_radius + 0.2 + car.chassis_offset.z);
 	car.wheels[0].direction = direction;
 	car.wheels[0].axis = axis;
 	car.wheels[0].suspensionRestLength = suspensionRestLength;
@@ -65,7 +73,7 @@ bool ModulePlayer::Start()
 
 
 	// FRONT-RIGHT ------------------------
-	car.wheels[1].connection.Set(-half_width + 0.3f * wheel_width, connection_height, half_length - wheel_radius);
+	car.wheels[1].connection.Set(-half_width + 0.3f * wheel_width, connection_height, half_length - wheel_radius + 0.2 + car.chassis_offset.z);
 	car.wheels[1].direction = direction;
 	car.wheels[1].axis = axis;
 	car.wheels[1].suspensionRestLength = suspensionRestLength;
@@ -77,7 +85,7 @@ bool ModulePlayer::Start()
 	car.wheels[1].steering = true;
 
 	// REAR-LEFT ------------------------
-	car.wheels[2].connection.Set(half_width - 0.3f * wheel_width, connection_height, -half_length + wheel_radius-0.2);
+	car.wheels[2].connection.Set(half_width - 0.3f * wheel_width, connection_height, -half_length + wheel_radius-0.2 + car.chassis_offset.z);
 	car.wheels[2].direction = direction;
 	car.wheels[2].axis = axis;
 	car.wheels[2].suspensionRestLength = suspensionRestLength;
@@ -89,7 +97,7 @@ bool ModulePlayer::Start()
 	car.wheels[2].steering = false;
 
 	// REAR-RIGHT ------------------------
-	car.wheels[3].connection.Set(-half_width + 0.3f * wheel_width, connection_height, -half_length + wheel_radius-0.2);
+	car.wheels[3].connection.Set(-half_width + 0.3f * wheel_width, connection_height, -half_length + wheel_radius-0.2 + car.chassis_offset.z);
 	car.wheels[3].direction = direction;
 	car.wheels[3].axis = axis;
 	car.wheels[3].suspensionRestLength = suspensionRestLength;
@@ -102,6 +110,7 @@ bool ModulePlayer::Start()
 
 	vehicle = App->physics->AddVehicle(car);
 	vehicle->SetPos(-50, 6, -150);
+	
 	
 	return true;
 }
@@ -116,8 +125,10 @@ bool ModulePlayer::CleanUp()
 
 // Update: draw background
 update_status ModulePlayer::Update(float dt)
-{
-	turn = acceleration = brake = 0.0f;
+{ 
+	brake = 2.5f;
+	turn = acceleration =0.0f;
+	AssistDirection(99.0f);
 
 	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_REPEAT) vehicle->SetPos(-50, 6, -150);
 	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_REPEAT) vehicle->SetPos(40, 14, -90);
@@ -130,30 +141,52 @@ update_status ModulePlayer::Update(float dt)
 
 	if(App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT || App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
 	{
-		acceleration = vel;
+			//vehicle->vehicle->getRigidBody()->applyCentralForce({0,-100,0});
+			if (vehicle->vehicle->getCurrentSpeedKmHour() <= -1) 
+				brake = BRAKE_POWER/1.5f;
+			else 
+				acceleration = vel;
 	}
+	
+	if(App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT || App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
+	{
+		//vehicle->vehicle->getRigidBody()->applyCentralForce({ 0,-500,0 });
+		if (vehicle->vehicle->getCurrentSpeedKmHour() > +1) 
+			brake = BRAKE_POWER / 1.5f;
+		else 
+			acceleration = vel * -1;
+		//LOG("%f", (float)vehicle->vehicle->getCurrentSpeedKmHour());
+	}
+
 
 	if(App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT || App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 	{
 		if(turn < TURN_DEGREES)
-			turn +=  TURN_DEGREES;
+			turn += (TURN_DEGREES) - assistDirection;
+		vehicle->vehicle->getRigidBody()->applyTorque({ vehicle->body->getCenterOfMassPosition().getX() + vehicle->vehicle->getForwardVector().x() * -500,0,0 });
 	}
 
 	if(App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT|| App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 	{
-		if(turn > -TURN_DEGREES)
-			turn -= TURN_DEGREES;
+		if(turn > -TURN_DEGREES) 
+			turn -= (TURN_DEGREES)- assistDirection;
+		vehicle->vehicle->getRigidBody()->applyTorque({ vehicle->body->getCenterOfMassPosition().getX() + vehicle->vehicle->getForwardVector().x()*500,0,0 });
+		vehicle->body->getCenterOfMassPosition().getX();
+
 	}
 
-	if(App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT || App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT)
+	if( App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT)
 	{
 		brake = BRAKE_POWER;
+
+	}
+	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN )
+	{
+		isJumped = true;
+		vehicle->vehicle->getRigidBody()->applyCentralForce({ 0,+70000,0 });
+
 	}
 
-	if(App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT || App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
-	{
-		acceleration = vel *-1;
-	}
 
 	vehicle->ApplyEngineForce(acceleration);
 	vehicle->Turn(turn);
@@ -171,10 +204,13 @@ update_status ModulePlayer::Update(float dt)
 
 	myCamera.x = vehicle->body->getCenterOfMassPosition().getX() + vehicle->vehicle->getForwardVector().x()* distanceCamara2CM;
 	myCamera.y = vehicle->body->getCenterOfMassPosition().getY() + 6;
-	myCamera.z = vehicle->body->getCenterOfMassPosition().getZ() + vehicle->vehicle->getForwardVector().z()* distanceCamara2CM;
+	myCamera.z = vehicle->body->getCenterOfMassPosition().getZ() + vehicle->vehicle->getForwardVector().z()* distanceCamara2CM ;
 	
+
+	
+
 	myCameraLook.x = vehicle->body->getCenterOfMassPosition().getX();
-	myCameraLook.y = vehicle->body->getCenterOfMassPosition().getY()+2;
+	myCameraLook.y = vehicle->body->getCenterOfMassPosition().getY()+4;
 	myCameraLook.z = vehicle->body->getCenterOfMassPosition().getZ();
 
 	App->camera->Position = myCamera;
@@ -182,6 +218,17 @@ update_status ModulePlayer::Update(float dt)
 
 	return UPDATE_CONTINUE;
 }
+
+void ModulePlayer::AssistDirection(float hardness)
+{
+
+	calculate = (vehicle->GetKmh() / 15) * (hardness/100.0f);
+	if (calculate <= 17.0f)
+		assistDirection = calculate * DEGTORAD;
+	else assistDirection = 17.0f * DEGTORAD;
+
+}
+
 
 //btVector3 ModulePlayer::Norm(btVector3 vec)
 //{

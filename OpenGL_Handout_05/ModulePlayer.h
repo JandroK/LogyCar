@@ -5,9 +5,9 @@
 
 struct PhysVehicle3D;
 
-#define MAX_ACCELERATION 700.0f
-#define TURN_DEGREES 22.0f * DEGTORAD
-#define BRAKE_POWER 1000.0f
+#define MAX_ACCELERATION 450.0f
+#define TURN_DEGREES 18.0f * DEGTORAD
+#define BRAKE_POWER 150.0f
 
 class ModulePlayer : public Module
 {
@@ -17,6 +17,7 @@ public:
 
 	bool Start();
 	update_status Update(float dt);
+	void AssistDirection(float hardness);
 	bool CleanUp();
 	btVector3 Norm(btVector3 vec);
 
@@ -26,6 +27,9 @@ public:
 	float turn;
 	float acceleration;
 	float brake;
+	bool isJumped=false;
 private:
 	int vel;
+	float assistDirection;
+	float calculate;
 };
