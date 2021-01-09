@@ -28,6 +28,7 @@ public:
 	float acceleration;
 	float brake;
 	bool isJumped=false;
+
 private:
 	int vel;
 	float assistDirection;

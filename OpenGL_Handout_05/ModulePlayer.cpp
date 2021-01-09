@@ -28,8 +28,8 @@ bool ModulePlayer::Start()
 	car.chassis2_size.Set(0.90, 0.35, 1);
 	car.chassis2_offset.Set(0, 0.85, car.chassis_offset.z -0.1);
 
-	//car.chassis3_size.Set(1.10, 0.10, 0.50);
-	//car.chassis3_offset.Set(0, 1.7, 3);
+	car.chassis3_size.Set(1.10, 0.10, 0.20);
+	car.chassis3_offset.Set(0, 0.90, car.chassis_offset.z- car.chassis_size.z/2.2f);
 	// Car properties ----------------------------------------
 
 
