@@ -32,4 +32,5 @@ private:
 	int vel;
 	float assistDirection;
 	float calculate;
+	bool CPactive = false;
 };
