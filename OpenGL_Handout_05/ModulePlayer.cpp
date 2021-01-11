@@ -203,15 +203,19 @@ update_status ModulePlayer::Update(float dt)
 		brake = 15;
 
 		vehicle->body->applyTorque(forwardVector * 45);
-		LOG("%d ", (int)vehicle->body->getTotalTorque().length());
+		//LOG("%d ", (int)vehicle->body->getTotalTorque().length());
 	}
+	if (*App->physics->GetNCollisions())
+		isJumped = false;
 
-	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN )
+	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && !isJumped)
 	{
-		isJumped = true;
+		vehicle->state = State::IN_AIR;
+		isJumped = true;	
 		vehicle->vehicle->getRigidBody()->applyCentralForce({ 0,+69999,0 });
 	}
 
+	
 	vehicle->ApplyEngineForce(acceleration);
 	vehicle->Turn(turn);
 	vehicle->Brake(brake);
