@@ -155,7 +155,7 @@ update_status ModulePlayer::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT && (vehicle->state == State::WALK || vehicle->state == State::TURBO))
 	{
 		vel = MAX_ACCELERATION * 2;
-		vehicle->state = State::TURBO;
+		vehicle->state = TURBO;
 		vehicle->vehicle->getRigidBody()->applyCentralForce({ 0,-69,0 });
 	}
 	else
@@ -173,7 +173,7 @@ update_status ModulePlayer::Update(float dt)
 			brake = BRAKE_POWER/1.5f;
 		else 
 			acceleration = vel;
-		vehicle->body->applyTorque(per *-90);
+		vehicle->body->applyTorque(per *-80);
 	}
 	
 	if(App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
@@ -184,14 +184,14 @@ update_status ModulePlayer::Update(float dt)
 			brake = BRAKE_POWER / 1.5f;
 		else 
 			acceleration = vel * -1;
-		vehicle->body->applyTorque(per *90);
+		vehicle->body->applyTorque(per *80);
 	}
 
 	if(App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 	{
 		if(turn < TURN_DEGREES)
 			turn += (TURN_DEGREES) - assistDirection;
-		vehicle->body->applyTorque(forwardVector * -40);
+		vehicle->body->applyTorque(forwardVector * -45);
 		brake = 15;
 
 	}
@@ -202,14 +202,14 @@ update_status ModulePlayer::Update(float dt)
 			turn -= (TURN_DEGREES)- assistDirection;
 		brake = 15;
 
-		vehicle->body->applyTorque(forwardVector * 40);
+		vehicle->body->applyTorque(forwardVector * 45);
 		LOG("%d ", (int)vehicle->body->getTotalTorque().length());
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN )
 	{
 		isJumped = true;
-		vehicle->vehicle->getRigidBody()->applyCentralForce({ 0,+69000,0 });
+		vehicle->vehicle->getRigidBody()->applyCentralForce({ 0,+69999,0 });
 	}
 
 	vehicle->ApplyEngineForce(acceleration);
