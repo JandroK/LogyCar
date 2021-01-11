@@ -41,7 +41,7 @@ bool ModulePlayer::Start()
 
 
 	car.mass =130.0f;
-	car.suspensionStiffness = 3.80f;
+	car.suspensionStiffness = 4.10f;
 	car.suspensionCompression = 0.42f;
 	car.suspensionDamping =0.35f;
 	car.maxSuspensionTravelCm = 110;
@@ -50,7 +50,7 @@ bool ModulePlayer::Start()
 
 
 	// Wheel properties ---------------------------------------
-	float connection_height = car.chassis_size.y- car.chassis_offset.z+0.5;
+	float connection_height = car.chassis_size.y- car.chassis_offset.z+0.2;
 	float wheel_radius = 0.6f;
 	float wheel_width = 0.83f;
 	float suspensionRestLength = 1.25f;
