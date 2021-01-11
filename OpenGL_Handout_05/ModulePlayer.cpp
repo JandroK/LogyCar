@@ -19,11 +19,11 @@ bool ModulePlayer::Start()
 	LOG("Loading player");
 
 	VehicleInfo car;
-
+	
 	
 // ----------------------------------------Vehicle chassis----//
 	car.chassis_size.Set(1, 0.5f, 2);
-	car.chassis_offset.Set(0, 0.125f, -0.05);
+	car.chassis_offset.Set(0, 0.225f, -0.05);
 
 	car.chassis2_size.Set(0.90, 0.35, 1);
 	car.chassis2_offset.Set(0, car.chassis_offset.y+0.35, car.chassis_offset.z -0.1);
@@ -40,10 +40,10 @@ bool ModulePlayer::Start()
 	// Car properties ----------------------------------------
 
 
-	car.mass =120.0f;
-	car.suspensionStiffness = 5.30f;
-	car.suspensionCompression = 0.2f;
-	car.suspensionDamping =1.0f;
+	car.mass =130.0f;
+	car.suspensionStiffness = 4.30f;
+	car.suspensionCompression = 0.42f;
+	car.suspensionDamping =0.35f;
 	car.maxSuspensionTravelCm = 110;
 	car.frictionSlip = 50.5;
 	car.maxSuspensionForce = 1000.0f;
@@ -132,11 +132,14 @@ bool ModulePlayer::CleanUp()
 
 // Update: draw background
 update_status ModulePlayer::Update(float dt)
-{ 
-	brake = 2.5f;
-	turn = acceleration =0.0f;
+{
+	//vehicle->state = IDLE;
+	brake = 5.0f;
+	turn = acceleration = 0.0f;
 	AssistDirection(90.0f);
 	forwardVector = vehicle->vehicle->getForwardVector();
+	btVector3 per = { -forwardVector.getZ(),forwardVector.getY(),forwardVector.getX() };
+
 	aux.setValue(forwardVector.getZ(), forwardVector.getY(), forwardVector.getX());
 
 	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_REPEAT || App->input->GetKey(SDL_SCANCODE_1) == KEY_REPEAT || App->input->GetKey(SDL_SCANCODE_2) == KEY_REPEAT || App->input->GetKey(SDL_SCANCODE_3) == KEY_REPEAT)
@@ -149,59 +152,65 @@ update_status ModulePlayer::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_2) == KEY_REPEAT)vehicle->SetPos(40, 20, 15);
 	if (App->input->GetKey(SDL_SCANCODE_3) == KEY_REPEAT)vehicle->SetPos(-110, 12, -10);
 
-	if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT && (vehicle->state == State::WALK || vehicle->state == State::TURBO))
 	{
 		vel = MAX_ACCELERATION * 2;
+		vehicle->state = State::TURBO;
 		vehicle->vehicle->getRigidBody()->applyCentralForce({ 0,-69,0 });
+	}
+	else
+	{
+		vel = MAX_ACCELERATION;
+		vehicle->state = State::IDLE;
 
 	}
-	else vel = MAX_ACCELERATION;
 
 	if(App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
 	{
+		if(vehicle->state != State::TURBO)vehicle->state = State::WALK;
+
 		if (vehicle->vehicle->getCurrentSpeedKmHour() <= -1) 
 			brake = BRAKE_POWER/1.5f;
 		else 
 			acceleration = vel;
+		vehicle->body->applyTorque(per *-90);
 	}
 	
 	if(App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
 	{
+		if (vehicle->state != State::TURBO)vehicle->state = State::WALK;
+
 		if (vehicle->vehicle->getCurrentSpeedKmHour() > +1) 
 			brake = BRAKE_POWER / 1.5f;
 		else 
 			acceleration = vel * -1;
+		vehicle->body->applyTorque(per *90);
 	}
-
 
 	if(App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 	{
 		if(turn < TURN_DEGREES)
 			turn += (TURN_DEGREES) - assistDirection;
 		vehicle->body->applyTorque(forwardVector * -40);
+		brake = 15;
+
 	}
 
 	if(App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 	{
 		if(turn > -TURN_DEGREES) 
 			turn -= (TURN_DEGREES)- assistDirection;
+		brake = 15;
 
 		vehicle->body->applyTorque(forwardVector * 40);
 		LOG("%d ", (int)vehicle->body->getTotalTorque().length());
 	}
 
-	if( App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT)
-	{
-		//brake = BRAKE_POWER;
-
-	}
 	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN )
 	{
 		isJumped = true;
 		vehicle->vehicle->getRigidBody()->applyCentralForce({ 0,+69000,0 });
-
 	}
-
 
 	vehicle->ApplyEngineForce(acceleration);
 	vehicle->Turn(turn);
@@ -236,11 +245,11 @@ update_status ModulePlayer::Update(float dt)
 
 void ModulePlayer::AssistDirection(float hardness)
 {
-
+	float turnDegrees = (TURN_DEGREES / DEGTORAD);
 	calculate = (vehicle->GetKmh() / 15) * (hardness/100.0f);
-	if (calculate <= 17.0f)
+	if (calculate <= turnDegrees)
 		assistDirection = calculate * DEGTORAD;
-	else assistDirection = 17.0f * DEGTORAD;
+	else assistDirection = (turnDegrees-1) * DEGTORAD;
 
 }
 

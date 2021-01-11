@@ -2,6 +2,7 @@
 #include "Primitive.h"
 #include "Bullet/include/btBulletDynamicsCommon.h"
 
+
 // ----------------------------------------------------------------------------
 VehicleInfo::~VehicleInfo()
 {
@@ -12,6 +13,7 @@ VehicleInfo::~VehicleInfo()
 // ----------------------------------------------------------------------------
 PhysVehicle3D::PhysVehicle3D(btRigidBody* body, btRaycastVehicle* vehicle, const VehicleInfo& info) : PhysBody3D(body), vehicle(vehicle), info(info)
 {
+	state = IDLE;
 }
 
 // ----------------------------------------------------------------------------
@@ -36,9 +38,11 @@ void PhysVehicle3D::Render()
 
 		vehicle->updateWheelTransform(i);
 		vehicle->getWheelInfo(i).m_worldTransform.getOpenGLMatrix(&wheel.transform);
-		//if (i==3 || i == 2)
-			wheel.color.Set(0.0f,0.0f,0.0f,0.2f);
-		//else wheel.color = Blue;
+		if ( state==TURBO)
+			if((i == 3 || i == 2))
+			wheel.color.Set(1.0f,0.0f,0.0f,0.2f);
+			else wheel.color.Set(0.0f,0.0f,0.0f,0.2f);
+		else wheel.color.Set(0.0f, 0.0f, 0.0f, 0.2f);
 		wheel.Render();
 	}
 

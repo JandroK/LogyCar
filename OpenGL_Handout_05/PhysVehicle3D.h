@@ -1,11 +1,18 @@
 #pragma once
 
 #include "PhysBody3D.h"
+
 #include "glmath.h"
 
 class btRaycastVehicle;
 struct PhysBody3D;
-
+enum State
+{
+	IDLE,
+	WALK,
+	TURBO,
+	IN_AIR,
+};
 struct Wheel
 {
 	vec3 connection; // origin of the ray. Must come from within the chassis
@@ -69,4 +76,5 @@ public:
 
 	VehicleInfo info;
 	btRaycastVehicle* vehicle;
+	State state;
 };
