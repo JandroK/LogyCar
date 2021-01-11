@@ -21,7 +21,7 @@ public:
 
 	void OnCollision(PhysBody3D* body1, PhysBody3D* body2);
 
-	void Looping() {}
+	void Looping();
 public:
 	/*
 	PhysBody3D* pb_snake[MAX_SNAKE];
@@ -30,6 +30,7 @@ public:
 	PhysBody3D* pb_snake2[MAX_SNAKE];
 	Sphere s_snake2[MAX_SNAKE];
 	*/
+	p2List<Cube*> looping;
 
 	PhysBody3D* pb_chassis;
 	Cube p_chassis;
