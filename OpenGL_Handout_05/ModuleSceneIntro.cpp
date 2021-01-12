@@ -227,23 +227,26 @@ void ModuleSceneIntro::Looping()
 {
 	#define PI 3.14159265359
 	Cube* cube;
-	int numCubes = 15;
+	int numCubes = 128;
 	float alpha =0;
-	int offset = 0;
-	float radio = 6;
+	float offset = 0;
+	float radio = 5;
 	float rad = 0;
 	float posZ = 0;
 	float posY = 0;
-	vec3 size = { 12,0.5,radio };
+	vec3 size = { 20,0.5,radio };
 	vec3 axis = { size.x,size.z,size.z};
 
 
 	for (int i = 0; i < numCubes; i++)
 	{
 		
-		alpha += 350 / numCubes;
+		alpha += (360*2) / numCubes;
 		
 		rad = alpha * PI / 180;
+
+		//posZ = axis.z * cos(alpha) - axis.y * sin(alpha);
+		//posY = axis.z * cos(alpha) + axis.y * sin(alpha);
 
 		posZ += radio * cos(rad);
 		posY += radio * sin(rad);
@@ -253,13 +256,13 @@ void ModuleSceneIntro::Looping()
 		cube->size = size;
 		cube->color = White;
 
-		cube->SetRotation(alpha+11.7f, { 1,0,0 });
+		cube->SetRotation(alpha+2.5f, { 1,0,0 });
 
 		looping.add(cube);	
 		App->physics->AddBody(*cube,0);
 
 	
-		offset +=numCubes/ size.x ;
+		offset +=(size.x*2 )/numCubes ;
 	}
 
 }

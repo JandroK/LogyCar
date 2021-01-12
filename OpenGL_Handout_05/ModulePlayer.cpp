@@ -41,16 +41,16 @@ bool ModulePlayer::Start()
 
 
 	car.mass =130.0f;
-	car.suspensionStiffness = 4.10f;
-	car.suspensionCompression = 0.42f;
-	car.suspensionDamping =0.35f;
+	car.suspensionStiffness = 16.10f;
+	car.suspensionCompression = 01.42f;
+	car.suspensionDamping =2.35f;
 	car.maxSuspensionTravelCm = 110;
 	car.frictionSlip = 50.5;
 	car.maxSuspensionForce = 1000.0f;
 
 
 	// Wheel properties ---------------------------------------
-	float connection_height = car.chassis_size.y- car.chassis_offset.z+0.2;
+	float connection_height = car.chassis_size.y- car.chassis_offset.z+0.65;
 	float wheel_radius = 0.6f;
 	float wheel_width = 0.83f;
 	float suspensionRestLength = 1.25f;
@@ -134,9 +134,9 @@ bool ModulePlayer::CleanUp()
 update_status ModulePlayer::Update(float dt)
 {
 	//vehicle->state = IDLE;
-	brake = 5.0f;
+	brake =2.5f;
 	turn = acceleration = 0.0f;
-	AssistDirection(90.0f);
+	AssistDirection(50.0f);
 	forwardVector = vehicle->vehicle->getForwardVector();
 	btVector3 per = { -forwardVector.getZ(),forwardVector.getY(),forwardVector.getX() };
 
@@ -174,6 +174,11 @@ update_status ModulePlayer::Update(float dt)
 		else 
 			acceleration = vel;
 		vehicle->body->applyTorque(per *-80);
+		//if (vehicle->body->getVelocityInLocalPoint(vehicle->body->getCenterOfMassPosition()).length() >150)
+		//{
+		//	vehicle->body->setLinearVelocity({0,0,0});
+
+		//}
 	}
 	
 	if(App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
