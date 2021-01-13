@@ -44,6 +44,7 @@ bool ModuleSceneIntro::Start()
 	App->physics->AddBody(ground, 0);
 
 	Looping();
+	CylinderWalls();
 
 	// Limits
 	{
@@ -263,6 +264,50 @@ void ModuleSceneIntro::Looping()
 
 	
 		offset +=(size.x*2 )/numCubes ;
+	}
+
+}
+
+void ModuleSceneIntro::CylinderWalls()
+{
+#define PI 3.14159265358979323846
+	Cube* cube;
+	float numCubes = 16;
+	float alpha = 0;
+	float offset = 100;
+	float radio = 1.00;
+	float rad = 0;
+	float posZ = 100;
+	float posY = 0;
+	vec3 size = { radio ,0.25f,100.0f };
+	vec3 axis = { size.x,size.z,size.z };
+
+
+	for (int i = 0; i < numCubes; i++)
+	{
+
+		alpha += 360.0f  / numCubes;
+
+		rad = alpha * PI / 180;
+
+		//posZ = axis.z * cos(alpha) - axis.y * sin(alpha);
+		//posY = axis.z * cos(alpha) + axis.y * sin(alpha);
+
+		offset += radio * cos(rad);
+		posY += radio * sin(rad);
+
+		cube = new Cube();
+		cube->SetPos(offset, posY,-posZ);
+		cube->size = size;
+		cube->color = White;
+
+		cube->SetRotation(alpha+10.5f , { 0,0,1 });
+
+		looping.add(cube);
+		App->physics->AddBody(*cube, 0);
+
+
+		//posZ += size.z / numCubes;
 	}
 
 }

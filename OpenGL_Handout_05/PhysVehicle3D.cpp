@@ -1,6 +1,8 @@
 #include "PhysVehicle3D.h"
 #include "Primitive.h"
 #include "Bullet/include/btBulletDynamicsCommon.h"
+#include "Module.h"
+
 
 
 // ----------------------------------------------------------------------------
@@ -77,8 +79,7 @@ void PhysVehicle3D::Render()
 	chassis3.transform.M[12] += offset3.getX();
 	chassis3.transform.M[13] += offset3.getY();
 	chassis3.transform.M[14] += offset3.getZ();
-	chassis3.color.Set(1.0f, 1.0f, 1.0f, 1.0f);
-
+	chassis3.color = this->GetColor();
 
 	Cube chassis4(info.chassis4_size.x, info.chassis4_size.y, info.chassis4_size.z);
 	vehicle->getChassisWorldTransform().getOpenGLMatrix(&chassis4.transform);

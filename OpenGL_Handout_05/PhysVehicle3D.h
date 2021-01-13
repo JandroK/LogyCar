@@ -1,6 +1,7 @@
 #pragma once
 
 #include "PhysBody3D.h"
+#include "Color.h"
 
 #include "glmath.h"
 
@@ -39,6 +40,7 @@ struct VehicleInfo
 	vec3 chassis2_size;
 	vec3 chassis2_offset;
 
+	
 	vec3 chassis3_size;
 	vec3 chassis3_offset;
 
@@ -72,8 +74,10 @@ public:
 	void Brake(float force);
 	void Turn(float degrees);
 	float GetKmh() const;
+	Color GetColor() { return color; };
+	void SetColor(Color pColor) {  color=pColor; };
 public:
-
+	Color color;
 	VehicleInfo info;
 	btRaycastVehicle* vehicle;
 	State state;
