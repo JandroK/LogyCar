@@ -4,6 +4,11 @@
 #include "Primitive.h"
 #include "PhysBody3D.h"
 
+
+
+
+
+
 ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
 }
@@ -17,6 +22,8 @@ bool ModuleSceneIntro::Start()
 	LOG("Loading Intro assets");
 	bool ret = true;
 
+	
+
 	//Musica
 	//App->audio->PlayMusic("Assets/Sounds/enemy_airforce.ogg");
 
@@ -29,8 +36,9 @@ bool ModuleSceneIntro::Start()
 		btDefaultMotionState* myMotionState = new btDefaultMotionState();
 		btRigidBody::btRigidBodyConstructionInfo rbInfo(0.0f, myMotionState, colShape);
 
-		btRigidBody* body = new btRigidBody(rbInfo);
-		App->physics->world->addRigidBody(body);
+		btRigidBody* rigidBbody = new btRigidBody(rbInfo);
+		rigidBbody->activate();
+		App->physics->world->addRigidBody(rigidBbody);
 		
 	}
 
@@ -43,8 +51,9 @@ bool ModuleSceneIntro::Start()
 	//Limit1.color = Red;
 	App->physics->AddBody(ground, 0);
 
-	Looping();
+	Looping({-106,10,+54});
 	CylinderWalls();
+	Ramp();
 
 	// Limits
 	{
@@ -66,16 +75,16 @@ bool ModuleSceneIntro::Start()
 
 		Limit4.SetPos(0, height / 2.0f, -200);
 		Limit4.size = { 400,height+1,1 };
-		//Limit4.color = Red;
 		App->physics->AddBody(Limit4, 0);
+
 	}
 
 	// Platforms
 	{
-		wall1.SetPos(-50, 1.6, -110);
-		wall1.size = { 10,15,2 };
-		wall1.color = White;
-		wall1.SetRotation(90-20, { 1,0,0 });
+		wall1.SetPos(-90, 1.0f, -86);
+		wall1.size = { 10,1,15 };
+		wall1.color = Red;
+		wall1.SetRotation(23, { 0,0,1 });
 		App->physics->AddBody(wall1, 0);
 
 		wall2.SetPos(-50, 4, -85);
@@ -84,8 +93,8 @@ bool ModuleSceneIntro::Start()
 		App->physics->AddBody(wall2, 0);
 
 		// segunda rampa
-		wall12.SetPos(-40, 4.5f, -90);
-		wall12.size = { 5,1.7,5 };
+		wall12.SetPos(-39, 5.0f, -86);
+		wall12.size = { 8,1,15 };
 		wall12.color = White;
 		wall12.SetRotation(20, { 0,0,1 });
 
@@ -117,7 +126,7 @@ bool ModuleSceneIntro::Start()
 
 		// Plancha
 		wall6.SetPos(40, 20, -50);
-		wall6.size = { 2.8,0.5,60 };
+		wall6.size = { 3.25,0.5,60 };
 		wall6.color = White;
 		wall6.SetRotation(20, { -1,0,0 });
 		App->physics->AddBody(wall6, 0);
@@ -152,15 +161,29 @@ bool ModuleSceneIntro::Start()
 
 		wall10.SetPos(-70, 10, -10);
 		wall10.size = { 60,2,7 };
-		wall10.color = White;
-		App->physics->AddBody(wall10, 0);
+		wall10.color.Set(0.5f,0.5f,1.0f);
+		body=App->physics->AddBody(wall10, 0);
+		body->body->setFriction(0.01f);
 
 		wall11.SetPos(-110, 10, -10);
 		wall11.size = { 20,2,20 };
 		wall11.color = White;
-		App->physics->AddBody(wall11, 0);
+		//body->body->activate();
+		body = App->physics->AddBody(wall11, 0);
+	
 	}
 
+	// Sensors
+	{
+		cubeSensor.SetPos(-110, 11.1f, -10);
+		cubeSensor.size = { 19.5f,0.45f,19.5f };
+		cubeSensor.color = White;
+		bodySensor =App->physics->AddBody(cubeSensor, 0);
+		bodySensor->SetAsSensor(true);
+		bodySensor->collision_listeners.add(this);
+		bodySensor->body->setUserPointer(bodySensor);
+
+	}
 
 	return ret;
 }
@@ -209,6 +232,8 @@ update_status ModuleSceneIntro::Update(float dt)
 		wall10.Render();
 		wall11.Render();
 		wall12.Render();
+
+		cubeSensor.Render();
 		
 	
 		for (p2List_item<Cube*>* cube = looping.getFirst(); cube; cube= cube->next)
@@ -222,19 +247,34 @@ update_status ModuleSceneIntro::Update(float dt)
 
 void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 {
+	if ((body1 == bodySensor || body2 == bodySensor)&& !win)
+	{
+		win = true;
+		btVector3 vec = bodySensor->body->getCenterOfMassPosition();
+		vec3 sizeCube= cubeSensor.size ;
+		cubeSensor.SetPos(-110, 11.1f, -10);
+		cubeSensor.color = Green;
+		cubeSensor.size.y = 0.10f;
+		bodySensor->SetPos(vec.getX(),vec.getY()-1,vec.getZ());
+	}
+
+	int i;
 }
 
-void ModuleSceneIntro::Looping()
+void ModuleSceneIntro::Looping(vec3 position)
 {
 	#define PI 3.14159265359
 	Cube* cube;
-	int numCubes = 128;
+	//int numCubes = 118;
+	int numCubes = 236;
 	float alpha =0;
-	float offset = 0;
-	float radio = 5;
+//	float radio = 5;
+	float radio = 2.5f;
 	float rad = 0;
-	float posZ = 0;
-	float posY = 0;
+	float offset = 0;
+	float posX = position.x;
+	float posY = position.y;
+	float posZ = position.z;
 	vec3 size = { 20,0.5,radio };
 	vec3 axis = { size.x,size.z,size.z};
 
@@ -253,17 +293,18 @@ void ModuleSceneIntro::Looping()
 		posY += radio * sin(rad);
 
 		cube = new Cube();
-		cube->SetPos(offset, posY, -posZ);
+		cube->SetPos(posX+offset, posY, -posZ);
 		cube->size = size;
 		cube->color = White;
 
-		cube->SetRotation(alpha+2.5f, { 1,0,0 });
+		cube->SetRotation(alpha+1.5f, { 1,0,0 });
+		//cube->transform.rotate(alpha + 1.5f, { 1,0,0 });
 
 		looping.add(cube);	
 		App->physics->AddBody(*cube,0);
 
 	
-		offset +=(size.x*2 )/numCubes ;
+		offset +=(size.x*2.7 )/numCubes ;
 	}
 
 }
@@ -279,7 +320,7 @@ void ModuleSceneIntro::CylinderWalls()
 	float rad = 0;
 	float posZ = 100;
 	float posY = 0;
-	vec3 size = { radio ,0.25f,100.0f };
+	vec3 size = { 100.0f,0.25f,radio  };
 	vec3 axis = { size.x,size.z,size.z };
 
 
@@ -293,7 +334,7 @@ void ModuleSceneIntro::CylinderWalls()
 		//posZ = axis.z * cos(alpha) - axis.y * sin(alpha);
 		//posY = axis.z * cos(alpha) + axis.y * sin(alpha);
 
-		offset += radio * cos(rad);
+		posZ += radio * cos(rad);
 		posY += radio * sin(rad);
 
 		cube = new Cube();
@@ -301,7 +342,10 @@ void ModuleSceneIntro::CylinderWalls()
 		cube->size = size;
 		cube->color = White;
 
-		cube->SetRotation(alpha+10.5f , { 0,0,1 });
+		cube->SetRotation(alpha+10.5f , { 1,0,0 });
+		//cube->transform.rotate(alpha+10.5f , { 1,0,0 });
+	//	cube->transform.rotate( 10.5f, { 0,1,0 });
+
 
 		looping.add(cube);
 		App->physics->AddBody(*cube, 0);
@@ -312,62 +356,48 @@ void ModuleSceneIntro::CylinderWalls()
 
 }
 
-/*wall1.Render();
-wall2.Render();
-wall3.Render();
-wall4.Render();
-wall5.Render();
-wall6.Render();
-wall7.Render();
-wall8.Render();
-
-	wall1.SetPos(-10,2,10);
-	wall1.size = {4,3,60};
-	wall1.color = Red;
-
-	App->physics->AddBody(wall1,0);
-
-	wall2.SetPos(10, 2, 10);
-	wall2.size = { 4,3,80 };
-	wall2.color = Red;
-
-	App->physics->AddBody(wall2, 0);
-
-	wall3.SetPos(-28, 2, 50);
-	wall3.size = { 80,3,4 };
-	wall3.color = Red;
-
-	App->physics->AddBody(wall3, 0);
-
-	wall4.SetPos(-40, 2, 40);
-	wall4.size = { 80,3,4 };
-	wall4.color = Red;
-
-	App->physics->AddBody(wall4, 0);
 
 
-	wall5.SetPos(-60, 2, 10);
-	wall5.size = { 4,3,60 };
-	wall5.color = Red;
+void ModuleSceneIntro::Ramp()
+{
+#define PI 3.14159265358979323846
+	Cube* cube;
+	float numCubes = 8;
+	float alpha = 0;
+	float offset = 100;
+	float radio = 5.00;
+	float rad = 0;
+	float posZ = -100;
+	float posY = 0;
+	vec3 size = {  100.0f,0.50f,radio };
+	vec3 axis = { size.x,size.z,size.z };
 
-	App->physics->AddBody(wall5, 0);
 
-	wall6.SetPos(-80, 2, 10);
-	wall6.SetRotation(30, { -80, 2, 10 });
-	wall6.size = { 4,3,80 };
-	wall6.color = Red;
+	for (int i = 0; i < numCubes; i++)
+	{
 
-	App->physics->AddBody(wall6, 0);
+		alpha += 90.0f / numCubes;
 
-	//wall7.SetPos(-28, 2, 50);
-	//wall7.size = { 60,3,4 };
-	//wall7.color = Red;
+		rad = alpha * PI / 180;
 
-	//App->physics->AddBody(wall7, 0);
+		//posZ = axis.z * cos(alpha) - axis.y * sin(alpha);
+		//posY = axis.z * cos(alpha) + axis.y * sin(alpha);
 
-	//wall8.SetPos(-40, 2, 40);
-	//wall8.size = { 60,3,4 };
-	//wall8.color = Red;
+		posZ += radio * cos(rad);
+		posY += radio * sin(rad);
 
-	//App->physics->AddBody(wall8, 0);
-*/
+		cube = new Cube();
+		cube->SetPos(offset, posY, -posZ);
+		cube->size = size;
+		cube->color = White;
+
+		cube->SetRotation(alpha + 6.0f, { 1,0,0 });
+
+		looping.add(cube);
+		App->physics->AddBody(*cube, 0);
+
+
+		//posZ += size.z / numCubes;
+	}
+
+}

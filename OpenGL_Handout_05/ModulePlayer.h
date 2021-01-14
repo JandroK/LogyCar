@@ -21,8 +21,10 @@ public:
 
 	bool Start();
 	update_status Update(float dt);
+	void CameraPlayer();
 	void AssistDirection(float hardness);
 	bool CleanUp();
+	void OnCollision(PhysBody3D* body1, PhysBody3D* body2);
 	//btVector3 Norm(btVector3 vec);
 
 public:
@@ -36,7 +38,6 @@ public:
 private:
 
 	btVector3 forwardVector;
-	btVector3 aux;
 	int vel;
 	float assistDirection;
 	float calculate;

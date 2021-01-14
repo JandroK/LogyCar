@@ -79,6 +79,7 @@ bool ModulePlayer::Start()
 	car.wheels[0].steering = true;
 
 
+
 	// FRONT-RIGHT ------------------------
 	car.wheels[1].connection.Set(-half_width + 0.3f * wheel_width, connection_height, half_length - wheel_radius + 0.2 + car.chassis_offset.z);
 	car.wheels[1].direction = direction;
@@ -117,6 +118,14 @@ bool ModulePlayer::Start()
 
 	vehicle = App->physics->AddVehicle(car);
 	vehicle->SetPos(-50, 6, -150);
+	vehicle->body->setFriction(1);
+
+	vehicle->collision_listeners.add(this);
+
+	vehicle->body->setUserPointer(vehicle);
+	vehicle->body->activate();
+
+
 	
 	
 	return true;
@@ -134,6 +143,9 @@ bool ModulePlayer::CleanUp()
 update_status ModulePlayer::Update(float dt)
 {
 	vehicle->vehicle->getChassisWorldTransform();
+	btQuaternion p = { 0,0,1,90 };
+	btQuaternion q = vehicle->vehicle->getChassisWorldTransform().getRotation()* vehicle->vehicle->getForwardVector().normalize();
+
 
 	vehicle->SetColor( color);
 	color.Set(1.0f, 1.0f, 1.0f, 1.0f);
@@ -142,10 +154,10 @@ update_status ModulePlayer::Update(float dt)
 	brake =2.5f;
 	turn = acceleration = 0.0f;
 	AssistDirection(90.0f);
-	forwardVector = vehicle->vehicle->getForwardVector();
-	btVector3 per = { -forwardVector.getZ(),forwardVector.getY(),forwardVector.getX() };
+	forwardVector = vehicle->vehicle->getForwardVector().normalize();
+	//btVector3 per = { q.getAxis().getX() ,q.getAxis().getY() ,q.getAxis().getZ() };
+	btVector3 per = { -forwardVector.getZ(), forwardVector.getY(), forwardVector.getX() };
 
-	aux.setValue(forwardVector.getZ(), forwardVector.getY(), forwardVector.getX());
 
 	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_REPEAT || App->input->GetKey(SDL_SCANCODE_1) == KEY_REPEAT || App->input->GetKey(SDL_SCANCODE_2) == KEY_REPEAT || App->input->GetKey(SDL_SCANCODE_3) == KEY_REPEAT)
 	{
@@ -176,7 +188,7 @@ update_status ModulePlayer::Update(float dt)
 
 	if(App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
 	{
-		if(vehicle->state != State::TURBO)vehicle->state = State::WALK;
+		if (vehicle->state != State::TURBO && vehicle->state != State::IN_AIR)vehicle->state = State::WALK;
 
 		if (vehicle->vehicle->getCurrentSpeedKmHour() <= -1)
 		{
@@ -186,7 +198,7 @@ update_status ModulePlayer::Update(float dt)
 		}
 		else 
 			acceleration = vel;
-		vehicle->body->applyTorque(per * -80);
+		vehicle->body->applyTorque(per * -40);
 
 			//if (vehicle->body->getVelocityInLocalPoint(vehicle->body->getCenterOfMassPosition()).length() >150)
 		//{
@@ -197,7 +209,7 @@ update_status ModulePlayer::Update(float dt)
 	
 	if(App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
 	{
-		if (vehicle->state != State::TURBO)vehicle->state = State::WALK;
+		if (vehicle->state != State::TURBO && vehicle->state != State::IN_AIR)vehicle->state = State::WALK;
 
 		if (vehicle->vehicle->getCurrentSpeedKmHour() > +1)
 		{
@@ -216,12 +228,18 @@ update_status ModulePlayer::Update(float dt)
 	{
 		if(turn < TURN_DEGREES)
 			turn += (TURN_DEGREES) - assistDirection;
+		brake = 15;
+
 		if (vehicle->state == State::IN_AIR)
 		{
 			vehicle->body->applyTorque(forwardVector * -45);
 		}
-		else vehicle->body->applyTorque(forwardVector * -500);
-		brake = 15;
+		else
+		{
+			vehicle->body->applyTorque(forwardVector * -200);
+		//	vehicle->vehicle->getRigidBody()->applyCentralForce({ 1000,0,0 });
+
+		}
 
 	}
 
@@ -235,7 +253,12 @@ update_status ModulePlayer::Update(float dt)
 		{
 			vehicle->body->applyTorque(forwardVector * 45);
 		}
-		else vehicle->body->applyTorque(forwardVector * 500);
+		else
+		{
+			vehicle->body->applyTorque(forwardVector * 200);
+			//vehicle->vehicle->getRigidBody()->applyCentralForce({ -1000,0,0 });
+
+		}
 		//LOG("%d ", (int)vehicle->body->getTotalTorque().length());
 	}
 	if (*App->physics->GetNCollisions())
@@ -243,13 +266,14 @@ update_status ModulePlayer::Update(float dt)
 		isJumped = false;
 		vehicle->state = State::IDLE;
 
+
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && !isJumped)
 	{
 		vehicle->state = State::IN_AIR;
 		isJumped = true;	
-		vehicle->vehicle->getRigidBody()->applyCentralForce({ 0,+69999,0 });
+		vehicle->vehicle->getRigidBody()->applyCentralForce({ 0,+70000,0 });
 	}
 
 	
@@ -263,49 +287,58 @@ update_status ModulePlayer::Update(float dt)
 	sprintf_s(title, "%.1f Km/h", vehicle->GetKmh());
 	App->window->SetTitle(title);
 
+	CameraPlayer();
+
+	return UPDATE_CONTINUE;
+}
+
+void ModulePlayer::CameraPlayer()
+{
 	if (!App->GetDebugMode())
 	{
 		vec3 myCamera;
 		vec3 myCameraLook;
-		float distanceCamara2CM = -9;
+		float distanceCamara2CM = -12;
 
-		if (vehicle->GetKmh() > 130) 
+		if (vehicle->GetKmh() < 130)
 		{
-			myCamera.x = vehicle->body->getCenterOfMassPosition().getX() + forwardVector.x() * distanceCamara2CM;
-			myCamera.y = vehicle->body->getCenterOfMassPosition().getY()-(forwardVector.y());
-			
-			myCamera.z = vehicle->body->getCenterOfMassPosition().getZ() + forwardVector.z() * distanceCamara2CM;
+			myCamera.x = vehicle->body->getCenterOfMassPosition().getX() + forwardVector.getX() * distanceCamara2CM;
+			myCamera.y = vehicle->body->getCenterOfMassPosition().getY() + forwardVector.getY() + 6;
+			myCamera.z = vehicle->body->getCenterOfMassPosition().getZ() + forwardVector.getZ() * distanceCamara2CM;
 
 		}
 		else
 		{
-			myCamera.x = vehicle->body->getCenterOfMassPosition().getX() + forwardVector.x() * distanceCamara2CM;
-			myCamera.y = vehicle->body->getCenterOfMassPosition().getY()+6;
-			myCamera.z = vehicle->body->getCenterOfMassPosition().getZ() + forwardVector.z() * distanceCamara2CM;
+			myCamera.x = vehicle->body->getCenterOfMassPosition().getX() + forwardVector.getX() * distanceCamara2CM;
+			myCamera.y = vehicle->body->getCenterOfMassPosition().getY() + forwardVector.getY() * distanceCamara2CM+6;
+			myCamera.z = vehicle->body->getCenterOfMassPosition().getZ() + forwardVector.getZ() * distanceCamara2CM;
 		}
 
 
 		myCameraLook.x = vehicle->body->getCenterOfMassPosition().getX();
 		myCameraLook.y = vehicle->body->getCenterOfMassPosition().getY() + 4;
 		myCameraLook.z = vehicle->body->getCenterOfMassPosition().getZ();
+		if(App->input->GetKey(SDL_SCANCODE_P)== KEY_DOWN)LOG("Position Player \n x: %f \t z: %f ", myCamera.x, myCamera.z);
 
 		App->camera->Position = myCamera;
 		App->camera->LookAt(myCameraLook);
 	}
-
-	return UPDATE_CONTINUE;
 }
 
 void ModulePlayer::AssistDirection(float hardness)
 {
 	float turnDegrees = (TURN_DEGREES / DEGTORAD);
-	calculate = (vehicle->GetKmh() / 15) * (hardness/100.0f);
-	if (calculate <= turnDegrees)
+	calculate = (vehicle->GetKmh() / 16) * (hardness/100.0f);
+	if (calculate <= turnDegrees-5)
 		assistDirection = calculate * DEGTORAD;
-	else assistDirection = (turnDegrees-1) * DEGTORAD;
+	else assistDirection = (turnDegrees-5) * DEGTORAD;
 
 }
+void ModulePlayer::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
+{
 
+	int i;
+}
 
 //btVector3 ModulePlayer::Norm(btVector3 vec)
 //{

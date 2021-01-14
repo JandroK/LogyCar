@@ -21,8 +21,9 @@ public:
 
 	void OnCollision(PhysBody3D* body1, PhysBody3D* body2);
 
-	void Looping();
+	void Looping(vec3 position);
 	void CylinderWalls();
+	void Ramp();
 public:
 	/*
 	PhysBody3D* pb_snake[MAX_SNAKE];
@@ -67,12 +68,14 @@ public:
 
 	Cube wall10;
 	Cube wall11;
+	PhysBody3D* body;
 
-
+	Cube cubeSensor;
+	PhysBody3D* bodySensor;
+	
 	Cylinder cylinder1;
 
-
-
+	bool win=false;
 
 	// MapPrimitives
 };
