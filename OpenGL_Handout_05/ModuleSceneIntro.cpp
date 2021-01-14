@@ -52,7 +52,6 @@ bool ModuleSceneIntro::Start()
 	App->physics->AddBody(ground, 0);
 
 	Looping({-106,10,+54});
-	CylinderWalls();
 	Ramp();
 
 	// Limits
@@ -97,8 +96,10 @@ bool ModuleSceneIntro::Start()
 		wall12.size = { 8,1,15 };
 		wall12.color = White;
 		wall12.SetRotation(20, { 0,0,1 });
-
 		App->physics->AddBody(wall12, 0);
+
+		// Cilindro
+		CylinderWalls({0,0,0});
 
 		/*cylinder1.SetPos(-10, 6.5f, -90);
 		cylinder1.radius = 5;
@@ -309,20 +310,20 @@ void ModuleSceneIntro::Looping(vec3 position)
 
 }
 
-void ModuleSceneIntro::CylinderWalls()
+void ModuleSceneIntro::CylinderWalls(vec3 position)
 {
 #define PI 3.14159265358979323846
 	Cube* cube;
 	float numCubes = 16;
 	float alpha = 0;
 	float offset = 100;
-	float radio = 1.00;
+	float radio = 5.00;
 	float rad = 0;
-	float posZ = 100;
-	float posY = 0;
+	float posX = position.x;
+	float posY = position.y;
+	float posZ = position.z;
 	vec3 size = { 100.0f,0.25f,radio  };
 	vec3 axis = { size.x,size.z,size.z };
-
 
 	for (int i = 0; i < numCubes; i++)
 	{
@@ -338,11 +339,11 @@ void ModuleSceneIntro::CylinderWalls()
 		posY += radio * sin(rad);
 
 		cube = new Cube();
-		cube->SetPos(offset, posY,-posZ);
+		cube->SetPos(posX, posY,-posZ);
 		cube->size = size;
 		cube->color = White;
 
-		cube->SetRotation(alpha+10.5f , { 1,0,0 });
+		cube->SetRotation(alpha+11.5f , { 1,0,0 });
 		//cube->transform.rotate(alpha+10.5f , { 1,0,0 });
 	//	cube->transform.rotate( 10.5f, { 0,1,0 });
 

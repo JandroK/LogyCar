@@ -1,7 +1,6 @@
 #include "PhysVehicle3D.h"
 #include "Primitive.h"
 #include "Bullet/include/btBulletDynamicsCommon.h"
-#include "Module.h"
 
 
 
@@ -29,14 +28,10 @@ void PhysVehicle3D::Render()
 {
 	Cylinder wheel;
 
-	wheel.color = Blue;
-
 	for(int i = 0; i < vehicle->getNumWheels(); ++i)
 	{
 		wheel.radius = info.wheels[0].radius;
 		wheel.height = info.wheels[0].width;
-
-	
 
 		vehicle->updateWheelTransform(i);
 		vehicle->getWheelInfo(i).m_worldTransform.getOpenGLMatrix(&wheel.transform);
@@ -46,8 +41,9 @@ void PhysVehicle3D::Render()
 			else wheel.color.Set(0.0f,0.0f,0.0f,0.2f);
 		else wheel.color.Set(0.0f, 0.0f, 0.0f, 0.2f);
 		wheel.Render();
-	}
 
+	}
+	// 
 	btQuaternion q = vehicle->getChassisWorldTransform().getRotation();
 
 	Cube chassis(info.chassis_size.x, info.chassis_size.y, info.chassis_size.z);

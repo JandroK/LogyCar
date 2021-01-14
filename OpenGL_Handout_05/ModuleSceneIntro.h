@@ -22,7 +22,7 @@ public:
 	void OnCollision(PhysBody3D* body1, PhysBody3D* body2);
 
 	void Looping(vec3 position);
-	void CylinderWalls();
+	void CylinderWalls(vec3 position);
 	void Ramp();
 public:
 	/*
