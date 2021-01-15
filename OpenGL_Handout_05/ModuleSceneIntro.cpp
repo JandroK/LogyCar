@@ -5,6 +5,7 @@
 #include "PhysBody3D.h"
 
 
+#define PI 3.14159265359
 
 
 
@@ -80,50 +81,47 @@ bool ModuleSceneIntro::Start()
 
 	// Platforms
 	{
-		wall1.SetPos(-90, 1.0f, -86);
-		wall1.size = { 10,1,15 };
-		wall1.color = Red;
-		wall1.SetRotation(23, { 0,0,1 });
-		App->physics->AddBody(wall1, 0);
+		// Done
+		{
+			wall1.SetPos(-90, 1.0f, -86);
+			wall1.size = { 10,1,15 };
+			wall1.color = Red;
+			wall1.SetRotation(23, { 0,0,1 });
+			App->physics->AddBody(wall1, 0);
 
-		wall2.SetPos(-50, 4, -86);
-		wall2.size = { 30,2,20 };
-		wall2.color = White;
-		App->physics->AddBody(wall2, 0);
+			wall2.SetPos(-55.5895, 4.162, -86);
+			wall2.size = { 26,1,20 };
+			wall2.color = White;
+			App->physics->AddBody(wall2, 0);
 
-		// segunda rampa
-		wall12.SetPos(-39, 5.5f, -85.8f);
-		wall12.size = { 8,1,19.9f };
-		wall12.color = White;
-		wall12.SetRotation(20, { 0,0,1 });
-		App->physics->AddBody(wall12, 0);
+			// segunda rampa
+			wall12.SetPos(-39, 5.5f, -86.0f);
+			wall12.size = { 8,1,20 };
+			wall12.color = White;
+			wall12.SetRotation(20, { 0,0,1 });
+			App->physics->AddBody(wall12, 0);
 
-		// Cilindro
-		CylinderWalls({ 14.5, 21, -85.5f });
+			// Cilindro
+			CylinderWalls({ 14.5, 21, -85.5f });
 
-		/*cylinder1.SetPos(-10, 6.5f, -90);
-		cylinder1.radius = 5;
-		cylinder1.height = 50;
-		cylinder1.color = White;
-		cylinder1.SetRotation(15, { 0,0,1 });
-		App->physics->AddBody(cylinder1, 0);*/
-
-		// balanza
-		//wall3.SetPos(-3, 6.5f, -90);
-		//wall3.size = { 2,39,10 };
-		//wall3.color = White;
-		//wall3.SetRotation(90-15, { 0,0,-1 });
-		//App->physics->AddBody(wall3, 0);
-
-		wall4.SetPos(40, 10, -90);
-		wall4.size = { 20,2,15 };
-		wall4.color = White;
-		App->physics->AddBody(wall4, 0);
-
-		wall5.SetPos(50, 12.5f, -90);
-		wall5.size = { 2,5,15 };
-		wall5.color = White;
-		App->physics->AddBody(wall5, 0);
+		}
+		
+		// Haciendo
+		{
+			// plataforma con pared
+			float angle= -20;
+			wall4.size = { 20,2,20 };
+			wall4.SetPos(40, 14, -80);
+			wall4.SetRotation(angle, {0,1,0});
+			wall4.color = White;
+			App->physics->AddBody(wall4, 0);
+			// pared de la plataforma 
+			wall5.size = { wall4.size.y,8,wall4.size.z };
+			wall5.SetPos(wall4.GetPos().x + 9* cos(-angle * PI /180), wall4.GetPos().y+ (wall5.size.y/2), wall4.GetPos().z+ 9 * sin(-angle * PI / 180));
+			wall5.SetRotation(angle, { 0,1,0 });
+			wall5.color = White;
+			App->physics->AddBody(wall5, 0);
+		}
 
 		// Plancha
 		wall6.SetPos(40, 20, -50);
@@ -268,7 +266,6 @@ void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 
 void ModuleSceneIntro::Looping(vec3 position)
 {
-	#define PI 3.14159265359
 	Cube* cube;
 	//int numCubes = 118;
 	int numCubes = 236;
@@ -280,7 +277,7 @@ void ModuleSceneIntro::Looping(vec3 position)
 	float posX = position.x;
 	float posY = position.y;
 	float posZ = position.z;
-	vec3 size = { 20,1.5,radio };
+	vec3 size = { 20,1.25,radio };
 	vec3 axis = { size.x,size.z,size.z};
 
 
@@ -346,7 +343,7 @@ void ModuleSceneIntro::CylinderWalls(vec3 position)
 		cube->SetPos(posX+offset, posY,-posZ);
 		cube->size = size;
 		cube->color = White;
-		cube->SetRotation(alpha-7.5 , { 1,0,0 });
+		cube->SetRotation(alpha-8.5 , { 1,0,0 });
 		cilinderWall.add(cube);
 		App->physics->AddBody(*cube, 0);
 
@@ -354,7 +351,7 @@ void ModuleSceneIntro::CylinderWalls(vec3 position)
 		cube->SetPos(posX+ size.x +offset, posY,-posZ);
 		cube->size = size;
 		cube->color = Red;
-		cube->SetRotation(alpha-7.5 , { 1,0,0 });
+		cube->SetRotation(alpha-8.5 , { 1,0,0 });
 		cilinderWall.add(cube);
 		App->physics->AddBody(*cube, 0);
 

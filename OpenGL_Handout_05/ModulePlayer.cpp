@@ -135,7 +135,7 @@ bool ModulePlayer::Start()
 bool ModulePlayer::CleanUp()
 {
 	LOG("Unloading player");
-
+	//vehicle->body->~btRigidBody();
 	return true;
 }
 
