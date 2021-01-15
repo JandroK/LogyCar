@@ -55,7 +55,7 @@ bool ModulePhysics3D::Start()
 	world->setGravity(GRAVITY);
 	vehicle_raycaster = new btDefaultVehicleRaycaster(world);
 
-	isCollision = true;
+	isCollision = false;
 
 	return true;
 }
@@ -64,7 +64,6 @@ bool ModulePhysics3D::Start()
 update_status ModulePhysics3D::PreUpdate(float dt)
 {
 	world->stepSimulation(dt, 15);
-	
 	int numManifolds = world->getDispatcher()->getNumManifolds();
 	for(int i = 0; i<numManifolds; i++)
 	{
@@ -74,15 +73,16 @@ update_status ModulePhysics3D::PreUpdate(float dt)
 
 		int numContacts = contactManifold->getNumContacts();
 
+		isCollision = false;
 		if(numContacts > 0)
 		{
-			isCollision = true;
-
+			
 			PhysBody3D* pbodyA = (PhysBody3D*)obA->getUserPointer();
 			PhysBody3D* pbodyB = (PhysBody3D*)obB->getUserPointer();
 
 			if(pbodyA && pbodyB)
 			{
+				isCollision = true;
 				p2List_item<Module*>* item = pbodyA->collision_listeners.getFirst();
 				while(item)
 				{
@@ -98,7 +98,6 @@ update_status ModulePhysics3D::PreUpdate(float dt)
 				}
 			}
 		}
-		else isCollision = false;
 		
 	}
 

@@ -34,6 +34,10 @@ public:
 	*/
 	p2List<Cube*> looping;
 
+	p2List_item<PhysBody3D*> lissen;
+	p2List<PhysBody3D*> lisseners;
+
+
 	PhysBody3D* pb_chassis;
 	Cube p_chassis;
 
@@ -74,6 +78,7 @@ public:
 	PhysBody3D* bodySensor;
 	
 	Cylinder cylinder1;
+
 
 	bool win=false;
 

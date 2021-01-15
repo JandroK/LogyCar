@@ -39,7 +39,6 @@ bool ModulePlayer::Start()
 	
 	// Car properties ----------------------------------------
 
-
 	car.mass =130.0f;
 	car.suspensionStiffness = 16.10f;
 	car.suspensionCompression = 01.42f;
@@ -116,6 +115,19 @@ bool ModulePlayer::Start()
 	car.wheels[3].brake = true;
 	car.wheels[3].steering = false;
 
+	
+	// Sensors
+	{
+		cubeSensor.SetPos(0, 0, 0);
+		cubeSensor.size = {1,2,2 };
+		cubeSensor.color = White;
+		bodySensor =App->physics->AddBody(cubeSensor, 0);
+		bodySensor->SetAsSensor(true);
+		bodySensor->collision_listeners.add(App->scene_intro);
+		bodySensor->body->setUserPointer(bodySensor);
+	}
+	
+
 	vehicle = App->physics->AddVehicle(car);
 	vehicle->SetPos(-50, 6, -150);
 	vehicle->body->setFriction(1);
@@ -125,9 +137,6 @@ bool ModulePlayer::Start()
 	vehicle->body->setUserPointer(vehicle);
 	vehicle->body->activate();
 
-
-	
-	
 	return true;
 }
 
@@ -146,11 +155,13 @@ update_status ModulePlayer::Update(float dt)
 	btQuaternion p = { 0,0,1,90 };
 	btQuaternion q = vehicle->vehicle->getChassisWorldTransform().getRotation()* vehicle->vehicle->getForwardVector().normalize();
 
+	bodySensor->body->setWorldTransform(vehicle->body->getCenterOfMassTransform());
+
 
 	vehicle->SetColor( color);
 	color.Set(1.0f, 1.0f, 1.0f, 1.0f);
-
-	//vehicle->state = IDLE;
+	if (!vehicle->state == State::IN_AIR) vehicle->state = IDLE;
+	
 	brake =2.5f;
 	turn = acceleration = 0.0f;
 	AssistDirection(90.0f);
@@ -261,26 +272,24 @@ update_status ModulePlayer::Update(float dt)
 		}
 		//LOG("%d ", (int)vehicle->body->getTotalTorque().length());
 	}
-	if (*App->physics->GetNCollisions())
-	{
-		isJumped = false;
-		vehicle->state = State::IDLE;
 
-
-	}
-
-	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && !isJumped)
+	if (App->physics->GetCollisions())
 	{
 		vehicle->state = State::IN_AIR;
-		isJumped = true;	
+		//LOG("%d",vehicle->state);
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && vehicle->state != State::IN_AIR)
+	{
+		vehicle->state = State::IN_AIR;
 		vehicle->vehicle->getRigidBody()->applyCentralForce({ 0,+70000,0 });
 	}
 
-	
 	vehicle->ApplyEngineForce(acceleration);
 	vehicle->Turn(turn);
 	vehicle->Brake(brake);
 
+	cubeSensor.Render();
 	vehicle->Render();
 
 	char title[80];
@@ -336,8 +345,11 @@ void ModulePlayer::AssistDirection(float hardness)
 }
 void ModulePlayer::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 {
+	if ((body1 == bodySensor || body2 == bodySensor) && (body1 != vehicle && body2 != vehicle))
+	{
 
-	int i;
+	}
+
 }
 
 //btVector3 ModulePlayer::Norm(btVector3 vec)

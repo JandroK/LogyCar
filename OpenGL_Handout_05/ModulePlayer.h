@@ -35,6 +35,9 @@ public:
 	float brake;
 	bool isJumped=false;
 
+	Cube cubeSensor;
+	PhysBody3D* bodySensor;
+
 private:
 
 	btVector3 forwardVector;
