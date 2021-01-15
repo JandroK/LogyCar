@@ -25,6 +25,10 @@ public:
 	void CylinderWalls(vec3 position);
 	void Ramp();
 public:
+
+	float angle;
+	float radi;
+
 	/*
 	PhysBody3D* pb_snake[MAX_SNAKE];
 	Sphere s_snake[MAX_SNAKE];
@@ -68,8 +72,13 @@ public:
 	Cube wall9;
 	Cube wall12;
 
+	Cube wall13;
+
 	Cube rotationPlt1;
 	Cube rotationPlt2;
+	Cube rotationPlt3;
+	Cube rotationPlt4;
+	Cube rotationPlt5;
 
 	Cube wall10;
 	Cube wall11;

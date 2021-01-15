@@ -5,6 +5,7 @@
 #include "PhysBody3D.h"
 
 #define PI 3.14159265359
+#define DEG_TO_RAD (PI / 180)
 
 ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -50,7 +51,6 @@ bool ModuleSceneIntro::Start()
 	lisseners.getLast()->data->collision_listeners.add(this);
 	lisseners.getLast()->data->body->setUserPointer(lisseners.getLast()->data);
 
-	Looping({-106,10,+54});
 	Ramp();
 
 	// Limits
@@ -108,72 +108,133 @@ bool ModuleSceneIntro::Start()
 			// Cilindro
 			CylinderWalls({ 14.5, 21, -85.5f });
 
+			// plataforma con pared
+			{
+				angle = -20;
+				wall4.size = { 20,2,20 };
+				wall4.SetPos(40, 14, -81);
+				wall4.SetRotation(angle, { 0,1,0 });
+				wall4.color = White;
+				lisseners.add(App->physics->AddBody(wall4, 0));
+				lisseners.getLast()->data->collision_listeners.add(this);
+				lisseners.getLast()->data->body->setUserPointer(lisseners.getLast()->data);
+				// pared de la plataforma 
+				wall5.size = { wall4.size.y,10,wall4.size.z };
+				wall5.SetPos(wall4.GetPos().x + 9 * cos(-angle * PI / 180), wall4.GetPos().y + (wall5.size.y / 2), wall4.GetPos().z + 9 * sin(-angle * PI / 180));
+				wall5.SetRotation(angle, { 0,1,0 });
+				wall5.color = White;
+				lisseners.add(App->physics->AddBody(wall5, 0));
+				lisseners.getLast()->data->collision_listeners.add(this);
+				lisseners.getLast()->data->body->setUserPointer(lisseners.getLast()->data);
+						angle =-20 ;
+			}
+			radi = 2.5f;
+
+			// Plancha
+			wall6.size = { 1.3,0.5,20 };
+			wall6.SetPos(45.7, (wall4.GetPos().y + ((wall4.size.y/2) - (wall6.size.y ))), -99.1);
+			wall6.color = White;
+
+			wall6.SetRotation(angle, { 0,1,0 });
+			lisseners.add(App->physics->AddBody(wall6, 0));
+			lisseners.getLast()->data->collision_listeners.add(this);
+			lisseners.getLast()->data->body->setUserPointer(lisseners.getLast()->data);
+
+			wall7.size = { 1.3,0.5,20 };
+			wall7.SetPos(wall6.GetPos().x + radi * cos(-angle * DEG_TO_RAD), wall6.GetPos().y, wall6.GetPos().z + +radi * sin(-angle * DEG_TO_RAD));
+			wall7.color = White;
+
+			wall7.SetRotation(angle, { 0,1,0 });
+			lisseners.add(App->physics->AddBody(wall7, 0));
+			lisseners.getLast()->data->collision_listeners.add(this);
+			lisseners.getLast()->data->body->setUserPointer(lisseners.getLast()->data);
+
+
+			angle = -20;
+			wall13.size = { 5,1,5 };
+			wall13.SetPos(50.8, 14.5, -109.5);
+			wall13.SetRotation(angle, { 0,1,0 });
+			wall13.color = White;
+			lisseners.add(App->physics->AddBody(wall13, 0));
+			lisseners.getLast()->data->collision_listeners.add(this);
+			lisseners.getLast()->data->body->setUserPointer(lisseners.getLast()->data);
+
+
+			angle = 0;
+			rotationPlt1.size = { 5,1,5 };
+			rotationPlt1.SetPos(51.8f, 14.5, -110.2);
+			rotationPlt1.SetRotation(angle, { 0,1,0 });
+			rotationPlt1.color = White;
+			lisseners.add(App->physics->AddBody(rotationPlt1, 0));
+			lisseners.getLast()->data->collision_listeners.add(this);
+			lisseners.getLast()->data->body->setUserPointer(lisseners.getLast()->data);
+
+			angle = -90;
+			radi = 2.5f;
+			// Plancha
+			//wall8.SetPos((wall6.GetPos().x- wall6.size.x) + radi * cos(-angle * DEG_TO_RAD), wall6.GetPos().y, (wall6.GetPos().z- wall6.size.z) + radi * sin(-angle * DEG_TO_RAD));
+			wall8.size = { 1.3,0.5,20 };
+			wall8.SetPos(63, wall6.GetPos().y, -111.50);
+			wall8.color = White;
+
+			wall8.SetRotation(angle, { 0,1,0 });
+			lisseners.add(App->physics->AddBody(wall8, 0));
+			lisseners.getLast()->data->collision_listeners.add(this);
+			lisseners.getLast()->data->body->setUserPointer(lisseners.getLast()->data);
+
+			// rampa pequeña salto
+			wall9.size = { 1.3,0.5,20 };
+			wall9.SetPos(wall8.GetPos().x + radi * cos(-angle * DEG_TO_RAD), wall8.GetPos().y, wall8.GetPos().z + radi * sin(-angle * DEG_TO_RAD));
+			wall9.color = White;
+
+			wall9.SetRotation(angle, { 0,1,0 });
+			lisseners.add(App->physics->AddBody(wall9, 0));
+			lisseners.getLast()->data->collision_listeners.add(this);
+			lisseners.getLast()->data->body->setUserPointer(lisseners.getLast()->data);
+
+			rotationPlt2.SetPos(71.0f, 14.5, -98.0);
+			rotationPlt2.size = { 10,1,30 };
+			rotationPlt2.color = White;
+			lisseners.add(App->physics->AddBody(rotationPlt2, 0));
+			lisseners.getLast()->data->collision_listeners.add(this);
+			lisseners.getLast()->data->body->setUserPointer(lisseners.getLast()->data);
+
 		}
 		
 		// Haciendo
 		{
-			// plataforma con pared
-			float angle= -20;
-			wall4.size = { 20,2,20 };
-			wall4.SetPos(40, 14, -80);
-			wall4.SetRotation(angle, {0,1,0});
-			wall4.color = White;
-			lisseners.add(App->physics->AddBody(wall4, 0));
-			lisseners.getLast()->data->collision_listeners.add(this);
-			lisseners.getLast()->data->body->setUserPointer(lisseners.getLast()->data);
-			// pared de la plataforma 
-			wall5.size = { wall4.size.y,10,wall4.size.z };
-			wall5.SetPos(wall4.GetPos().x + 9* cos(-angle * PI /180), wall4.GetPos().y+ (wall5.size.y/2), wall4.GetPos().z+ 9 * sin(-angle * PI / 180));
-			wall5.SetRotation(angle, { 0,1,0 });
-			wall5.color = White;
-			lisseners.add(App->physics->AddBody(wall5, 0));
-			lisseners.getLast()->data->collision_listeners.add(this);
-			lisseners.getLast()->data->body->setUserPointer(lisseners.getLast()->data);
+		angle = 45;
+		rotationPlt3.SetPos(74.0f, 14.5, -82.2);
+		rotationPlt3.size = { 10,1,12.5 };
+		rotationPlt3.SetRotation(angle, { 0,1,0 });
+		rotationPlt3.color = White;
+		lisseners.add(App->physics->AddBody(rotationPlt3, 0));
+		lisseners.getLast()->data->collision_listeners.add(this);
+		lisseners.getLast()->data->body->setUserPointer(lisseners.getLast()->data);
+
+		angle = 90;
+		rotationPlt4.SetPos(80.9f, 14.5, -79.25);
+		rotationPlt4.size = { 10,1,12 };
+		rotationPlt4.SetRotation(angle, { 0,1,0 });
+		rotationPlt4.color = White;
+		lisseners.add(App->physics->AddBody(rotationPlt4, 0));
+		lisseners.getLast()->data->collision_listeners.add(this); 
+		lisseners.getLast()->data->body->setUserPointer(lisseners.getLast()->data);
+
+		angle = -45;
+		rotationPlt5.SetPos(87.9f, 14.5, -82.2);
+		rotationPlt5.size = { 10,1,12.5 };
+		rotationPlt5.SetRotation(angle, { 0,1,0 });
+		rotationPlt5.color = White;
+		lisseners.add(App->physics->AddBody(rotationPlt5, 0));
+		lisseners.getLast()->data->collision_listeners.add(this); 
+		lisseners.getLast()->data->body->setUserPointer(lisseners.getLast()->data);
+
+
+		Looping({ 18.0f, 14.5, 50.0 });
+
 		}
 
-		// Plancha
-		wall6.SetPos(40, 20, -50);
-		wall6.size = { 3.25,0.5,60 };
-		wall6.color = White;
-		wall6.SetRotation(20, { -1,0,0 });
-		lisseners.add(App->physics->AddBody(wall6, 0));
-		lisseners.getLast()->data->collision_listeners.add(this);
-		lisseners.getLast()->data->body->setUserPointer(lisseners.getLast()->data);
-		// rampa pequeña salto
-		wall7.SetPos(40, 11, -84);
-		wall7.size = { 5,1.5,5};
-		wall7.color = White;
-		wall7.SetRotation(20, { -1,0,0 });
-		lisseners.add(App->physics->AddBody(wall7, 0));
-		lisseners.getLast()->data->collision_listeners.add(this);
-		lisseners.getLast()->data->body->setUserPointer(lisseners.getLast()->data);
-
-		wall8.SetPos(40, 18, 15);
-		wall8.size = { 20,4,20};
-		wall8.color = White;
-		lisseners.add(App->physics->AddBody(wall8, 0));
-		lisseners.getLast()->data->collision_listeners.add(this);
-		lisseners.getLast()->data->body->setUserPointer(lisseners.getLast()->data);
-
-		wall9.SetPos(30, 20, 15);
-		wall9.size = { 20,2,20};
-		wall9.color = White;
-		wall9.SetRotation(20, { 0,0,-1 });
-		App->physics->AddBody(wall9, 0);
-
-		rotationPlt1.SetPos(-10, 19, 15);
-		rotationPlt1.size = { 20,2,20 };
-		rotationPlt1.color = White;
-		lisseners.add(App->physics->AddBody(rotationPlt1, 0));
-		lisseners.getLast()->data->collision_listeners.add(this);
-		lisseners.getLast()->data->body->setUserPointer(lisseners.getLast()->data);
-
-		rotationPlt2.SetPos(-30, 13, -10);
-		rotationPlt2.size = { 20,2,20 };
-		rotationPlt2.color = White;
-		lisseners.add(App->physics->AddBody(rotationPlt2, 0));
-		lisseners.getLast()->data->collision_listeners.add(this);
-		lisseners.getLast()->data->body->setUserPointer(lisseners.getLast()->data);
 
 		wall10.SetPos(-70, 10, -10);
 		wall10.size = { 60,2,7 };
@@ -183,16 +244,17 @@ bool ModuleSceneIntro::Start()
 		lisseners.getLast()->data->collision_listeners.add(this);
 		lisseners.getLast()->data->body->setUserPointer(lisseners.getLast()->data);
 
+		
+	}
+
+	// Sensors
+	{
 		wall11.SetPos(-110, 10, -10);
 		wall11.size = { 20,2,20 };
 		wall11.color = White;
 		lisseners.add(App->physics->AddBody(wall11, 0));
 		lisseners.getLast()->data->collision_listeners.add(this);
 		lisseners.getLast()->data->body->setUserPointer(lisseners.getLast()->data);
-	}
-
-	// Sensors
-	{
 		cubeSensor.SetPos(-110, 11.1f, -10);
 		cubeSensor.size = { 19.5f,0.45f,19.5f };
 		cubeSensor.color = White;
@@ -252,12 +314,17 @@ update_status ModuleSceneIntro::Update(float dt)
 		wall7.Render();
 		wall8.Render();
 		wall9.Render();
+
 		rotationPlt1.Render();
 		rotationPlt2.Render();
+		rotationPlt3.Render();
+		rotationPlt4.Render();
+		rotationPlt5.Render();
 
 		wall10.Render();
 		wall11.Render();
 		wall12.Render();
+		wall13.Render();
 
 		cubeSensor.Render();
 		
@@ -308,7 +375,7 @@ void ModuleSceneIntro::Looping(vec3 position)
 	float offset = 0;
 	float posX = position.x;
 	float posY = position.y;
-	float posZ = position.z;
+	float posZ = -position.z;
 	vec3 size = { 20,1.25,radio };
 	vec3 axis = { size.x,size.z,size.z};
 
@@ -329,7 +396,7 @@ void ModuleSceneIntro::Looping(vec3 position)
 		cube = new Cube();
 		cube->SetPos(posX+offset, posY, -posZ);
 		cube->size = size;
-		cube->color = White;
+		cube->color.Set(40 / posX+1.65, 40 / posY ,40 / posZ );
 
 		cube->SetRotation(alpha+1.5f, { 1,0,0 });
 		//cube->transform.rotate(alpha + 1.5f, { 1,0,0 });

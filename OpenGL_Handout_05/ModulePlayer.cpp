@@ -28,8 +28,8 @@ bool ModulePlayer::Start()
 	car.chassis2_size.Set(0.90, 0.35, 1);
 	car.chassis2_offset.Set(0, car.chassis_offset.y+0.35, car.chassis_offset.z -0.1);
 
-	car.chassis3_size.Set(1.10, 0.10, 0.20);
-	car.chassis3_offset.Set(0, car.chassis_offset.y + 0.40, car.chassis_offset.z- car.chassis_size.z/2.05f);
+	car.chassis3_size.Set(1.10, 0.10, 0.25);
+	car.chassis3_offset.Set(0, car.chassis_offset.y + 0.60, car.chassis_offset.z- car.chassis_size.z/2.05f);
 
 	car.chassis4_size.Set(0.075, 0.20, 0.075);
 	car.chassis4_offset.Set(-0.25, car.chassis_offset.y + 0.60, car.chassis_offset.z-0.4);
@@ -40,23 +40,24 @@ bool ModulePlayer::Start()
 	// Car properties ----------------------------------------
 
 	car.mass =130.0f;
-	car.suspensionStiffness = 16.10f;
-	car.suspensionCompression = 01.42f;
+	car.suspensionStiffness = 26.10f;
+	car.suspensionCompression = 1.42f;
 	car.suspensionDamping =2.35f;
-	car.maxSuspensionTravelCm = 110;
-	car.frictionSlip = 50.5;
+	car.maxSuspensionTravelCm = 510;
+	car.frictionSlip = 100.5;
 	car.maxSuspensionForce = 1000.0f;
 
 
 	// Wheel properties ---------------------------------------
 	float connection_height = car.chassis_size.y- car.chassis_offset.z+0.75;
 	float wheel_radius = 0.6f;
-	float wheel_width = 0.83f;
+	float wheel_width = 0.75f;
 	float suspensionRestLength = 1.25f;
 
 	// Don't change anything below this line ------------------
 
 	float half_width = car.chassis_size.x+0.28f;
+
 	float half_length = car.chassis_size.z*0.6f;
 	
 	vec3 direction(0,-1,0);
@@ -66,12 +67,12 @@ bool ModulePlayer::Start()
 	car.wheels = new Wheel[4];
 
 	// FRONT-LEFT ------------------------
-	car.wheels[0].connection.Set(half_width - 0.3f * wheel_width, connection_height, half_length - wheel_radius + 0.2 + car.chassis_offset.z);
+	car.wheels[0].connection.Set(half_width - 0.4f * wheel_width, connection_height, half_length - wheel_radius + 0.2 + car.chassis_offset.z);
 	car.wheels[0].direction = direction;
 	car.wheels[0].axis = axis;
 	car.wheels[0].suspensionRestLength = suspensionRestLength;
-	car.wheels[0].radius = wheel_radius;
-	car.wheels[0].width = wheel_width;
+	car.wheels[0].radius = wheel_radius * 0.95;
+	car.wheels[0].width = wheel_width * 0.9;
 	car.wheels[0].front = true;
 	car.wheels[0].drive = true;
 	car.wheels[0].brake = false;
@@ -80,19 +81,19 @@ bool ModulePlayer::Start()
 
 
 	// FRONT-RIGHT ------------------------
-	car.wheels[1].connection.Set(-half_width + 0.3f * wheel_width, connection_height, half_length - wheel_radius + 0.2 + car.chassis_offset.z);
+	car.wheels[1].connection.Set(-half_width + 0.4f * wheel_width, connection_height, half_length - wheel_radius + 0.2 + car.chassis_offset.z);
 	car.wheels[1].direction = direction;
 	car.wheels[1].axis = axis;
 	car.wheels[1].suspensionRestLength = suspensionRestLength;
-	car.wheels[1].radius = wheel_radius;
-	car.wheels[1].width = wheel_width;
+	car.wheels[1].radius = wheel_radius*0.95;
+	car.wheels[1].width = wheel_width * 0.9;
 	car.wheels[1].front = true;
 	car.wheels[1].drive = true;
 	car.wheels[1].brake = false;
 	car.wheels[1].steering = true;
 
 	// REAR-LEFT ------------------------
-	car.wheels[2].connection.Set(half_width - 0.3f * wheel_width, connection_height, -half_length + wheel_radius-0.2 + car.chassis_offset.z);
+	car.wheels[2].connection.Set(half_width - 0.3f * wheel_width, connection_height, -half_length + wheel_radius-0.4 + car.chassis_offset.z);
 	car.wheels[2].direction = direction;
 	car.wheels[2].axis = axis;
 	car.wheels[2].suspensionRestLength = suspensionRestLength;
@@ -104,7 +105,7 @@ bool ModulePlayer::Start()
 	car.wheels[2].steering = false;
 
 	// REAR-RIGHT ------------------------
-	car.wheels[3].connection.Set(-half_width + 0.3f * wheel_width, connection_height, -half_length + wheel_radius-0.2 + car.chassis_offset.z);
+	car.wheels[3].connection.Set(-half_width + 0.3f * wheel_width, connection_height, -half_length + wheel_radius-0.4 + car.chassis_offset.z);
 	car.wheels[3].direction = direction;
 	car.wheels[3].axis = axis;
 	car.wheels[3].suspensionRestLength = suspensionRestLength;
@@ -118,8 +119,8 @@ bool ModulePlayer::Start()
 	
 	// Sensors
 	{
-		cubeSensor.SetPos(0, 0, 0);
-		cubeSensor.size = {0.5,2,2 };
+		cubeSensor.SetPos(0, -2, 0);
+		cubeSensor.size = {0.1,5,0.1 };
 		cubeSensor.color = White;
 		bodySensor =App->physics->AddBody(cubeSensor, 0);
 		bodySensor->body->setUserPointer(bodySensor);
@@ -190,7 +191,7 @@ update_status ModulePlayer::Update(float dt)
 		vehicle->SetTransform(matrix);
 	}
 	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_REPEAT)vehicle->SetPos(-50.0f, 6.0f, -150.0f);
-	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_REPEAT)vehicle->SetPos(40, 14, -90);
+	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_REPEAT)vehicle->SetPos(40, 24, -90);
 	if (App->input->GetKey(SDL_SCANCODE_2) == KEY_REPEAT)vehicle->SetPos(40, 20, 15);
 	if (App->input->GetKey(SDL_SCANCODE_3) == KEY_REPEAT)vehicle->SetPos(-110, 12, -10);
 
