@@ -182,7 +182,7 @@ bool ModuleSceneIntro::Start()
 			lisseners.getLast()->data->collision_listeners.add(this);
 			lisseners.getLast()->data->body->setUserPointer(lisseners.getLast()->data);
 
-			// rampa pequeña salto
+			// 
 			wall9.size = { 1.3,0.5,20 };
 			wall9.SetPos(wall8.GetPos().x + radi * cos(-angle * DEG_TO_RAD), wall8.GetPos().y, wall8.GetPos().z + radi * sin(-angle * DEG_TO_RAD));
 			wall9.color = White;
@@ -192,43 +192,96 @@ bool ModuleSceneIntro::Start()
 			lisseners.getLast()->data->collision_listeners.add(this);
 			lisseners.getLast()->data->body->setUserPointer(lisseners.getLast()->data);
 
-			rotationPlt2.SetPos(71.0f, 14.5, -98.0);
-			rotationPlt2.size = { 10,1,30 };
-			rotationPlt2.color = White;
-			lisseners.add(App->physics->AddBody(rotationPlt2, 0));
-			lisseners.getLast()->data->collision_listeners.add(this);
-			lisseners.getLast()->data->body->setUserPointer(lisseners.getLast()->data);
+
 
 		}
 		
 		// Haciendo
 		{
-		angle = 45;
-		rotationPlt3.SetPos(74.0f, 14.5, -82.2);
-		rotationPlt3.size = { 10,1,12.5 };
-		rotationPlt3.SetRotation(angle, { 0,1,0 });
-		rotationPlt3.color = White;
-		lisseners.add(App->physics->AddBody(rotationPlt3, 0));
-		lisseners.getLast()->data->collision_listeners.add(this);
-		lisseners.getLast()->data->body->setUserPointer(lisseners.getLast()->data);
+			//curva anti horaria
+			{
+				rotationPlt2.SetPos(71.07f, 14.5, -98.0);
+				rotationPlt2.size = { 10,1,30 };
+				rotationPlt2.color = White;
+				lisseners.add(App->physics->AddBody(rotationPlt2, 0));
+				lisseners.getLast()->data->collision_listeners.add(this);
+				lisseners.getLast()->data->body->setUserPointer(lisseners.getLast()->data);
 
-		angle = 90;
-		rotationPlt4.SetPos(80.9f, 14.5, -79.25);
-		rotationPlt4.size = { 10,1,12 };
-		rotationPlt4.SetRotation(angle, { 0,1,0 });
-		rotationPlt4.color = White;
-		lisseners.add(App->physics->AddBody(rotationPlt4, 0));
-		lisseners.getLast()->data->collision_listeners.add(this); 
-		lisseners.getLast()->data->body->setUserPointer(lisseners.getLast()->data);
+				angle = 45;
+				rotationPlt3.SetPos(74.0f, 14.5, -82.2);
+				rotationPlt3.size = { 10,1,12.5 };
+				rotationPlt3.SetRotation(angle, { 0,1,0 });
+				rotationPlt3.color = White;
+				lisseners.add(App->physics->AddBody(rotationPlt3, 0));
+				lisseners.getLast()->data->collision_listeners.add(this);
+				lisseners.getLast()->data->body->setUserPointer(lisseners.getLast()->data);
 
-		angle = -45;
-		rotationPlt5.SetPos(87.9f, 14.5, -82.2);
-		rotationPlt5.size = { 10,1,12.5 };
-		rotationPlt5.SetRotation(angle, { 0,1,0 });
-		rotationPlt5.color = White;
-		lisseners.add(App->physics->AddBody(rotationPlt5, 0));
-		lisseners.getLast()->data->collision_listeners.add(this); 
-		lisseners.getLast()->data->body->setUserPointer(lisseners.getLast()->data);
+				angle = 90;
+				rotationPlt4.SetPos(80.9f, 14.5, -79.25);
+				rotationPlt4.size = { 10,1,12 };
+				rotationPlt4.SetRotation(angle, { 0,1,0 });
+				rotationPlt4.color = White;
+				lisseners.add(App->physics->AddBody(rotationPlt4, 0));
+				lisseners.getLast()->data->collision_listeners.add(this);
+				lisseners.getLast()->data->body->setUserPointer(lisseners.getLast()->data);
+
+				angle = -45;
+				rotationPlt5.SetPos(87.9f, 14.5, -82.2);
+				rotationPlt5.size = { 10,1,12.5 };
+				rotationPlt5.SetRotation(angle, { 0,1,0 });
+				rotationPlt5.color = White;
+				lisseners.add(App->physics->AddBody(rotationPlt5, 0));
+				lisseners.getLast()->data->collision_listeners.add(this);
+				lisseners.getLast()->data->body->setUserPointer(lisseners.getLast()->data);
+
+
+				rotationPlt6.SetPos(90.8f, 14.5, -98.0);
+				rotationPlt6.size = { 10,1,30 };
+				rotationPlt6.color = White;
+				lisseners.add(App->physics->AddBody(rotationPlt6, 0));
+				lisseners.getLast()->data->collision_listeners.add(this);
+				lisseners.getLast()->data->body->setUserPointer(lisseners.getLast()->data);
+			}
+
+			//curva horaria
+			{
+				angle = -45;
+				rotationPlt7.SetPos(74.0f + 19.73f, 14.5, -113.8f);
+				rotationPlt7.size = { 10,1,12.5 };
+				rotationPlt7.SetRotation(angle, { 0,1,0 });
+				rotationPlt7.color = White;
+				lisseners.add(App->physics->AddBody(rotationPlt7, 0));
+				lisseners.getLast()->data->collision_listeners.add(this);
+				lisseners.getLast()->data->body->setUserPointer(lisseners.getLast()->data);
+
+				angle = 90;
+				rotationPlt8.SetPos(80.9f + 19.73f, 14.5, -116.75f);
+				rotationPlt8.size = { 10,1,12 };
+				rotationPlt8.SetRotation(angle, { 0,1,0 });
+				rotationPlt8.color = White;
+				lisseners.add(App->physics->AddBody(rotationPlt8, 0));
+				lisseners.getLast()->data->collision_listeners.add(this);
+				lisseners.getLast()->data->body->setUserPointer(lisseners.getLast()->data);
+
+				angle = 45;
+				rotationPlt9.SetPos(87.9f+19.73f, 14.5, -113.8f);
+				rotationPlt9.size = { 10,1,12.5 };
+				rotationPlt9.SetRotation(angle, { 0,1,0 });
+				rotationPlt9.color = White;
+				lisseners.add(App->physics->AddBody(rotationPlt9, 0));
+				lisseners.getLast()->data->collision_listeners.add(this);
+				lisseners.getLast()->data->body->setUserPointer(lisseners.getLast()->data);
+			
+				rotationPlt10.SetPos(110.53f, 14.5, -98.0);
+				rotationPlt10.size = { 10,1,30 };
+				rotationPlt10.color = White;
+				lisseners.add(App->physics->AddBody(rotationPlt10, 0));
+				lisseners.getLast()->data->collision_listeners.add(this);
+				lisseners.getLast()->data->body->setUserPointer(lisseners.getLast()->data);
+
+			}
+
+
 
 
 		Looping({ 18.0f, 14.5, 50.0 });
@@ -295,6 +348,7 @@ update_status ModuleSceneIntro::Update(float dt)
 
 	ground.Render();
 
+	
 	// Limits
 	{
 		Limit1.Render();
@@ -314,17 +368,23 @@ update_status ModuleSceneIntro::Update(float dt)
 		wall7.Render();
 		wall8.Render();
 		wall9.Render();
+		wall10.Render();
+		wall11.Render();
+		wall12.Render();
+		wall13.Render();
 
 		rotationPlt1.Render();
 		rotationPlt2.Render();
 		rotationPlt3.Render();
 		rotationPlt4.Render();
 		rotationPlt5.Render();
+		rotationPlt6.Render();
+		rotationPlt7.Render();
+		rotationPlt8.Render();
+		rotationPlt9.Render();
+		rotationPlt10.Render();
 
-		wall10.Render();
-		wall11.Render();
-		wall12.Render();
-		wall13.Render();
+	
 
 		cubeSensor.Render();
 		
