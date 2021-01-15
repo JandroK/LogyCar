@@ -116,7 +116,7 @@ bool ModuleSceneIntro::Start()
 			wall4.color = White;
 			App->physics->AddBody(wall4, 0);
 			// pared de la plataforma 
-			wall5.size = { wall4.size.y,8,wall4.size.z };
+			wall5.size = { wall4.size.y,10,wall4.size.z };
 			wall5.SetPos(wall4.GetPos().x + 9* cos(-angle * PI /180), wall4.GetPos().y+ (wall5.size.y/2), wall4.GetPos().z+ 9 * sin(-angle * PI / 180));
 			wall5.SetRotation(angle, { 0,1,0 });
 			wall5.color = White;

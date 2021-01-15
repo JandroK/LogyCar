@@ -161,8 +161,8 @@ update_status ModulePlayer::Update(float dt)
 
 	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_REPEAT || App->input->GetKey(SDL_SCANCODE_1) == KEY_REPEAT || App->input->GetKey(SDL_SCANCODE_2) == KEY_REPEAT || App->input->GetKey(SDL_SCANCODE_3) == KEY_REPEAT)
 	{
-		const float matrix[3] = { 0,1,0 };
-		//vehicle->SetTransform(matrix);
+		const float matrix[13] = { 0,1,0 };
+		vehicle->SetTransform(matrix);
 	}
 	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_REPEAT)vehicle->SetPos(-50.0f, 6.0f, -150.0f);
 	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_REPEAT)vehicle->SetPos(40, 14, -90);
@@ -176,7 +176,7 @@ update_status ModulePlayer::Update(float dt)
 		vel = MAX_ACCELERATION * 2;
 		vehicle->state = TURBO;
 		vehicle->vehicle->getRigidBody()->applyCentralForce({ 0,-99,0 });
-		vehicle->body->applyTorque(per * 80);
+		//vehicle->body->applyTorque(per * 80);
 
 	}
 	else
