@@ -79,7 +79,7 @@ update_status ModulePhysics3D::PreUpdate(float dt)
 			
 			PhysBody3D* pbodyA = (PhysBody3D*)obA->getUserPointer();
 			PhysBody3D* pbodyB = (PhysBody3D*)obB->getUserPointer();
-
+//			if( pbodyA->body != App->player->vehicle->body && pbodyB->body  !=App->player->vehicle->body)
 			if(pbodyA && pbodyB)
 			{
 				isCollision = true;

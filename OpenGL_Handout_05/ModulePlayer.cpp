@@ -119,23 +119,20 @@ bool ModulePlayer::Start()
 	// Sensors
 	{
 		cubeSensor.SetPos(0, 0, 0);
-		cubeSensor.size = {1,2,2 };
+		cubeSensor.size = {0.5,2,2 };
 		cubeSensor.color = White;
 		bodySensor =App->physics->AddBody(cubeSensor, 0);
+		bodySensor->body->setUserPointer(bodySensor);
 		bodySensor->SetAsSensor(true);
 		bodySensor->collision_listeners.add(App->scene_intro);
-		bodySensor->body->setUserPointer(bodySensor);
 	}
 	
 
 	vehicle = App->physics->AddVehicle(car);
 	vehicle->SetPos(-50, 6, -150);
 	vehicle->body->setFriction(1);
-
 	vehicle->collision_listeners.add(this);
-
 	vehicle->body->setUserPointer(vehicle);
-	vehicle->body->activate();
 
 	return true;
 }
@@ -160,7 +157,23 @@ update_status ModulePlayer::Update(float dt)
 
 	vehicle->SetColor( color);
 	color.Set(1.0f, 1.0f, 1.0f, 1.0f);
-	if (!vehicle->state == State::IN_AIR) vehicle->state = IDLE;
+
+	if (!App->physics->GetCollisions())
+	{
+		vehicle->state = State::IN_AIR;
+		LOG("%d", vehicle->state);
+	} 
+	else
+	{
+		vehicle->state = State::IDLE;
+	}
+	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && vehicle->state != State::IN_AIR)
+	{
+		vehicle->state = State::IN_AIR;
+		vehicle->vehicle->getRigidBody()->applyCentralForce({ 0,+70000,0 });
+	}
+
+	//if (!vehicle->state == State::IN_AIR) vehicle->state = IDLE;
 	
 	brake =2.5f;
 	turn = acceleration = 0.0f;
@@ -168,6 +181,7 @@ update_status ModulePlayer::Update(float dt)
 	forwardVector = vehicle->vehicle->getForwardVector().normalize();
 	//btVector3 per = { q.getAxis().getX() ,q.getAxis().getY() ,q.getAxis().getZ() };
 	btVector3 per = { -forwardVector.getZ(), forwardVector.getY(), forwardVector.getX() };
+
 
 
 	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_REPEAT || App->input->GetKey(SDL_SCANCODE_1) == KEY_REPEAT || App->input->GetKey(SDL_SCANCODE_2) == KEY_REPEAT || App->input->GetKey(SDL_SCANCODE_3) == KEY_REPEAT)
@@ -180,8 +194,10 @@ update_status ModulePlayer::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_2) == KEY_REPEAT)vehicle->SetPos(40, 20, 15);
 	if (App->input->GetKey(SDL_SCANCODE_3) == KEY_REPEAT)vehicle->SetPos(-110, 12, -10);
 
+
+
 	if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT &&
-		(vehicle->state == State::WALK || vehicle->state == State::TURBO)&&
+		(vehicle->state != State::IN_AIR || vehicle->state == State::TURBO)&&
 		App->input->GetKey(SDL_SCANCODE_S) != KEY_REPEAT)
 	{
 		vel = MAX_ACCELERATION * 2;
@@ -273,17 +289,9 @@ update_status ModulePlayer::Update(float dt)
 		//LOG("%d ", (int)vehicle->body->getTotalTorque().length());
 	}
 
-	if (App->physics->GetCollisions())
-	{
-		vehicle->state = State::IN_AIR;
-		//LOG("%d",vehicle->state);
-	}
 
-	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && vehicle->state != State::IN_AIR)
-	{
-		vehicle->state = State::IN_AIR;
-		vehicle->vehicle->getRigidBody()->applyCentralForce({ 0,+70000,0 });
-	}
+
+
 
 	vehicle->ApplyEngineForce(acceleration);
 	vehicle->Turn(turn);

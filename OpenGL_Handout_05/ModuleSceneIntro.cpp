@@ -287,7 +287,7 @@ void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 		cubeSensor.size.y = 0.10f;
 		bodySensor->SetPos(vec.getX(),vec.getY()-1,vec.getZ());
 	}
-	if ( lisseners.find(body1) >= 0 || lisseners.find(body2) >= 0)
+	if ( (lisseners.find(body1) >= 0 || lisseners.find(body2) >= 0))
 	{
 		LOG("En el suelo");
 
@@ -335,8 +335,8 @@ void ModuleSceneIntro::Looping(vec3 position)
 		//cube->transform.rotate(alpha + 1.5f, { 1,0,0 });
 
 		looping.add(cube);	
-		App->physics->AddBody(*cube,0);
-
+		lisseners.add(App->physics->AddBody(*cube, 0));
+		lisseners.getLast()->data->collision_listeners.add(this);
 	
 		offset +=(size.x*2.7 )/numCubes ;
 	}
@@ -377,7 +377,8 @@ void ModuleSceneIntro::CylinderWalls(vec3 position)
 		cube->color = White;
 		cube->SetRotation(alpha-8.5 , { 1,0,0 });
 		cilinderWall.add(cube);
-		App->physics->AddBody(*cube, 0);
+		lisseners.add(App->physics->AddBody(*cube, 0));
+		lisseners.getLast()->data->collision_listeners.add(this);
 
 		cube = new Cube();
 		cube->SetPos(posX+ size.x +offset, posY,-posZ);
@@ -385,8 +386,8 @@ void ModuleSceneIntro::CylinderWalls(vec3 position)
 		cube->color = Red;
 		cube->SetRotation(alpha-8.5 , { 1,0,0 });
 		cilinderWall.add(cube);
-		App->physics->AddBody(*cube, 0);
-
+		lisseners.add(App->physics->AddBody(*cube, 0));
+		lisseners.getLast()->data->collision_listeners.add(this);
 
 		offset -= size.x*8 / numCubes;
 	}
@@ -429,9 +430,12 @@ void ModuleSceneIntro::Ramp()
 		cube->color = White;
 
 		cube->SetRotation(alpha + 6.0f, { 1,0,0 });
+		
 
 		looping.add(cube);
-		App->physics->AddBody(*cube, 0);
+		lisseners.add( App->physics->AddBody(*cube, 0));
+		lisseners.getLast()->data->collision_listeners.add(this);
+
 
 
 		//posZ += size.z / numCubes;

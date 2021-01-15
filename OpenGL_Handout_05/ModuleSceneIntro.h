@@ -35,7 +35,7 @@ public:
 	p2List<Cube*> looping;
 	p2List<Cube*> cilinderWall;
 
-	p2List_item<PhysBody3D*> lissen;
+	p2List<PhysBody3D*> lissen;
 	p2List<PhysBody3D*> lisseners;
 
 
