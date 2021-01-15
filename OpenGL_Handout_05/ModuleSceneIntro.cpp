@@ -86,20 +86,20 @@ bool ModuleSceneIntro::Start()
 		wall1.SetRotation(23, { 0,0,1 });
 		App->physics->AddBody(wall1, 0);
 
-		wall2.SetPos(-50, 4, -85);
+		wall2.SetPos(-50, 4, -86);
 		wall2.size = { 30,2,20 };
 		wall2.color = White;
 		App->physics->AddBody(wall2, 0);
 
 		// segunda rampa
-		wall12.SetPos(-39, 5.0f, -86);
-		wall12.size = { 8,1,15 };
+		wall12.SetPos(-39, 5.5f, -85.8f);
+		wall12.size = { 8,1,19.9f };
 		wall12.color = White;
 		wall12.SetRotation(20, { 0,0,1 });
 		App->physics->AddBody(wall12, 0);
 
 		// Cilindro
-		CylinderWalls({0,0,0});
+		CylinderWalls({ 14.5, 21, -85.5f });
 
 		/*cylinder1.SetPos(-10, 6.5f, -90);
 		cylinder1.radius = 5;
@@ -109,11 +109,11 @@ bool ModuleSceneIntro::Start()
 		App->physics->AddBody(cylinder1, 0);*/
 
 		// balanza
-		wall3.SetPos(-3, 6.5f, -90);
-		wall3.size = { 2,39,10 };
-		wall3.color = White;
-		wall3.SetRotation(90-15, { 0,0,-1 });
-		App->physics->AddBody(wall3, 0);
+		//wall3.SetPos(-3, 6.5f, -90);
+		//wall3.size = { 2,39,10 };
+		//wall3.color = White;
+		//wall3.SetRotation(90-15, { 0,0,-1 });
+		//App->physics->AddBody(wall3, 0);
 
 		wall4.SetPos(40, 10, -90);
 		wall4.size = { 20,2,15 };
@@ -241,6 +241,10 @@ update_status ModuleSceneIntro::Update(float dt)
 		{
 			cube->data->Render();
 		}
+		for (p2List_item<Cube*>* cube = cilinderWall.getFirst(); cube; cube= cube->next)
+		{
+			cube->data->Render();
+		}
 
 	}
 	return UPDATE_CONTINUE;
@@ -276,7 +280,7 @@ void ModuleSceneIntro::Looping(vec3 position)
 	float posX = position.x;
 	float posY = position.y;
 	float posZ = position.z;
-	vec3 size = { 20,0.5,radio };
+	vec3 size = { 20,1.5,radio };
 	vec3 axis = { size.x,size.z,size.z};
 
 
@@ -314,45 +318,48 @@ void ModuleSceneIntro::CylinderWalls(vec3 position)
 {
 #define PI 3.14159265358979323846
 	Cube* cube;
-	float numCubes = 16;
+	float numCubes = 84;
 	float alpha = 0;
-	float offset = 100;
-	float radio = 5.00;
+	float offset = 0;
+	float radio = 2.5f;
 	float rad = 0;
 	float posX = position.x;
-	float posY = position.y;
-	float posZ = position.z;
-	vec3 size = { 100.0f,0.25f,radio  };
+	float posY = position.y+radio * cos(rad);
+	float posZ = -position.z+ radio * cos(rad);
+	vec3 size = { 5.0f,0.75f,radio  };
 	vec3 axis = { size.x,size.z,size.z };
 
 	for (int i = 0; i < numCubes; i++)
 	{
 
-		alpha += 360.0f  / numCubes;
+		alpha -= (360.0f*4)  / numCubes;
 
 		rad = alpha * PI / 180;
 
 		//posZ = axis.z * cos(alpha) - axis.y * sin(alpha);
 		//posY = axis.z * cos(alpha) + axis.y * sin(alpha);
 
-		posZ += radio * cos(rad);
 		posY += radio * sin(rad);
+		posZ += radio * cos(rad);
 
 		cube = new Cube();
-		cube->SetPos(posX, posY,-posZ);
+		cube->SetPos(posX+offset, posY,-posZ);
 		cube->size = size;
 		cube->color = White;
+		cube->SetRotation(alpha-7.5 , { 1,0,0 });
+		cilinderWall.add(cube);
+		App->physics->AddBody(*cube, 0);
 
-		cube->SetRotation(alpha+11.5f , { 1,0,0 });
-		//cube->transform.rotate(alpha+10.5f , { 1,0,0 });
-	//	cube->transform.rotate( 10.5f, { 0,1,0 });
-
-
-		looping.add(cube);
+		cube = new Cube();
+		cube->SetPos(posX+ size.x +offset, posY,-posZ);
+		cube->size = size;
+		cube->color = Red;
+		cube->SetRotation(alpha-7.5 , { 1,0,0 });
+		cilinderWall.add(cube);
 		App->physics->AddBody(*cube, 0);
 
 
-		//posZ += size.z / numCubes;
+		offset -= size.x*8 / numCubes;
 	}
 
 }

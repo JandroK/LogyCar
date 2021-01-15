@@ -33,6 +33,7 @@ public:
 	Sphere s_snake2[MAX_SNAKE];
 	*/
 	p2List<Cube*> looping;
+	p2List<Cube*> cilinderWall;
 
 	PhysBody3D* pb_chassis;
 	Cube p_chassis;
