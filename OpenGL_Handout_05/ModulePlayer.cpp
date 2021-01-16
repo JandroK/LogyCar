@@ -29,13 +29,13 @@ bool ModulePlayer::Start()
 	car.chassis2_offset.Set(0, car.chassis_offset.y+0.35, car.chassis_offset.z -0.1);
 
 	car.chassis3_size.Set(1.10, 0.10, 0.25);
-	car.chassis3_offset.Set(0, car.chassis_offset.y + 0.60, car.chassis_offset.z- car.chassis_size.z/2.05f);
+	car.chassis3_offset.Set(0, car.chassis_offset.y + 0.50, car.chassis_offset.z- car.chassis_size.z/2.05f);
 
-	car.chassis4_size.Set(0.075, 0.20, 0.075);
-	car.chassis4_offset.Set(-0.25, car.chassis_offset.y + 0.60, car.chassis_offset.z-0.4);
+	car.chassis4_size.Set(0.1, 0.30, 0.1);
+	car.chassis4_offset.Set(-0.25, car.chassis_offset.y + 0.70, car.chassis_offset.z-0.4);
 
-	car.chassis5_size.Set(0.05, 0.50, 0.05);
-	car.chassis5_offset.Set(-0.25, car.chassis_offset.y + 0.85, car.chassis_offset.z-0.4);
+	car.chassis5_size.Set(0.075, 0.60, 0.075);
+	car.chassis5_offset.Set(-0.25, car.chassis_offset.y + 0.95, car.chassis_offset.z-0.4);
 	
 	// Car properties ----------------------------------------
 
