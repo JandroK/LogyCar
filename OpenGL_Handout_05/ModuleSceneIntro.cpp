@@ -51,7 +51,7 @@ bool ModuleSceneIntro::Start()
 	lisseners.getLast()->data->collision_listeners.add(this);
 	lisseners.getLast()->data->body->setUserPointer(lisseners.getLast()->data);
 
-	Ramp();
+
 
 	// Limits
 	{
@@ -192,12 +192,6 @@ bool ModuleSceneIntro::Start()
 			lisseners.getLast()->data->collision_listeners.add(this);
 			lisseners.getLast()->data->body->setUserPointer(lisseners.getLast()->data);
 
-
-
-		}
-		
-		// Haciendo
-		{
 			//curva anti horaria
 			{
 				rotationPlt2.SetPos(71.07f, 14.5, -98.0);
@@ -246,7 +240,7 @@ bool ModuleSceneIntro::Start()
 			//curva horaria
 			{
 				angle = -45;
-				rotationPlt7.SetPos(74.0f + 19.73f, 14.5, -113.8f);
+				rotationPlt7.SetPos(93.73f, 14.5, -113.8f);
 				rotationPlt7.size = { 10,1,12.5 };
 				rotationPlt7.SetRotation(angle, { 0,1,0 });
 				rotationPlt7.color = White;
@@ -255,7 +249,7 @@ bool ModuleSceneIntro::Start()
 				lisseners.getLast()->data->body->setUserPointer(lisseners.getLast()->data);
 
 				angle = 90;
-				rotationPlt8.SetPos(80.9f + 19.73f, 14.5, -116.75f);
+				rotationPlt8.SetPos(100.63f, 14.5, -116.75f);
 				rotationPlt8.size = { 10,1,12 };
 				rotationPlt8.SetRotation(angle, { 0,1,0 });
 				rotationPlt8.color = White;
@@ -264,36 +258,96 @@ bool ModuleSceneIntro::Start()
 				lisseners.getLast()->data->body->setUserPointer(lisseners.getLast()->data);
 
 				angle = 45;
-				rotationPlt9.SetPos(87.9f+19.73f, 14.5, -113.8f);
+				rotationPlt9.SetPos(107.63f , 14.5, -113.8f);
 				rotationPlt9.size = { 10,1,12.5 };
 				rotationPlt9.SetRotation(angle, { 0,1,0 });
 				rotationPlt9.color = White;
 				lisseners.add(App->physics->AddBody(rotationPlt9, 0));
 				lisseners.getLast()->data->collision_listeners.add(this);
 				lisseners.getLast()->data->body->setUserPointer(lisseners.getLast()->data);
-			
+
 				rotationPlt10.SetPos(110.53f, 14.5, -98.0);
 				rotationPlt10.size = { 10,1,30 };
 				rotationPlt10.color = White;
 				lisseners.add(App->physics->AddBody(rotationPlt10, 0));
 				lisseners.getLast()->data->collision_listeners.add(this);
 				lisseners.getLast()->data->body->setUserPointer(lisseners.getLast()->data);
+				// Semicurva
+				{
 
+					angle = 45;
+					rotationPlt11.SetPos(93.73f + 19.73f, 14.5, -82.2);
+					rotationPlt11.size = { 10,1,12.5 };
+					rotationPlt11.SetRotation(angle, { 0,1,0 });
+					rotationPlt11.color = White;
+					lisseners.add(App->physics->AddBody(rotationPlt11, 0));
+					lisseners.getLast()->data->collision_listeners.add(this);
+					lisseners.getLast()->data->body->setUserPointer(lisseners.getLast()->data);
+
+					angle = 90;
+					rotationPlt12.SetPos(100.63f + 19.73f, 14.5, -79.25);
+					rotationPlt12.size = { 10,1,12 };
+					rotationPlt12.SetRotation(angle, { 0,1,0 });
+					rotationPlt12.color = White;
+					lisseners.add(App->physics->AddBody(rotationPlt12, 0));
+					lisseners.getLast()->data->collision_listeners.add(this);
+					lisseners.getLast()->data->body->setUserPointer(lisseners.getLast()->data);
+
+					angle = 45;
+					rotationPlt13.SetPos(107.63f + 19.73f, 14.5, -79.25 + 2.95f);
+					rotationPlt13.size = { 10,1,12.5 };
+					rotationPlt13.SetRotation(angle, { 0,1,0 });
+					rotationPlt13.color = White;
+					lisseners.add(App->physics->AddBody(rotationPlt13, 0));
+					lisseners.getLast()->data->collision_listeners.add(this);
+					lisseners.getLast()->data->body->setUserPointer(lisseners.getLast()->data);
+				}
 			}
 
+
+		}
+		
+		// Haciendo
+		{
+			float radio = 7;
+			Ramp({ 130,14,-59.2 }, true, { radio,1.5,27 });
+			Ramp({ 130,14,85 }, false, { radio,1.5,27 });
+
+			//Ramp({ 100,14,109.2 }, true, { radio,1.5,27 });
+			//MidRamp({ 20,14,185 }, false, { 27 ,1.5,radio });
+
+			angle = 30;
+			wall14.SetPos(100, 14, 85);
+			wall14.size = { 90,1,25 };
+			
+			wall14.color = White;
+			lisseners.add(App->physics->AddBody(wall14, 0));
+
+
+			angle = -10;
+			wall15.SetPos(35.5, 16, 125);
+			wall15.size = { 40,1.5,25 };
+			wall15.SetRotation(angle, { 0,0,1 });
+			lisseners.add(App->physics->AddBody(wall15, 0));
+			wall15.color = White;
+
+
+
+			Ramp({ 130,14,-59.2 }, true, { radio,1.5,27 });
+			radio = 5;
+			Ramp({ 0,0,100 }, { 10,1,radio });
+
+		}
 
 
 
 		Looping({ 18.0f, 14.5, 50.0 });
 
-		}
-
-
 		wall10.SetPos(-70, 10, -10);
 		wall10.size = { 60,2,7 };
 		wall10.color.Set(0.5f,0.5f,1.0f);
 		lisseners.add(App->physics->AddBody(wall10, 0));
-		lisseners.getLast()->data->body->setFriction(0.01f);
+		lisseners.getLast()->data->body->setFriction(0.00f);
 		lisseners.getLast()->data->collision_listeners.add(this);
 		lisseners.getLast()->data->body->setUserPointer(lisseners.getLast()->data);
 
@@ -308,14 +362,14 @@ bool ModuleSceneIntro::Start()
 		lisseners.add(App->physics->AddBody(wall11, 0));
 		lisseners.getLast()->data->collision_listeners.add(this);
 		lisseners.getLast()->data->body->setUserPointer(lisseners.getLast()->data);
+
 		cubeSensor.SetPos(-110, 11.1f, -10);
 		cubeSensor.size = { 19.5f,0.45f,19.5f };
 		cubeSensor.color = White;
-		bodySensor =App->physics->AddBody(cubeSensor, 0);
+		bodySensor = App->physics->AddBody(cubeSensor, 0);
 		bodySensor->SetAsSensor(true);
 		bodySensor->collision_listeners.add(this);
 		bodySensor->body->setUserPointer(bodySensor);
-
 	}
 
 	{
@@ -372,6 +426,8 @@ update_status ModuleSceneIntro::Update(float dt)
 		wall11.Render();
 		wall12.Render();
 		wall13.Render();
+		wall14.Render();
+		wall15.Render();
 
 		rotationPlt1.Render();
 		rotationPlt2.Render();
@@ -383,6 +439,9 @@ update_status ModuleSceneIntro::Update(float dt)
 		rotationPlt8.Render();
 		rotationPlt9.Render();
 		rotationPlt10.Render();
+		rotationPlt11.Render();
+		rotationPlt12.Render();
+		rotationPlt13.Render();
 
 	
 
@@ -465,7 +524,7 @@ void ModuleSceneIntro::Looping(vec3 position)
 		lisseners.add(App->physics->AddBody(*cube, 0));
 		lisseners.getLast()->data->collision_listeners.add(this);
 	
-		offset +=(size.x*2.7 )/numCubes ;
+		offset -=(size.x*2.7 )/numCubes ;
 	}
 
 }
@@ -476,19 +535,20 @@ void ModuleSceneIntro::CylinderWalls(vec3 position)
 	Cube* cube;
 	float numCubes = 84;
 	float alpha = 0;
+	float auxAngle = (360.0f * 4) / numCubes;
 	float offset = 0;
 	float radio = 2.5f;
 	float rad = 0;
 	float posX = position.x;
 	float posY = position.y+radio * cos(rad);
 	float posZ = -position.z+ radio * cos(rad);
-	vec3 size = { 5.0f,0.75f,radio  };
+	vec3 size = { 5.0f,0.75f,radio+0.15f  };
 	vec3 axis = { size.x,size.z,size.z };
 
 	for (int i = 0; i < numCubes; i++)
 	{
 
-		alpha -= (360.0f*4)  / numCubes;
+		alpha -= auxAngle;
 
 		rad = alpha * PI / 180;
 
@@ -502,7 +562,7 @@ void ModuleSceneIntro::CylinderWalls(vec3 position)
 		cube->SetPos(posX+offset, posY,-posZ);
 		cube->size = size;
 		cube->color = White;
-		cube->SetRotation(alpha-8.5 , { 1,0,0 });
+		cube->SetRotation(alpha- (auxAngle/2), { 1,0,0 });
 		cilinderWall.add(cube);
 		lisseners.add(App->physics->AddBody(*cube, 0));
 		lisseners.getLast()->data->collision_listeners.add(this);
@@ -523,25 +583,145 @@ void ModuleSceneIntro::CylinderWalls(vec3 position)
 
 
 
-void ModuleSceneIntro::Ramp()
+void ModuleSceneIntro::Ramp(vec3 position,bool inverse,  vec3 size)
 {
-#define PI 3.14159265358979323846
 	Cube* cube;
-	float numCubes = 8;
+	float numCubes = 12;
 	float alpha = 0;
-	float offset = 100;
-	float radio = 5.00;
+	float auxAngle = 90.0f / numCubes;
+	float offset = 0;
 	float rad = 0;
-	float posZ = -100;
-	float posY = 0;
-	vec3 size = {  100.0f,0.50f,radio };
+	float radio = size.x;
+	//vec3 size = size.;
+	float posX = position.x;
+	float posY = position.y;
+	float posZ = -position.z;
 	vec3 axis = { size.x,size.z,size.z };
 
 
 	for (int i = 0; i < numCubes; i++)
 	{
 
-		alpha += 90.0f / numCubes;
+
+		rad = alpha * PI / 180;
+
+		//posZ = axis.z * cos(alpha) - axis.y * sin(alpha);
+		//posY = axis.z * cos(alpha) + axis.y * sin(alpha);
+
+		posX += radio * cos(rad);
+		posY += radio * sin(rad);
+
+		cube = new Cube();
+		if (alpha > 42.5)
+			cube->SetPos(posX, posY, -posZ - (offset*1.15f));
+		else	
+			cube->SetPos(posX, posY, -posZ - offset);
+
+
+		cube->size = size;
+		if(alpha >42.5)
+			cube->size = { size.x,size.y,size.z +(i*5.5f)+(10-(posY/10))};
+		else
+		cube->size = { size.x,size.y,size.z +(i*4)+(10-(posY/10))};;
+		cube->color = White;
+
+		cube->SetRotation(alpha + (auxAngle/2), { 0,0,1 });
+
+
+		looping.add(cube);
+		lisseners.add(App->physics->AddBody(*cube, 0));
+		lisseners.getLast()->data->collision_listeners.add(this);
+
+		alpha += auxAngle;
+
+
+		if(inverse)offset -= size.z*2 / numCubes;
+		else offset += size.z * 2 / numCubes;
+	}
+
+}
+
+void ModuleSceneIntro::MidRamp(vec3 position, bool inverse, vec3 size)
+{
+	Cube* cube;
+	float numCubes = 12;
+	float alpha = 0;
+	float auxAngle = 90.0f / numCubes;
+	float offset = 0;
+	float rad = 0;
+	float radio = size.z;
+	//vec3 size = size.;
+	float posX = position.x;
+	float posY = position.y;
+	float posZ = -position.z;
+	vec3 axis = { size.x,size.z,size.z };
+
+
+	for (int i = 0; i < numCubes; i++)
+	{
+
+
+		rad = alpha * PI / 180;
+
+		//posZ = axis.z * cos(alpha) - axis.y * sin(alpha);
+		//posY = axis.z * cos(alpha) + axis.y * sin(alpha);
+
+		posZ -= radio * cos(rad);
+		posY += radio * sin(rad);
+
+		cube = new Cube();
+		if (alpha > 42.5)
+			cube->SetPos(posX + (offset * 1.15f), posY, -posZ);
+		else
+			cube->SetPos(posX + offset, posY,-posZ);
+
+
+		cube->size = size;
+		if (alpha > 42.5)
+			cube->size = { size.x+ (i * 5.5f) + (10 - (posY / 10)),size.y,size.z  };
+		else
+			cube->size = { size.x+ (i * 4) + (10 - (posY / 10)),size.y,size.z  };
+		cube->color = White;
+
+		cube->SetRotation(-alpha - (auxAngle / 2), { 1,0,0 });
+
+
+		looping.add(cube);
+		lisseners.add(App->physics->AddBody(*cube, 0));
+		lisseners.getLast()->data->collision_listeners.add(this);
+
+		alpha += auxAngle;
+
+
+		if (inverse)offset -= size.x * 2 / numCubes;
+		else offset += size.x * 2 / numCubes;
+	}
+
+}
+
+void ModuleSceneIntro::Ramp(vec3 position, vec3 size)
+{
+	Cube* cube;
+	float numCubes = 8;
+	float alpha = 0;
+	float auxAngle = 90.0f / numCubes;
+	float offset = 100;
+	float rad = 0;
+	float radio = size.z;
+	//vec3 size = size;
+	vec3 axis = { size.x,size.z,size.z };
+
+	float posX = position.x;
+	float posY = position.y;
+	float posZ = -position.z;
+
+
+
+
+	for (int i = 0; i < numCubes; i++)
+	{
+
+		alpha += auxAngle;
 
 		rad = alpha * PI / 180;
 
@@ -552,11 +732,11 @@ void ModuleSceneIntro::Ramp()
 		posY += radio * sin(rad);
 
 		cube = new Cube();
-		cube->SetPos(offset, posY, -posZ);
+		cube->SetPos(posX+offset, posY, -posZ);
 		cube->size = size;
 		cube->color = White;
 
-		cube->SetRotation(alpha + 6.0f, { 1,0,0 });
+		cube->SetRotation(alpha + (auxAngle / 2), { 1,0,0 });
 		
 
 		looping.add(cube);

@@ -162,7 +162,7 @@ update_status ModulePlayer::Update(float dt)
 	if (!App->physics->GetCollisions())
 	{
 		vehicle->state = State::IN_AIR;
-		LOG("%d", vehicle->state);
+		//LOG("%d", vehicle->state);
 	} 
 	else
 	{
@@ -190,6 +190,8 @@ update_status ModulePlayer::Update(float dt)
 		const float matrix[13] = { 0,1,0 };
 		vehicle->SetTransform(matrix);
 	}
+	vec3 cam = App->camera->Position;
+	if (App->input->GetKey(SDL_SCANCODE_O) == KEY_REPEAT)vehicle->SetPos(cam.x,cam.y-5,cam.z);
 	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_REPEAT)vehicle->SetPos(-50.0f, 6.0f, -150.0f);
 	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_REPEAT)vehicle->SetPos(40, 24, -90);
 	if (App->input->GetKey(SDL_SCANCODE_2) == KEY_REPEAT)vehicle->SetPos(40, 20, 15);

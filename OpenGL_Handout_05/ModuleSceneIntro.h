@@ -23,7 +23,9 @@ public:
 
 	void Looping(vec3 position);
 	void CylinderWalls(vec3 position);
-	void Ramp();
+	void Ramp(vec3 position, vec3 size);
+	void Ramp(vec3 position,bool inverse, vec3 size);
+	void MidRamp(vec3 position,bool inverse, vec3 size);
 public:
 
 	float angle;
@@ -70,9 +72,13 @@ public:
 	Cube wall7;
 	Cube wall8;
 	Cube wall9;
+	Cube wall10;
+	Cube wall11;
 	Cube wall12;
-
 	Cube wall13;
+	Cube wall14;
+	Cube wall15;
+	Cube wall16;
 
 	Cube rotationPlt1;
 	Cube rotationPlt2;
@@ -84,9 +90,11 @@ public:
 	Cube rotationPlt8;
 	Cube rotationPlt9;
 	Cube rotationPlt10;
+	Cube rotationPlt11;
+	Cube rotationPlt12;
+	Cube rotationPlt13;
 
-	Cube wall10;
-	Cube wall11;
+	
 	PhysBody3D* body;
 
 	Cube cubeSensor;
