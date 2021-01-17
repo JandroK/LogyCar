@@ -316,21 +316,38 @@ bool ModuleSceneIntro::Start()
 			//Ramp({ 100,14,109.2 }, true, { radio,1.5,27 });
 			//MidRamp({ 20,14,185 }, false, { 27 ,1.5,radio });
 
-			angle = 30;
-			wall14.SetPos(100, 14, 85);
-			wall14.size = { 90,1,25 };
-			
+			wall14.SetPos(121.5, 14, 89.7);
+			wall14.size = { 25,1,33 };
 			wall14.color = White;
 			lisseners.add(App->physics->AddBody(wall14, 0));
 
+			angle = -20;
+			wall17.SetPos(122, 14, 128);
+			wall17.size = { 20,1,25 };
+			wall17.SetRotation(angle, { 1,0,0 });
+			wall17.color = White;
+			lisseners.add(App->physics->AddBody(wall17, 0));
+			
+		
+			wall18.SetPos(120, 14, 160);
+			wall18.size = { 30,2,20 };
+			wall18.color = White;
+			lisseners.add(App->physics->AddBody(wall18, 0));
 
-			angle = -10;
-			wall15.SetPos(35.5, 16, 125);
-			wall15.size = { 40,1.5,25 };
+			angle = -22;
+			wall15.SetPos(65, 24, 159.7);
+			wall15.size = { 60,2,20 };
 			wall15.SetRotation(angle, { 0,0,1 });
 			lisseners.add(App->physics->AddBody(wall15, 0));
 			wall15.color = White;
 
+			wall16.SetPos(20, 35, 159.7);
+			wall16.size = { 30,2,20 };
+			wall16.color = White;
+			lisseners.add(App->physics->AddBody(wall16, 0));
+			
+			
+	
 
 
 			Ramp({ 130,14,-59.2 }, true, { radio,1.5,27 });
@@ -428,6 +445,9 @@ update_status ModuleSceneIntro::Update(float dt)
 		wall13.Render();
 		wall14.Render();
 		wall15.Render();
+		wall16.Render();
+		wall17.Render();
+		wall18.Render();
 
 		rotationPlt1.Render();
 		rotationPlt2.Render();

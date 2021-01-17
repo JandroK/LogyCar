@@ -79,6 +79,8 @@ public:
 	Cube wall14;
 	Cube wall15;
 	Cube wall16;
+	Cube wall17;
+	Cube wall18;
 
 	Cube rotationPlt1;
 	Cube rotationPlt2;
