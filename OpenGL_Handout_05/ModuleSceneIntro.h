@@ -68,6 +68,16 @@ public:
 	
 	Cylinder cylinder1;
 
+	float cX=1;
+	float cY=1;
+	float cZ=1;
+	
+	float aux;
+	float increment1= 0.002f;
+	float increment2 = 0.004f;
+	float increment3 = 0.003f;
+
+	bool changeColor=true;
 
 	bool win=false;
 

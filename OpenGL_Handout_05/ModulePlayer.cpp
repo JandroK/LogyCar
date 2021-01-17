@@ -119,8 +119,8 @@ bool ModulePlayer::Start()
 	
 	// Sensors
 	{
-		cubeSensor.SetPos(0, -2, 0);
-		cubeSensor.size = {0.1,5,0.1 };
+		cubeSensor.SetPos(0, -1, 0);
+		cubeSensor.size = {0.1,2,0.1 };
 		cubeSensor.color = White;
 		bodySensor =App->physics->AddBody(cubeSensor, 0);
 		bodySensor->body->setUserPointer(bodySensor);
@@ -159,16 +159,17 @@ update_status ModulePlayer::Update(float dt)
 	vehicle->SetColor( color);
 	color.Set(1.0f, 1.0f, 1.0f, 1.0f);
 
-	if (!App->physics->GetCollisions())
+	if (App->physics->GetCollisions())
 	{
-		vehicle->state = State::IN_AIR;
+		vehicle->state = State::IDLE;
+		isJumped = false;
 		//LOG("%d", vehicle->state);
 	} 
 	else
 	{
-		vehicle->state = State::IDLE;
+		//vehicle->state = State::IN_AIR;
 	}
-	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && vehicle->state != State::IN_AIR)
+	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && vehicle->state != State::IN_AIR && !isJumped)
 	{
 		vehicle->state = State::IN_AIR;
 		vehicle->vehicle->getRigidBody()->applyCentralForce({ 0,+70000,0 });
@@ -206,6 +207,7 @@ update_status ModulePlayer::Update(float dt)
 		vel = MAX_ACCELERATION * 2;
 		vehicle->state = TURBO;
 		vehicle->vehicle->getRigidBody()->applyCentralForce({ 0,-99,0 });
+
 		//vehicle->body->applyTorque(per * 80);
 
 	}
@@ -219,12 +221,13 @@ update_status ModulePlayer::Update(float dt)
 	if(App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
 	{
 		if (vehicle->state != State::TURBO && vehicle->state != State::IN_AIR)vehicle->state = State::WALK;
+		vehicle->vehicle->getRigidBody()->applyCentralForce({ 0,-70,0 });
 
 		if (vehicle->vehicle->getCurrentSpeedKmHour() <= -1)
 		{
 			brake = BRAKE_POWER/1.5f;
 			color.Set(1.0f, 0.0f, 0.0f, 1.0f);
-			vehicle->vehicle->getRigidBody()->applyCentralForce({ 0,-300,0 });
+			vehicle->vehicle->getRigidBody()->applyCentralForce({ 0,-200,0 });
 		}
 		else 
 			acceleration = vel;
@@ -245,7 +248,7 @@ update_status ModulePlayer::Update(float dt)
 		{
 			brake = BRAKE_POWER / 1.5f;
 			color.Set(1.0f, 0.0f, 0.0f, 1.0f);
-			vehicle->vehicle->getRigidBody()->applyCentralForce({ 0,-300,0 });
+			vehicle->vehicle->getRigidBody()->applyCentralForce({ 0,-200,0 });
 		}
 		else 
 			acceleration = vel * -1;
@@ -300,7 +303,7 @@ update_status ModulePlayer::Update(float dt)
 	vehicle->Turn(turn);
 	vehicle->Brake(brake);
 
-	cubeSensor.Render();
+	//cubeSensor.Render();
 	vehicle->Render();
 
 	char title[80];

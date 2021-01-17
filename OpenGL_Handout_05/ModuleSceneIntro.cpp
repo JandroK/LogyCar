@@ -444,31 +444,53 @@ bool ModuleSceneIntro::CleanUp()
 // Update
 update_status ModuleSceneIntro::Update(float dt)
 {
-	if (App->input->GetKey(SDL_SCANCODE_F1)==KEY_DOWN)App->SetDebugMode();
+	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)App->SetDebugMode();
 
 	Plane p(0, 1, 0, 0);
 	p.axis = true;
 	p.Render();
-
 	ground.Render();
+	cubeSensor.Render();
 
-		cubeSensor.Render();
-		
-	
-		for (p2List_item<Cube*>* cube = cubes.getFirst(); cube; cube= cube->next)
+	if ((cX <= 1.1 || cY <= 1.1 || cZ <= 1.1 ) && changeColor)
+	{
+		cX += increment1;
+		cY += increment2;
+		cZ += increment3;
+	}
+	else if ((cX >= 0.4 && cY >= 0.4 && cZ >= 0.4) &&!changeColor)
+	{
+		cX -= increment1;
+		cY -= increment2;
+		cZ -= increment3;
+	}
+	else
+	{
+		changeColor = !changeColor;
+		if (!changeColor) 
 		{
-			cube->data->Render();
-		}
-		for (p2List_item<Cube*>* cube = looping.getFirst(); cube; cube= cube->next)
-		{
-			cube->data->Render();
-		}
-		for (p2List_item<Cube*>* cube = cilinderWall.getFirst(); cube; cube= cube->next)
-		{
-			cube->data->Render();
+			aux= increment1;
+			increment1 = increment2;
+			increment2 = increment3;
+			increment3 = aux;
 		}
 
-	//}
+	}
+
+	for (p2List_item<Cube*>* cube = looping.getFirst(); cube; cube = cube->next)
+	{
+		cube->data->Render();
+	}
+	for (p2List_item<Cube*>* cube = cilinderWall.getFirst(); cube; cube = cube->next)
+	{
+		cube->data->Render();
+	}
+	for (p2List_item<Cube*>* cubeWorld = cubes.getFirst(); cubeWorld; cubeWorld = cubeWorld->next)
+	{
+		cubeWorld->data->color.Set(cX, cY, cZ);
+		cubeWorld->data->Render();
+	}
+
 	return UPDATE_CONTINUE;
 }
 
@@ -532,7 +554,7 @@ void ModuleSceneIntro::Looping(vec3 position)
 		//cube->transform.rotate(alpha + 1.5f, { 1,0,0 });
 
 		looping.add(cube);	
-		cubes.add(cube); 		physBodyCubes.add(App->physics->AddBody(*cube, 0));
+		physBodyCubes.add(App->physics->AddBody(*cube, 0));
 	
 		offset -=(size.x*2.7 )/numCubes ;
 	}
@@ -574,7 +596,7 @@ void ModuleSceneIntro::CylinderWalls(vec3 position)
 		cube->color = White;
 		cube->SetRotation(alpha- (auxAngle/2), { 1,0,0 });
 		cilinderWall.add(cube);
-		cubes.add(cube); 		physBodyCubes.add(App->physics->AddBody(*cube, 0));
+		physBodyCubes.add(App->physics->AddBody(*cube, 0));
 		physBodyCubes.getLast()->data->collision_listeners.add(this);
 
 		cube = new Cube();
@@ -583,7 +605,7 @@ void ModuleSceneIntro::CylinderWalls(vec3 position)
 		cube->color = Red;
 		cube->SetRotation(alpha-8.5 , { 1,0,0 });
 		cilinderWall.add(cube);
-		cubes.add(cube); 		physBodyCubes.add(App->physics->AddBody(*cube, 0));
+		physBodyCubes.add(App->physics->AddBody(*cube, 0));
 		physBodyCubes.getLast()->data->collision_listeners.add(this);
 
 		offset -= size.x*8 / numCubes;
@@ -639,7 +661,7 @@ void ModuleSceneIntro::Ramp(vec3 position,bool inverse,  vec3 size)
 
 
 		looping.add(cube);
-		cubes.add(cube); 		physBodyCubes.add(App->physics->AddBody(*cube, 0));
+		physBodyCubes.add(App->physics->AddBody(*cube, 0));
 		physBodyCubes.getLast()->data->collision_listeners.add(this);
 
 		alpha += auxAngle;
@@ -697,7 +719,7 @@ void ModuleSceneIntro::MidRamp(vec3 position, bool inverse, vec3 size)
 
 
 		looping.add(cube);
-		cubes.add(cube); 		physBodyCubes.add(App->physics->AddBody(*cube, 0));
+		physBodyCubes.add(App->physics->AddBody(*cube, 0));
 
 		alpha += auxAngle;
 
