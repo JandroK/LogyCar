@@ -21,7 +21,7 @@ bool ModuleSceneIntro::Start()
 	bool ret = true;
 
 	Cube* cube;
-
+	timer = new Timer();
 
 	//Musica
 	//App->audio->PlayMusic("Assets/Sounds/enemy_airforce.ogg");
@@ -309,15 +309,177 @@ cubes.add(cube);		physBodyCubes.add(App->physics->AddBody(*cube, 0));
 
 
 					angle = 45;
-					cube = new Cube();
-					Cube cube1(10,1,12.5 );
-					cube->SetPos(137, 14.5, -84);
-					cube->SetRotation(angle, { 0,1,0 });
+					cube = new Cube(10,1,30 );
+					cube->SetPos(130, 14.5, -60);
 					cube->color = White;
 					cubes.add(cube); 	
 					physBodyCubes.add(App->physics->AddBody(*cube, 0));
 
 				}
+			}
+			//	Obstacles to looping
+			{
+				float radio = 7;
+				Ramp({ 130,14,-59.2 }, true, { radio,1.5,27 });
+				Ramp({ 130,14,85 }, false, { radio,1.5,27 });
+
+				//Ramp({ 100,14,109.2 }, true, { radio,1.5,27 });
+				//MidRamp({ 20,14,185 }, false, { 27 ,1.5,radio });
+
+				cube = new Cube();
+				cube->SetPos(121.5, 14, 89.7);
+				cube->size = { 25,1,33 };
+				cube->color = White;
+				cubes.add(cube);
+				physBodyCubes.add(App->physics->AddBody(*cube, 0));
+
+				angle = -20;
+				cube = new Cube();
+				cube->SetPos(122, 14, 128);
+				cube->size = { 20,1,25 };
+				cube->SetRotation(angle, { 1,0,0 });
+				cube->color = White;
+				cubes.add(cube);
+				physBodyCubes.add(App->physics->AddBody(*cube, 0));
+
+
+				cube = new Cube();
+				cube->SetPos(120, 14, 160);
+				cube->size = { 30,2,20 };
+				cube->color = White;
+				cubes.add(cube);
+				physBodyCubes.add(App->physics->AddBody(*cube, 0));
+
+				angle = -20;
+				cube = new Cube();
+				cube->SetPos(62.8, 24.8, 159.7);
+				cube->size = { 60,2,20 };
+				cube->SetRotation(angle, { 0,0,1 });
+				cube->color = White;
+				cubes.add(cube);
+				physBodyCubes.add(App->physics->AddBody(*cube, 0));
+
+				cube = new Cube();
+				cube->SetPos(20, 35, 159.7);
+				cube->size = { 30,2,20 };
+				cube->color = White;
+				cubes.add(cube);
+				physBodyCubes.add(App->physics->AddBody(*cube, 0));
+
+				cube = new Cube();
+				angle = -11.2;
+				cube->SetPos(18, 24.7, 99);
+				cube->size = { 19.5,1,104 };
+				cube->SetRotation(angle, { 1,0,0 });
+				cube->color = White;
+				cubes.add(cube);
+				physBodyCubes.add(App->physics->AddBody(*cube, 0));
+
+				cube = new Cube();
+				cube->SetPos(18, 15, 47);
+				cube->size = { 19.5,1,6 };
+				cube->color = White;
+				cubes.add(cube);
+				physBodyCubes.add(App->physics->AddBody(*cube, 0));
+
+
+				//	Ramp({ 130,14,-59.2 }, true, { radio,1.5,27 });
+				//radio = 5;
+				//Ramp({ 0,0,100 }, { 10,1,radio });
+			}
+
+			Looping({ 18.0f, 14.5, 50.0 });
+
+			// peralt
+			{
+				cube = new Cube();
+				cube->SetPos(-35.8, 15.25, 30);
+				cube->size = { 19.5,1,60 };
+				cube->color = White;
+				cubes.add(cube);
+				physBodyCubes.add(App->physics->AddBody(*cube, 0));
+
+				angle = -20;
+				cube = new Cube();
+				cube->SetPos(-35.8, 11.15, -11.1);
+				cube->size = { 19.5,1,24 };
+				cube->SetRotation(angle, { 1,0,0 });
+				cube->color = White;
+				cubes.add(cube);
+				physBodyCubes.add(App->physics->AddBody(*cube, 0));
+
+				angle = 22;
+				cube = new Cube();
+				cube->SetPos(-35.5, 11, -25);
+				cube->size = { 22,1,55 };
+				cube->SetRotation(angle, { 0,0,1 });
+				cube->color = White;
+				cubes.add(cube);
+				physBodyCubes.add(App->physics->AddBody(*cube, 0));
+
+				angle = 22;
+				cube = new Cube();
+				cube->SetPos(-63, 11, -43.7);
+				cube->size = { 75,1,22 };
+				cube->SetRotation(angle, { 1,0,0 });
+				cube->color = White;
+				cubes.add(cube);
+				physBodyCubes.add(App->physics->AddBody(*cube, 0));
+
+				angle = -22;
+				cube = new Cube();
+				cube->SetPos(-90.5, 11, -25);
+				cube->size = { 22,1,55 };
+				cube->SetRotation(angle, { 0,0,1 });
+				cube->color = White;
+				cubes.add(cube);
+				physBodyCubes.add(App->physics->AddBody(*cube, 0));
+
+				angle = -20;
+				cube = new Cube();
+				cube->SetPos(-90.3, 11.15, -11.1);
+				cube->size = { 19.5,1,24 };
+				cube->SetRotation(angle, { 1,0,0 });
+				cube->color = White;
+				cubes.add(cube);
+				physBodyCubes.add(App->physics->AddBody(*cube, 0));
+
+				cube = new Cube();
+				cube->SetPos(-90.3, 15.25, 32.5);
+				cube->size = { 19.5,1,65 };
+				cube->color = White;
+				cubes.add(cube);
+				physBodyCubes.add(App->physics->AddBody(*cube, 0));
+			}
+
+			// Ramps
+			{
+				RampFlip({ -115.3, 15, 60.5 }, { 70,1,6 });
+
+				cube = new Cube();
+				cube->SetPos(-140.3, 15.25, 50.5);
+				cube->size = { 20,1,30 };
+				cube->color = White;
+				cubes.add(cube);
+				physBodyCubes.add(App->physics->AddBody(*cube, 0));
+
+				Ramp({ -175.3, 15, 40 }, { 90,1,6 });
+
+				cube = new Cube();
+				cube->SetPos(-210.3, 15.25, 50.5);
+				cube->size = { 20,1,30 };
+				cube->color = White;
+				cubes.add(cube);
+				physBodyCubes.add(App->physics->AddBody(*cube, 0));
+
+				RampFlip({ -235.3, 15, 60.5 }, { 70,1,6 });
+
+				cube = new Cube();
+				cube->SetPos(-260.3, 15.25, 50.5);
+				cube->size = { 20,1,30 };
+				cube->color = White;
+				cubes.add(cube);
+				physBodyCubes.add(App->physics->AddBody(*cube, 0));
 			}
 
 
@@ -325,109 +487,53 @@ cubes.add(cube);		physBodyCubes.add(App->physics->AddBody(*cube, 0));
 		
 		// Haciendo
 		{
-			float radio = 7;
-			Ramp({ 130,14,-59.2 }, true, { radio,1.5,27 });
-			Ramp({ 130,14,85 }, false, { radio,1.5,27 });
-
-			//Ramp({ 100,14,109.2 }, true, { radio,1.5,27 });
-			//MidRamp({ 20,14,185 }, false, { 27 ,1.5,radio });
-
-			cube = new Cube();
-			cube->SetPos(121.5, 14, 89.7);
-			cube->size = { 25,1,33 };
-			cube->color = White;
-			cubes.add(cube); 	
-			physBodyCubes.add(App->physics->AddBody(*cube, 0));
-
-			angle = -20;
-			cube = new Cube();
-			cube->SetPos(122, 14, 128);
-			cube->size = { 20,1,25 };
-			cube->SetRotation(angle, { 1,0,0 });
-			cube->color = White;
-			cubes.add(cube); 	
-			physBodyCubes.add(App->physics->AddBody(*cube, 0));
-
-
-			cube = new Cube();
-			cube->SetPos(120, 14, 160);
-			cube->size = { 30,2,20 };
-			cube->color = White;
-			cubes.add(cube); 	
-			physBodyCubes.add(App->physics->AddBody(*cube, 0));
-
-			angle = -20;
-			cube = new Cube();
-			cube->SetPos(62.8, 24.8, 159.7);
-			cube->size = { 60,2,20 };
-			cube->SetRotation(angle, { 0,0,1 });
-			cube->color = White;
-			cubes.add(cube); 	
-			physBodyCubes.add(App->physics->AddBody(*cube, 0));
-
-			cube = new Cube();
-			cube->SetPos(20, 35, 159.7);
-			cube->size = { 30,2,20 };
-			cube->color = White;
-			cubes.add(cube); 	
-			physBodyCubes.add(App->physics->AddBody(*cube, 0));
-
-			cube = new Cube();
-			angle = -11.2;
-			cube->SetPos(18, 24.7, 99);
-			cube->size = { 19.5,1,104 };
-			cube->SetRotation(angle, {1,0,0});
-			cube->color = White;
-			cubes.add(cube); 	
-			physBodyCubes.add(App->physics->AddBody(*cube, 0));
-
-
-		//	Ramp({ 130,14,-59.2 }, true, { radio,1.5,27 });
-			radio = 5;
-			//Ramp({ 0,0,100 }, { 10,1,radio });
-
-		}
-
-
-
-		Looping({ 18.0f, 14.5, 50.0 });
 
 		cube = new Cube();
-		cube->SetPos(-70, 10, -10);
-		cube->size = { 60,2,7 };
+		cube->SetPos(-260.3, 15.25, 10.5);
+		cube->size = { 10,2,60 };
 		cube->color.Set(0.5f,0.5f,1.0f);
 		cubes.add(cube); 
 		physBodyCubes.add(App->physics->AddBody(*cube, 0));
 		physBodyCubes.getLast()->data->body->setFriction(0.00f);
 
+
 		
-	}
+		cubeMove = new Cube();
+		cubeMove->SetPos(-260.3, 15.25, -24.5);
+		cubeMove->size = { 10,2,10 };
+		cubeMove->color.Set(0.5f, 1.0f, 0.5f);
+		cubeMovBody =App->physics->AddBody(*cubeMove, 0);
 
-	// Sensors
-	{
 		cube = new Cube();
-		cube->SetPos(-110, 10, -10);
-		cube->size = { 20,2,20 };
-		cube->color = White;
-		cubes.add(cube); 	
+		cube->SetPos(-185.3,70.25, -24.5);
+		cube->size = { 140,2,10 };
+		cube->color.Set(0.5f, 0.5f, 1.0f);
+		cubes.add(cube);
 		physBodyCubes.add(App->physics->AddBody(*cube, 0));
+		physBodyCubes.getLast()->data->body->setFriction(0.00f);
 
-		cubeSensor.SetPos(-110, 11.1f, -10);
-		cubeSensor.size = { 19.5f,0.45f,19.5f };
-		cubeSensor.color = White;
-		bodySensor = App->physics->AddBody(cubeSensor, 0);
-		bodySensor->SetAsSensor(true);
-		bodySensor->collision_listeners.add(this);
-		bodySensor->body->setUserPointer(bodySensor);
-	}
-	
+		}
 
-	{
-		/*p2List_item<tdata>* lissener = physBodyCubes.getFirst();
-		for (int i = 0; i < physBodyCubes.count(); i++)
+
+
+		// Sensors
 		{
-			lissener
-		}*/
+			cube = new Cube();
+			cube->SetPos(-110, 70.25, -24.5);
+			cube->size = { 20,2,20 };
+			cube->color = White;
+			cubes.add(cube);
+			physBodyCubes.add(App->physics->AddBody(*cube, 0));
+
+			cubeSensor.SetPos(cube->GetPos().x, cube->GetPos().y + 1.1f, cube->GetPos().z);
+			cubeSensor.size = { cube->size.x - 0.5f,0.45f,cube->size.z - 0.5f };
+			cubeSensor.color = White;
+			bodySensor = App->physics->AddBody(cubeSensor, 0);
+			bodySensor->SetAsSensor(true);
+			bodySensor->collision_listeners.add(this);
+			bodySensor->body->setUserPointer(bodySensor);
+		}
+		
 	}
 
 	return ret;
@@ -452,30 +558,9 @@ update_status ModuleSceneIntro::Update(float dt)
 	ground.Render();
 	cubeSensor.Render();
 
-	if ((cX <= 1.1 || cY <= 1.1 || cZ <= 1.1 ) && changeColor)
-	{
-		cX += increment1;
-		cY += increment2;
-		cZ += increment3;
-	}
-	else if ((cX >= 0.4 && cY >= 0.4 && cZ >= 0.4) &&!changeColor)
-	{
-		cX -= increment1;
-		cY -= increment2;
-		cZ -= increment3;
-	}
-	else
-	{
-		changeColor = !changeColor;
-		if (!changeColor) 
-		{
-			aux= increment1;
-			increment1 = increment2;
-			increment2 = increment3;
-			increment3 = aux;
-		}
+	CubeMoveRender();
 
-	}
+	ChangeColor();
 
 	for (p2List_item<Cube*>* cube = looping.getFirst(); cube; cube = cube->next)
 	{
@@ -492,6 +577,68 @@ update_status ModuleSceneIntro::Update(float dt)
 	}
 
 	return UPDATE_CONTINUE;
+}
+
+void ModuleSceneIntro::CubeMoveRender()
+{
+	cubeMove->Render();
+
+	posMoveY = cubeMove->GetPos().y;
+	if ((posMoveY<=70.25) && moveToUp)
+	{
+		posMoveY += 0.12;
+		cubeMove->SetPos(cubeMove->GetPos().x, posMoveY, cubeMove->GetPos().z);
+		cubeMovBody->SetPos(cubeMove->GetPos().x, posMoveY, cubeMove->GetPos().z);
+
+	}
+	else if ((posMoveY >= 15) && !moveToUp)
+	{
+		posMoveY -= 0.08;
+		cubeMove->SetPos(cubeMove->GetPos().x, posMoveY, cubeMove->GetPos().z);
+		cubeMovBody->SetPos(cubeMove->GetPos().x, posMoveY, cubeMove->GetPos().z);
+	}
+	else
+	{
+		if (!timerStarted)
+		{
+			timerStarted = true;
+			timer->Start();
+		}
+		if (timer->Read() > 2500)
+		{
+			timerStarted = false;
+			moveToUp = !moveToUp;
+		}
+
+	}
+}
+
+void ModuleSceneIntro::ChangeColor()
+{
+	if ((cX <= 1.1 || cY <= 1.1 || cZ <= 1.1) && changeColor)
+	{
+		cX += increment1;
+		cY += increment2;
+		cZ += increment3;
+	}
+	else if ((cX >= 0.4 && cY >= 0.4 && cZ >= 0.4) && !changeColor)
+	{
+		cX -= increment1;
+		cY -= increment2;
+		cZ -= increment3;
+	}
+	else
+	{
+		changeColor = !changeColor;
+		if (!changeColor)
+		{
+			aux = increment1;
+			increment1 = increment2;
+			increment2 = increment3;
+			increment3 = aux;
+		}
+
+	}
 }
 
 void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
@@ -733,10 +880,10 @@ void ModuleSceneIntro::MidRamp(vec3 position, bool inverse, vec3 size)
 void ModuleSceneIntro::Ramp(vec3 position, vec3 size)
 {
 	Cube* cube;
-	float numCubes = 8;
+	float numCubes = 10;
 	float alpha = 0;
 	float auxAngle = 90.0f / numCubes;
-	float offset = 100;
+	float offset = 0;
 	float rad = 0;
 	float radio = size.z;
 	//vec3 size = size;
@@ -768,6 +915,54 @@ void ModuleSceneIntro::Ramp(vec3 position, vec3 size)
 		cube->color = White;
 
 		cube->SetRotation(alpha + (auxAngle / 2), { 1,0,0 });
+		
+
+		looping.add(cube);
+		physBodyCubes.add( App->physics->AddBody(*cube, 0));
+		physBodyCubes.getLast()->data->collision_listeners.add(this);
+
+
+
+		//posZ += size.z / numCubes;
+	}
+
+}
+void ModuleSceneIntro::RampFlip(vec3 position, vec3 size)
+{
+	Cube* cube;
+	float numCubes = 10;
+	float alpha = 0;
+	float auxAngle = 90.0f / numCubes;
+	float offset =0 ;
+	float rad = 0;
+	float radio = size.z;
+
+	float posX = position.x;
+	float posY = position.y;
+	float posZ = -position.z;
+
+
+
+
+	for (int i = 0; i < numCubes; i++)
+	{
+
+		alpha += auxAngle;
+
+		rad = alpha * PI / 180;
+
+		//posZ = axis.z * cos(alpha) - axis.y * sin(alpha);
+		//posY = axis.z * cos(alpha) + axis.y * sin(alpha);
+
+		posZ -= radio * cos(rad);
+		posY += radio * sin(rad);
+
+		cube = new Cube();
+		cube->SetPos(posX+offset, posY, -posZ);
+		cube->size = size;
+		cube->color = White;
+
+		cube->SetRotation(-alpha - (auxAngle / 2), { 1,0,0 });
 		
 
 		looping.add(cube);

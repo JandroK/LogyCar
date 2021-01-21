@@ -17,6 +17,8 @@ public:
 
 	bool Start();
 	update_status Update(float dt);
+	void CubeMoveRender();
+	void ChangeColor();
 	bool CleanUp();
 
 	void OnCollision(PhysBody3D* body1, PhysBody3D* body2);
@@ -24,6 +26,7 @@ public:
 	void Looping(vec3 position);
 	void CylinderWalls(vec3 position);
 	void Ramp(vec3 position, vec3 size);
+	void RampFlip(vec3 position, vec3 size);
 	void Ramp(vec3 position,bool inverse, vec3 size);
 	void MidRamp(vec3 position,bool inverse, vec3 size);
 public:
@@ -45,7 +48,13 @@ public:
 
 	p2List<Cube*> lissen;
 
-	Cube reference;
+	Cube reference; 
+	Cube ground;
+
+	Cube* cubeMove;
+	PhysBody3D* cubeMovBody;
+	float posMoveY;
+
 
 	PhysBody3D* pb_chassis;
 	Cube p_chassis;
@@ -59,7 +68,6 @@ public:
 	PhysMotor3D* left_wheel;
 	PhysMotor3D* right_wheel;
 
-	Cube ground;
 	
 	PhysBody3D* body;
 
@@ -78,8 +86,11 @@ public:
 	float increment3 = 0.003f;
 
 	bool changeColor=true;
+	bool moveToUp=true;
 
 	bool win=false;
+	bool timerStarted;
+	Timer* timer;
 
 	// MapPrimitives
 };
