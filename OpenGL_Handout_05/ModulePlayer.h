@@ -44,6 +44,8 @@ private:
 	int vel;
 	float assistDirection;
 	float calculate;
+	vec3 camLoop;
+	btVector3 positionCM;
 	bool CPactive = false;
 	Color color;
 };

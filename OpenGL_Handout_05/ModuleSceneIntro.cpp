@@ -3,6 +3,8 @@
 #include "ModuleSceneIntro.h"
 #include "Primitive.h"
 #include "PhysBody3D.h"
+#include "Globals.h"
+
 
 #define PI 3.14159265359
 #define DEG_TO_RAD (PI / 180)
@@ -393,6 +395,27 @@ cubes.add(cube);		physBodyCubes.add(App->physics->AddBody(*cube, 0));
 			// peralt
 			{
 				cube = new Cube();
+				cube->SetPos(-25.5, 12, -25);
+				cube->size = { 1.5,12,55 };
+				cube->color = White;
+				cubes.add(cube);
+				physBodyCubes.add(App->physics->AddBody(*cube, 0));
+				
+				cube = new Cube();
+				cube->SetPos(-100.5, 12, -25);
+				cube->size = { 1.5,12,55 };
+				cube->color = White;
+				cubes.add(cube);
+				physBodyCubes.add(App->physics->AddBody(*cube, 0));
+
+				cube = new Cube();
+				cube->SetPos(-63, 12, -52.5);
+				cube->size = { 76.5,12,1.5 };
+				cube->color = White;
+				cubes.add(cube);
+				physBodyCubes.add(App->physics->AddBody(*cube, 0));
+
+				cube = new Cube();
 				cube->SetPos(-35.8, 15.25, 30);
 				cube->size = { 19.5,1,60 };
 				cube->color = White;
@@ -419,7 +442,7 @@ cubes.add(cube);		physBodyCubes.add(App->physics->AddBody(*cube, 0));
 
 				angle = 22;
 				cube = new Cube();
-				cube->SetPos(-63, 11, -43.7);
+				cube->SetPos(-63, 11, -42.5);
 				cube->size = { 75,1,22 };
 				cube->SetRotation(angle, { 1,0,0 });
 				cube->color = White;
@@ -489,8 +512,8 @@ cubes.add(cube);		physBodyCubes.add(App->physics->AddBody(*cube, 0));
 		{
 
 		cube = new Cube();
-		cube->SetPos(-260.3, 15.25, 10.5);
-		cube->size = { 10,2,60 };
+		cube->SetPos(-260.3, 15.25, 0.5);
+		cube->size = { 10,1.5,80 };
 		cube->color.Set(0.5f,0.5f,1.0f);
 		cubes.add(cube); 
 		physBodyCubes.add(App->physics->AddBody(*cube, 0));
@@ -499,14 +522,14 @@ cubes.add(cube);		physBodyCubes.add(App->physics->AddBody(*cube, 0));
 
 		
 		cubeMove = new Cube();
-		cubeMove->SetPos(-260.3, 15.25, -24.5);
+		cubeMove->SetPos(-250.3, 15.25, -34.5);
 		cubeMove->size = { 10,2,10 };
 		cubeMove->color.Set(0.5f, 1.0f, 0.5f);
 		cubeMovBody =App->physics->AddBody(*cubeMove, 0);
 
 		cube = new Cube();
-		cube->SetPos(-185.3,70.25, -24.5);
-		cube->size = { 140,2,10 };
+		cube->SetPos(-175.3,90.25, -34.5);
+		cube->size = { 139.9,2,10 };
 		cube->color.Set(0.5f, 0.5f, 1.0f);
 		cubes.add(cube);
 		physBodyCubes.add(App->physics->AddBody(*cube, 0));
@@ -519,8 +542,8 @@ cubes.add(cube);		physBodyCubes.add(App->physics->AddBody(*cube, 0));
 		// Sensors
 		{
 			cube = new Cube();
-			cube->SetPos(-110, 70.25, -24.5);
-			cube->size = { 20,2,20 };
+			cube->SetPos(-100, 90.25, -34.5);
+			cube->size = { 12,2,12 };
 			cube->color = White;
 			cubes.add(cube);
 			physBodyCubes.add(App->physics->AddBody(*cube, 0));
@@ -572,7 +595,6 @@ update_status ModuleSceneIntro::Update(float dt)
 	}
 	for (p2List_item<Cube*>* cubeWorld = cubes.getFirst(); cubeWorld; cubeWorld = cubeWorld->next)
 	{
-		cubeWorld->data->color.Set(cX, cY, cZ);
 		cubeWorld->data->Render();
 	}
 
@@ -582,18 +604,19 @@ update_status ModuleSceneIntro::Update(float dt)
 void ModuleSceneIntro::CubeMoveRender()
 {
 	cubeMove->Render();
+	cubeMove->color.Set(cX, cY, cZ);
 
 	posMoveY = cubeMove->GetPos().y;
-	if ((posMoveY<=70.25) && moveToUp)
+	if ((posMoveY<=90.25) && moveToUp)
 	{
-		posMoveY += 0.12;
+		posMoveY += 0.10;
 		cubeMove->SetPos(cubeMove->GetPos().x, posMoveY, cubeMove->GetPos().z);
 		cubeMovBody->SetPos(cubeMove->GetPos().x, posMoveY, cubeMove->GetPos().z);
 
 	}
 	else if ((posMoveY >= 15) && !moveToUp)
 	{
-		posMoveY -= 0.08;
+		posMoveY -= 0.16;
 		cubeMove->SetPos(cubeMove->GetPos().x, posMoveY, cubeMove->GetPos().z);
 		cubeMovBody->SetPos(cubeMove->GetPos().x, posMoveY, cubeMove->GetPos().z);
 	}
@@ -604,7 +627,7 @@ void ModuleSceneIntro::CubeMoveRender()
 			timerStarted = true;
 			timer->Start();
 		}
-		if (timer->Read() > 2500)
+		if (timer->Read() > 3000)
 		{
 			timerStarted = false;
 			moveToUp = !moveToUp;
@@ -648,7 +671,7 @@ void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 		win = true;
 		btVector3 vec = bodySensor->body->getCenterOfMassPosition();
 		vec3 sizeCube= cubeSensor.size ;
-		cubeSensor.SetPos(-110, 11.1f, -10);
+	//	cubeSensor.SetPos(vec.getX(), vec.getY() - 0.25, vec.getZ());
 		cubeSensor.color = Green;
 		cubeSensor.size.y = 0.10f;
 		bodySensor->SetPos(vec.getX(),vec.getY()-1,vec.getZ());
@@ -695,7 +718,9 @@ void ModuleSceneIntro::Looping(vec3 position)
 		cube = new Cube();
 		cube->SetPos(posX+offset, posY, -posZ);
 		cube->size = size;
-		cube->color.Set(40 / posX+1.65, 40 / posY ,40 / posZ );
+		cube->color.Set(40 / posX + 1.65, 40 / posY, 40 / posZ);
+		//LOG("Position Player \n x: %f \t y: %f \t z: %f ", posX + offset, posY, -posZ);
+
 
 		cube->SetRotation(alpha+1.5f, { 1,0,0 });
 		//cube->transform.rotate(alpha + 1.5f, { 1,0,0 });
@@ -741,6 +766,8 @@ void ModuleSceneIntro::CylinderWalls(vec3 position)
 		cube->SetPos(posX+offset, posY,-posZ);
 		cube->size = size;
 		cube->color = White;
+		
+
 		cube->SetRotation(alpha- (auxAngle/2), { 1,0,0 });
 		cilinderWall.add(cube);
 		physBodyCubes.add(App->physics->AddBody(*cube, 0));
@@ -803,6 +830,7 @@ void ModuleSceneIntro::Ramp(vec3 position,bool inverse,  vec3 size)
 		else
 		cube->size = { size.x,size.y,size.z +(i*4)+(10-(posY/10))};;
 		cube->color = White;
+		cube->color.Set(40 / posX + 1.65, 40 / posY, 40 / posZ);
 
 		cube->SetRotation(alpha + (auxAngle/2), { 0,0,1 });
 
@@ -855,12 +883,14 @@ void ModuleSceneIntro::MidRamp(vec3 position, bool inverse, vec3 size)
 			cube->SetPos(posX + offset, posY,-posZ);
 
 
+
 		cube->size = size;
 		if (alpha > 42.5)
 			cube->size = { size.x+ (i * 5.5f) + (10 - (posY / 10)),size.y,size.z  };
 		else
 			cube->size = { size.x+ (i * 4) + (10 - (posY / 10)),size.y,size.z  };
 		cube->color = White;
+
 
 		cube->SetRotation(-alpha - (auxAngle / 2), { 1,0,0 });
 
@@ -887,7 +917,6 @@ void ModuleSceneIntro::Ramp(vec3 position, vec3 size)
 	float rad = 0;
 	float radio = size.z;
 	//vec3 size = size;
-	vec3 axis = { size.x,size.z,size.z };
 
 	float posX = position.x;
 	float posY = position.y;
@@ -911,17 +940,16 @@ void ModuleSceneIntro::Ramp(vec3 position, vec3 size)
 
 		cube = new Cube();
 		cube->SetPos(posX+offset, posY, -posZ);
-		cube->size = size;
+		cube->size.Set(size.x,size.y,size.z + 0.25);
 		cube->color = White;
 
 		cube->SetRotation(alpha + (auxAngle / 2), { 1,0,0 });
-		
+		cube->color.Set(40 / posX + 1.65, 40 / posY, 40 / posZ);
+
 
 		looping.add(cube);
 		physBodyCubes.add( App->physics->AddBody(*cube, 0));
 		physBodyCubes.getLast()->data->collision_listeners.add(this);
-
-
 
 		//posZ += size.z / numCubes;
 	}
@@ -959,11 +987,12 @@ void ModuleSceneIntro::RampFlip(vec3 position, vec3 size)
 
 		cube = new Cube();
 		cube->SetPos(posX+offset, posY, -posZ);
-		cube->size = size;
+		cube->size.Set(size.x, size.y, size.z + 0.25);
 		cube->color = White;
 
 		cube->SetRotation(-alpha - (auxAngle / 2), { 1,0,0 });
-		
+		cube->color.Set(40 / posX + 1.65, 40 / posY, 40 / posZ);
+
 
 		looping.add(cube);
 		physBodyCubes.add( App->physics->AddBody(*cube, 0));

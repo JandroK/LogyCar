@@ -17,10 +17,10 @@ ModulePlayer::~ModulePlayer()
 bool ModulePlayer::Start()
 {
 	LOG("Loading player");
-
+	
 	VehicleInfo car;
 	color.Set(1.0f, 1.0f, 1.0f, 1.0f);
-	
+	camLoop.Set(-8.88, 62.38, 51.7);
 // ----------------------------------------Vehicle chassis----//
 	car.chassis_size.Set(1, 0.5f, 2);
 	car.chassis_offset.Set(0, 0.125f, 0.05);
@@ -36,7 +36,7 @@ bool ModulePlayer::Start()
 
 	car.chassis5_size.Set(0.075, 0.60, 0.075);
 	car.chassis5_offset.Set(-0.25, car.chassis_offset.y + 0.95, car.chassis_offset.z-0.4);
-	
+
 	// Car properties ----------------------------------------
 
 	car.mass =130.0f;
@@ -323,19 +323,21 @@ void ModulePlayer::CameraPlayer()
 		vec3 myCameraLook;
 		float distanceCamara2CM = -12;
 
-		if (vehicle->GetKmh() < 130)
-		{
-			myCamera.x = vehicle->body->getCenterOfMassPosition().getX() + forwardVector.getX() * distanceCamara2CM;
-			myCamera.y = vehicle->body->getCenterOfMassPosition().getY() + forwardVector.getY() + 6;
-			myCamera.z = vehicle->body->getCenterOfMassPosition().getZ() + forwardVector.getZ() * distanceCamara2CM;
+		positionCM = vehicle->body->getCenterOfMassPosition();
 
+		if (((camLoop.x - 36) < positionCM.getX() && (camLoop.x + 36) > positionCM.getX()) 
+			&& (((camLoop.y - 54) < positionCM.getY() && (camLoop.y + 54) > positionCM.getY())) 
+			&& (((camLoop.z - 54) < positionCM.getZ() && (camLoop.z + 54) > positionCM.getZ())) )
+		{
+			myCamera = camLoop;
 		}
 		else
 		{
-			myCamera.x = vehicle->body->getCenterOfMassPosition().getX() + forwardVector.getX() * distanceCamara2CM;
-			myCamera.y = vehicle->body->getCenterOfMassPosition().getY() + forwardVector.getY() * distanceCamara2CM+6;
-			myCamera.z = vehicle->body->getCenterOfMassPosition().getZ() + forwardVector.getZ() * distanceCamara2CM;
+			myCamera.x = positionCM.getX() + forwardVector.getX() * distanceCamara2CM;
+			myCamera.y = positionCM.getY() + forwardVector.getY() + 6;
+			myCamera.z = positionCM.getZ() + forwardVector.getZ() * distanceCamara2CM;
 		}
+	
 
 
 		myCameraLook.x = vehicle->body->getCenterOfMassPosition().getX();

@@ -122,8 +122,8 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 
 	// light 0 on cam pos
 	//lights[0].SetPos(App->camera->Position.x, App->camera->Position.y, App->camera->Position.z);
-	lights[0].SetPos(300, 1000, 0);
-	//lights[1].SetPos(-200, 1000, 0);
+	//lights[0].SetPos(300, 1000, 0);
+	lights[1].SetPos(-2000, 1000, +100);
 
 	for(uint i = 0; i < MAX_LIGHTS; ++i)
 		lights[i].Render();

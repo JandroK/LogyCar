@@ -48,7 +48,7 @@ update_status ModuleCamera3D::Update(float dt)
 	
 	if (App->GetDebugMode())
 	{
-		if (App->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN)LOG("Position Player \n x: %f \t z: %f ", Position.x, Position.z);
+		if (App->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN)LOG("Position Player \n x: %f \n y: %f \t z: %f ", Position.x,Position.y, Position.z);
 		if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT)newPos.y += speed;
 		if (App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT)newPos.y -= speed;
 		if (App->input->GetKey(SDL_SCANCODE_KP_1) == KEY_REPEAT) newPos.y += speed;
