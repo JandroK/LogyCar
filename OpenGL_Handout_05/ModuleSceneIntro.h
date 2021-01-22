@@ -46,6 +46,9 @@ public:
 	p2List<Cube*> cubes;
 	p2List<PhysBody3D*> physBodyCubes;
 
+	p2List<Cube*> checkopints;
+	p2List<PhysBody3D*> physBodyCheckopints;
+
 	p2List<Cube*> lissen;
 
 	Cube reference; 

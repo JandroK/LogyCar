@@ -44,45 +44,54 @@ bool ModuleSceneIntro::Start()
 	}
 
 
-	float height = 0.1f;
-	ground.SetPos(0, -0.1f, 0);
-	ground.size = { 400,height ,400 };
-	ground.color.Set(0.7f,1.9f,0.5f);
-
-	//Limit1.color = Red;
-	physBodyCubes.add(App->physics->AddBody(ground, 0));
-
+	//float height = 0.1f;
+	//ground.SetPos(0, 0.4f, 0);
+	//ground.size = { 400,height ,400 };
+	//ground.color.Set(0.80f, 0.88f, 1.f, 1.f);
+	//physBodyCubes.add(App->physics->AddBody(ground, 0));
+	//physBodyCubes.getLast()->data->SetAsSensor(true);
 
 
 
-	// Limits
-	{
-		float height = 10;
-		cube = new Cube(400, height + 1, 2);
-		cube->SetPos(0, height/2.0f, 200);
-		cubes.add(cube);		physBodyCubes.add(App->physics->AddBody(*cube, 0));
+	//// Limits
+	//{
+	//	float height = 10;
+	//	cube = new Cube(400, height + 1, 2);
+	//	cube->SetPos(0, height/2.0f, 200);
+	//	cubes.add(cube);		
+	//	physBodyCubes.add(App->physics->AddBody(*cube, 0));
 
-		cube = new Cube(1,height+1,400 );
-		cube->SetPos(200, height / 2.0f, 0);
-		cube->color = Red;
-		cubes.add(cube);		physBodyCubes.add(App->physics->AddBody(*cube, 0));
+	//	cube = new Cube(1,height+1,400 );
+	//	cube->SetPos(200, height / 2.0f, 0);
+	//	cube->color = Red;
+	//	cubes.add(cube);		
+	//	physBodyCubes.add(App->physics->AddBody(*cube, 0));
 
 
-		cube = new Cube(1, height + 1, 400);
-		cube->SetPos(-200, height / 2.0f, 0);
-		cube->color = Red;
-		cubes.add(cube); 		physBodyCubes.add(App->physics->AddBody(*cube, 0));
+	//	cube = new Cube(1, height + 1, 400);
+	//	cube->SetPos(-200, height / 2.0f, 0);
+	//	cube->color = Red;
+	//	cubes.add(cube); 		
+	//	physBodyCubes.add(App->physics->AddBody(*cube, 0));
 
-		cube = new Cube(400, height + 1, 1);
-		cube->SetPos(0, height / 2.0f, -200);
-cubes.add(cube);		physBodyCubes.add(App->physics->AddBody(*cube, 0));
+	//	cube = new Cube(400, height + 1, 1);
+	//	cube->SetPos(0, height / 2.0f, -200);
+	//	cubes.add(cube);		
+	//	physBodyCubes.add(App->physics->AddBody(*cube, 0));
 
-	}
+	//}
 
 	// Platforms
 	{
 		// Done
 		{
+			cube = new Cube(35, 1, 15);
+			cube->SetPos(-110, 0, -86);
+			cube->color = White;
+
+			cubes.add(cube); 	
+			physBodyCubes.add(App->physics->AddBody(*cube, 0));
+
 			cube = new Cube(10, 1, 15);
 			cube->SetPos(-90, 1.0f, -86);
 			cube->color = Red;
@@ -147,7 +156,6 @@ cubes.add(cube);		physBodyCubes.add(App->physics->AddBody(*cube, 0));
 			physBodyCubes.add(App->physics->AddBody(*cube, 0));
 
 
-
 			angle = -20;
 			cube = new Cube();
 			cube->size = { 5,1,5 };
@@ -170,7 +178,6 @@ cubes.add(cube);		physBodyCubes.add(App->physics->AddBody(*cube, 0));
 			angle = -90;
 			radi = 2.5f;
 			// Plancha
-			//wall8.SetPos((wall6.GetPos().x- wall6.size.x) + radi * cos(-angle * DEG_TO_RAD), wall6.GetPos().y, (wall6.GetPos().z- wall6.size.z) + radi * sin(-angle * DEG_TO_RAD));
 			cube = new Cube();
 			cube->size = { 1.3,0.5,20 };
 			cube->SetPos(63, reference.GetPos().y, -111.50);
@@ -187,8 +194,8 @@ cubes.add(cube);		physBodyCubes.add(App->physics->AddBody(*cube, 0));
 			cube->SetPos(reference.GetPos().x + radi * cos(-angle * DEG_TO_RAD), reference.GetPos().y, reference.GetPos().z + radi * sin(-angle * DEG_TO_RAD));
 			cube->color = White;
 			cube->SetRotation(angle, { 0,1,0 });
-			cubes.add(cube); 		physBodyCubes.add(App->physics->AddBody(*cube, 0));
-			;
+			cubes.add(cube); 	
+			physBodyCubes.add(App->physics->AddBody(*cube, 0));
 
 			//curva anti horaria
 			{
@@ -238,7 +245,6 @@ cubes.add(cube);		physBodyCubes.add(App->physics->AddBody(*cube, 0));
 				physBodyCubes.add(App->physics->AddBody(*cube, 0));
 
 			}
-
 			//curva horaria
 			{
 				angle = -45;
@@ -504,59 +510,139 @@ cubes.add(cube);		physBodyCubes.add(App->physics->AddBody(*cube, 0));
 				cubes.add(cube);
 				physBodyCubes.add(App->physics->AddBody(*cube, 0));
 			}
+			// Ice and move platform
+			{
+				cube = new Cube();
+				cube->SetPos(-260.3, 15.25, 0.5);
+				cube->size = { 10,1.5,80 };
+				cube->color.Set(0.5f, 0.5f, 1.0f);
+				cubes.add(cube);
+				physBodyCubes.add(App->physics->AddBody(*cube, 0));
+				physBodyCubes.getLast()->data->body->setFriction(0.00f);
+
+
+
+				cubeMove = new Cube();
+				cubeMove->SetPos(-250.3, 15.25, -34.5);
+				cubeMove->size = { 10,2,10 };
+				cubeMove->color.Set(0.5f, 1.0f, 0.5f);
+				cubeMovBody = App->physics->AddBody(*cubeMove, 0);
+
+				cube = new Cube();
+				cube->SetPos(-175.3, 90.25, -34.5);
+				cube->size = { 139.9,2,10 };
+				cube->color.Set(0.5f, 0.5f, 1.0f);
+				cubes.add(cube);
+				physBodyCubes.add(App->physics->AddBody(*cube, 0));
+				physBodyCubes.getLast()->data->body->setFriction(0.00f);
+			}
+			// Sensors
+			{
+				cube = new Cube();
+				cube->SetPos(-100, 90.25, -34.5);
+				cube->size = { 12,2,12 };
+				cube->color = White;
+				cubes.add(cube);
+				physBodyCubes.add(App->physics->AddBody(*cube, 0));
+
+				cubeSensor.SetPos(cube->GetPos().x, cube->GetPos().y + 1.1f, cube->GetPos().z);
+				cubeSensor.size = { cube->size.x - 0.5f,0.45f,cube->size.z - 0.5f };
+				cubeSensor.color = White;
+				bodySensor = App->physics->AddBody(cubeSensor, 0);
+				bodySensor->SetAsSensor(true);
+				bodySensor->collision_listeners.add(this);
+				bodySensor->body->setUserPointer(bodySensor);
+			}
 
 
 		}
 		
 		// Haciendo
 		{
+			// checkpoints
+			{
+				cube = new Cube(1,1,1);
+				cube->SetPos(-110, 3, -86);
+				cube->color = White;
+				cube->SetRotation(90,{ 0,1,0 });
+				checkopints.add(cube);
+				physBodyCheckopints.add(App->physics->AddBody(*cube, 0));
+				physBodyCheckopints.getLast()->data->SetAsSensor(true);
+				cube->size = { 0,0,0 };
 
-		cube = new Cube();
-		cube->SetPos(-260.3, 15.25, 0.5);
-		cube->size = { 10,1.5,80 };
-		cube->color.Set(0.5f,0.5f,1.0f);
-		cubes.add(cube); 
-		physBodyCubes.add(App->physics->AddBody(*cube, 0));
-		physBodyCubes.getLast()->data->body->setFriction(0.00f);
+				angle = -200;
+				cube = new Cube( 1,1,1 );
+				cube->SetPos(40, 17, -81);
+				cube->SetRotation(angle, { 0,1,0 });
+				cube->color = White;
+				checkopints.add(cube);
+				physBodyCheckopints.add(App->physics->AddBody(*cube, 0));
+				physBodyCheckopints.getLast()->data->SetAsSensor(true);
+				cube->size = { 0,0,0 };
+
+				cube = new Cube( 1,1,1 );
+				cube->SetPos(71.07f, 17.5, -98.0);
+				cube->color = White;
+				checkopints.add(cube);
+				physBodyCheckopints.add(App->physics->AddBody(*cube, 0));
+				physBodyCheckopints.getLast()->data->SetAsSensor(true);
+				cube->size = { 0,0,0 };
+
+				cube = new Cube( 1,1,1 );
+				cube->SetPos(121.5, 17, 89.7);
+				cube->color = White;
+				checkopints.add(cube);
+				physBodyCheckopints.add(App->physics->AddBody(*cube, 0));
+				physBodyCheckopints.getLast()->data->SetAsSensor(true);
+				cube->size = { 0,0,0 };
+
+				angle = 180;
+				cube = new Cube( 1,1,1 );
+				cube->SetPos(19, 39, 159.7);
+				cube->SetRotation(angle, { 0,1,0 });
+				cube->color = White;
+				checkopints.add(cube);
+				physBodyCheckopints.add(App->physics->AddBody(*cube, 0));
+				physBodyCheckopints.getLast()->data->SetAsSensor(true);
+				cube->size = { 0,0,0 };
+
+				angle = 180;
+				cube = new Cube( 1,1,1 );
+				cube->SetPos(-35.8, 19.25, 30);
+				cube->SetRotation(angle, { 0,1,0 });
+				cube->color = White;
+				checkopints.add(cube);
+				physBodyCheckopints.add(App->physics->AddBody(*cube, 0));
+				physBodyCheckopints.getLast()->data->SetAsSensor(true);
+				cube->size = { 0,0,0 };
+
+				cube = new Cube( 1,1,1 );
+				cube->SetPos(-90.3, 19.25, 32.5);
+				cube->color = White;
+				checkopints.add(cube);
+				physBodyCheckopints.add(App->physics->AddBody(*cube, 0));
+				physBodyCheckopints.getLast()->data->SetAsSensor(true);
+				cube->size = { 0,0,0 };
 
 
-		
-		cubeMove = new Cube();
-		cubeMove->SetPos(-250.3, 15.25, -34.5);
-		cubeMove->size = { 10,2,10 };
-		cubeMove->color.Set(0.5f, 1.0f, 0.5f);
-		cubeMovBody =App->physics->AddBody(*cubeMove, 0);
+				angle = 180;
+				cube = new Cube(1, 1, 1);
+				cube->SetPos(-260.3, 19.25, 50.5);
+				cube->SetRotation(angle, { 0,1,0 });
+				cube->color = White;
+				checkopints.add(cube);
+				physBodyCheckopints.add(App->physics->AddBody(*cube, 0));
+				physBodyCheckopints.getLast()->data->SetAsSensor(true);
+				cube->size = { 0,0,0 };
 
-		cube = new Cube();
-		cube->SetPos(-175.3,90.25, -34.5);
-		cube->size = { 139.9,2,10 };
-		cube->color.Set(0.5f, 0.5f, 1.0f);
-		cubes.add(cube);
-		physBodyCubes.add(App->physics->AddBody(*cube, 0));
-		physBodyCubes.getLast()->data->body->setFriction(0.00f);
 
+			}
 		}
 
 
 
-		// Sensors
-		{
-			cube = new Cube();
-			cube->SetPos(-100, 90.25, -34.5);
-			cube->size = { 12,2,12 };
-			cube->color = White;
-			cubes.add(cube);
-			physBodyCubes.add(App->physics->AddBody(*cube, 0));
-
-			cubeSensor.SetPos(cube->GetPos().x, cube->GetPos().y + 1.1f, cube->GetPos().z);
-			cubeSensor.size = { cube->size.x - 0.5f,0.45f,cube->size.z - 0.5f };
-			cubeSensor.color = White;
-			bodySensor = App->physics->AddBody(cubeSensor, 0);
-			bodySensor->SetAsSensor(true);
-			bodySensor->collision_listeners.add(this);
-			bodySensor->body->setUserPointer(bodySensor);
-		}
 		
+	
 	}
 
 	return ret;

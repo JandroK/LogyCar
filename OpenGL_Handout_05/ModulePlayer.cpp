@@ -130,10 +130,13 @@ bool ModulePlayer::Start()
 	
 
 	vehicle = App->physics->AddVehicle(car);
-	vehicle->SetPos(-50, 6, -150);
 	vehicle->body->setFriction(1);
 	vehicle->collision_listeners.add(this);
 	vehicle->body->setUserPointer(vehicle);
+	vec3 cam = App->scene_intro->checkopints.at(0).data->GetPos();
+	float* pos = App->scene_intro->checkopints.at(0).data->transform.M;
+	vehicle->SetTransform(pos);
+	vehicle->SetPos(cam.x, cam.y, cam.z);
 
 	return true;
 }
@@ -172,7 +175,7 @@ update_status ModulePlayer::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && vehicle->state != State::IN_AIR && !isJumped)
 	{
 		vehicle->state = State::IN_AIR;
-		vehicle->vehicle->getRigidBody()->applyCentralForce({ 0,+70000,0 });
+		vehicle->vehicle->getRigidBody()->applyCentralForce({ 0,+20000,0 });
 	}
 
 	//if (!vehicle->state == State::IN_AIR) vehicle->state = IDLE;
@@ -184,21 +187,7 @@ update_status ModulePlayer::Update(float dt)
 	//btVector3 per = { q.getAxis().getX() ,q.getAxis().getY() ,q.getAxis().getZ() };
 	btVector3 per = { -forwardVector.getZ(), forwardVector.getY(), forwardVector.getX() };
 
-
-
-	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_REPEAT || App->input->GetKey(SDL_SCANCODE_1) == KEY_REPEAT || App->input->GetKey(SDL_SCANCODE_2) == KEY_REPEAT || App->input->GetKey(SDL_SCANCODE_3) == KEY_REPEAT)
-	{
-		const float matrix[13] = { 0,1,0 };
-		vehicle->SetTransform(matrix);
-	}
-	vec3 cam = App->camera->Position;
-	if (App->input->GetKey(SDL_SCANCODE_O) == KEY_REPEAT)vehicle->SetPos(cam.x,cam.y-5,cam.z);
-	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_REPEAT)vehicle->SetPos(-50.0f, 6.0f, -150.0f);
-	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_REPEAT)vehicle->SetPos(40, 24, -90);
-	if (App->input->GetKey(SDL_SCANCODE_2) == KEY_REPEAT)vehicle->SetPos(40, 20, 15);
-	if (App->input->GetKey(SDL_SCANCODE_3) == KEY_REPEAT)vehicle->SetPos(-110, 12, -10);
-
-
+	CheckPoints();
 
 	if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT &&
 		(vehicle->state != State::IN_AIR || vehicle->state == State::TURBO)&&
@@ -313,6 +302,79 @@ update_status ModulePlayer::Update(float dt)
 	CameraPlayer();
 
 	return UPDATE_CONTINUE;
+}
+
+void ModulePlayer::CheckPoints()
+{
+	vec3 cam = App->camera->Position;
+
+	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_REPEAT || App->input->GetKey(SDL_SCANCODE_1) == KEY_REPEAT || App->input->GetKey(SDL_SCANCODE_2) == KEY_REPEAT || App->input->GetKey(SDL_SCANCODE_3) == KEY_REPEAT)
+	{
+		const float matrix[13] = { 0,1,0 };
+		vehicle->SetTransform(matrix);
+	}
+	if (App->input->GetKey(SDL_SCANCODE_O) == KEY_REPEAT)
+	{
+		vehicle->SetPos(cam.x, cam.y - 5, cam.z);
+	}
+
+
+	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_REPEAT)
+	{
+		cam = App->scene_intro->checkopints.at(0).data->GetPos();
+		float* pos = App->scene_intro->checkopints.at(0).data->transform.M;
+		vehicle->SetTransform(pos);
+		vehicle->SetPos(cam.x, cam.y, cam.z);
+	}
+	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_REPEAT)
+	{
+		cam = App->scene_intro->checkopints.at(1).data->GetPos();
+		float* pos = App->scene_intro->checkopints.at(1).data->transform.M;
+		vehicle->SetTransform(pos);
+		vehicle->SetPos(cam.x, cam.y, cam.z);
+	}
+	if (App->input->GetKey(SDL_SCANCODE_2) == KEY_REPEAT)
+	{
+		cam = App->scene_intro->checkopints.at(2).data->GetPos();
+		float* pos = App->scene_intro->checkopints.at(2).data->transform.M;
+		vehicle->SetTransform(pos);
+		vehicle->SetPos(cam.x, cam.y, cam.z);
+	}
+	if (App->input->GetKey(SDL_SCANCODE_3) == KEY_REPEAT)
+	{
+		cam = App->scene_intro->checkopints.at(3).data->GetPos();
+		float* pos = App->scene_intro->checkopints.at(3).data->transform.M;
+		vehicle->SetTransform(pos);
+		vehicle->SetPos(cam.x, cam.y, cam.z);
+	}
+	if (App->input->GetKey(SDL_SCANCODE_4) == KEY_REPEAT)
+	{
+		cam = App->scene_intro->checkopints.at(4).data->GetPos();
+		float* pos = App->scene_intro->checkopints.at(4).data->transform.M;
+		vehicle->SetTransform(pos);
+		vehicle->SetPos(cam.x, cam.y, cam.z);
+	}
+	if (App->input->GetKey(SDL_SCANCODE_5) == KEY_REPEAT)
+	{
+		cam = App->scene_intro->checkopints.at(5).data->GetPos();
+		float* pos = App->scene_intro->checkopints.at(5).data->transform.M;
+		vehicle->SetTransform(pos);
+		vehicle->SetPos(cam.x, cam.y, cam.z);
+	}
+	if (App->input->GetKey(SDL_SCANCODE_6) == KEY_REPEAT)
+	{
+		cam = App->scene_intro->checkopints.at(6).data->GetPos();
+		float* pos = App->scene_intro->checkopints.at(6).data->transform.M;
+		vehicle->SetTransform(pos);
+		vehicle->SetPos(cam.x, cam.y, cam.z);
+	}
+	if (App->input->GetKey(SDL_SCANCODE_7) == KEY_REPEAT)
+	{
+		cam = App->scene_intro->checkopints.at(7).data->GetPos();
+		float* pos = App->scene_intro->checkopints.at(7).data->transform.M;
+		vehicle->SetTransform(pos);
+		vehicle->SetPos(cam.x, cam.y, cam.z);
+	}
 }
 
 void ModulePlayer::CameraPlayer()
