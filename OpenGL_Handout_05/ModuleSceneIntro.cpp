@@ -5,7 +5,6 @@
 #include "PhysBody3D.h"
 #include "Globals.h"
 
-
 #define PI 3.14159265359
 #define DEG_TO_RAD (PI / 180)
 
@@ -759,6 +758,7 @@ void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 	if ((body1 == bodySensor || body2 == bodySensor)&& !win)
 	{
 		win = true;
+		App->audio->PlayMusic("Assets/Music/you_win.ogg");
 		btVector3 vec = bodySensor->body->getCenterOfMassPosition();
 		vec3 sizeCube= cubeSensor.size ;
 	//	cubeSensor.SetPos(vec.getX(), vec.getY() - 0.25, vec.getZ());
@@ -769,7 +769,6 @@ void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 	if ( (physBodyCubes.find(body1) >= 0 || physBodyCubes.find(body2) >= 0))
 	{
 		LOG("En el suelo");
-
 	}
 
 	int i;

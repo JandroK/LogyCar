@@ -19,7 +19,7 @@ bool ModulePlayer::Start()
 	LOG("Loading player");
 	
 	// Load Fx
-	dead = App->audio->LoadFx("Assets/Fx/player_die2.wav");
+	dead = App->audio->LoadFx("Assets/Fx/player_die.wav");
 
 	VehicleInfo car;
 	color.Set(1.0f, 1.0f, 1.0f, 1.0f);
@@ -242,7 +242,8 @@ update_status ModulePlayer::Update(float dt)
 	sprintf_s(title, "%.1f Km/h", vehicle->GetKmh());
 	App->window->SetTitle(title);
 
-	CameraPlayer();
+	if (!App->scene_intro->win)CameraPlayer(dt);
+	if (App->scene_intro->win)CameraWin(dt);
 
 	return UPDATE_CONTINUE;
 }
@@ -384,7 +385,7 @@ void ModulePlayer::Teleport(int num)
 	vehicle->SetPos(cam.x, cam.y, cam.z);
 }
 
-void ModulePlayer::CameraPlayer()
+void ModulePlayer::CameraPlayer(float dt)
 {
 	if (!App->GetDebugMode())
 	{
@@ -415,6 +416,32 @@ void ModulePlayer::CameraPlayer()
 
 		App->camera->Position = myCamera;
 		App->camera->LookAt(myCameraLook);
+	}
+}
+
+void ModulePlayer::CameraWin(float dt)
+{
+	vehicle->body->setLinearVelocity({ 0,0,0 });
+
+	vec3 myCamera;
+	vec3 myCameraLook = { 0,50,0 };
+	float distanceCamara2CM = -200;
+
+	angle += dt / 2;
+	myCamera.x = distanceCamara2CM * sin(angle);
+	myCamera.y = 130;
+	myCamera.z = distanceCamara2CM * cos(angle);
+
+	App->camera->Position = myCamera;
+	App->camera->LookAt(myCameraLook);
+
+	// If camara has gone two laps or press space restart level
+	if (angle > 4 * PI || App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+	{
+		angle = 0;
+		App->scene_intro->win = false;
+		App->audio->PlayMusic("Assets/Music/fall_guys.ogg");
+		Teleport(0);
 	}
 }
 

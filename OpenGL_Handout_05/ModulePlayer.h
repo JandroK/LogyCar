@@ -24,7 +24,8 @@ public:
 	void PlayerControls();
 	void CheckPoints();
 	void Teleport(int num);
-	void CameraPlayer();
+	void CameraPlayer(float dt);
+	void CameraWin(float dt);
 	void AssistDirection(float hardness);
 	bool CleanUp();
 	void OnCollision(PhysBody3D* body1, PhysBody3D* body2);
@@ -55,6 +56,8 @@ private:
 	bool reset = false;
 	bool falling = false;
 	Color color;
-
+	//Fx
 	uint dead;
+
+	float angle = 0;
 };
