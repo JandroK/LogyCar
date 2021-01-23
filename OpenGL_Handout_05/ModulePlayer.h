@@ -63,6 +63,5 @@ private:
 	Color color;
 	//Fx
 	uint dead;
-
 	float angle = 0;
 };

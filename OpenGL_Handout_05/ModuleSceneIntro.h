@@ -17,6 +17,7 @@ public:
 
 	bool Start();
 	update_status Update(float dt);
+	void Win();
 	void CubeMoveRender();
 	void ChangeColor();
 	bool CleanUp();
@@ -87,14 +88,15 @@ public:
 	float cZ=1;
 	
 	float aux;
-	float increment1= 0.002f;
-	float increment2 = 0.004f;
-	float increment3 = 0.003f;
+	float increment1= 0.01f;
+	float increment2 = 0.02f;
+	float increment3 = 0.015f;
 
 	bool changeColor=true;
 	bool moveToUp=true;
 
 	bool win=false;
+	bool won=false;
 	bool timerStarted;
 	Timer* timer;
 

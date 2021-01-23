@@ -95,8 +95,8 @@ bool ModuleSceneIntro::Start()
 			platformsCheckpoints.add(physBodyCubes.getLast()->data);
 
 
-			cube = new Cube(10, 1, 15);
-			cube->SetPos(-90, 1.0f + offsetOfFloor, -86);
+			cube = new Cube(7, 1, 15);
+			cube->SetPos(-89.5, 1.3f + offsetOfFloor, -86);
 			cube->color = Red;
 			cube->SetRotation(23, { 0,0,1 });
 			cubes.add(cube); 	
@@ -565,15 +565,15 @@ bool ModuleSceneIntro::Start()
 			// Sensors
 			{
 				cube = new Cube();
-				cube->SetPos(-100, 90.25 + offsetOfFloor, -34.5);
-				cube->size = { 12,2,12 };
-				cube->color = White;
+				cube->SetPos(-100, 90.75 + offsetOfFloor, -34.5);
+				cube->size = { 12,3,12 };
+				cube->color.Set(0.3, 0.3, 0.35);
 				cubes.add(cube);
 				physBodyCubes.add(App->physics->AddBody(*cube, 0));
 
-				cubeSensor.SetPos(cube->GetPos().x, cube->GetPos().y + 1.1f, cube->GetPos().z);
-				cubeSensor.size = { cube->size.x - 0.5f,0.45f,cube->size.z - 0.5f };
-				cubeSensor.color = White;
+				cubeSensor.SetPos(cube->GetPos().x, cube->GetPos().y + 1.6f, cube->GetPos().z);
+				cubeSensor.size = { cube->size.x - 0.5f,0.85f,cube->size.z - 0.75f };
+				cubeSensor.color.Set(1, 0.35, 0.35);
 				bodySensor = App->physics->AddBody(cubeSensor, 0);
 				bodySensor->SetAsSensor(true);
 				bodySensor->collision_listeners.add(this);
@@ -693,6 +693,7 @@ bool ModuleSceneIntro::CleanUp()
 // Update
 update_status ModuleSceneIntro::Update(float dt)
 {
+
 	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)App->SetDebugMode();
 
 	Plane p(0, 1, 0, 0);
@@ -704,6 +705,10 @@ update_status ModuleSceneIntro::Update(float dt)
 	CubeMoveRender();
 
 	ChangeColor();
+
+	Win();
+	
+
 
 	for (p2List_item<Cube*>* cube = looping.getFirst(); cube; cube = cube->next)
 	{
@@ -719,6 +724,31 @@ update_status ModuleSceneIntro::Update(float dt)
 	}
 
 	return UPDATE_CONTINUE;
+}
+
+void ModuleSceneIntro::Win()
+{
+	if (win && !won)
+	{
+		won = true;
+		btVector3 vec = bodySensor->body->getCenterOfMassPosition();
+		vec3 sizeCube = cubeSensor.size;
+		//	cubeSensor.SetPos(vec.getX(), vec.getY() - 0.25, vec.getZ());
+		cubeSensor.color = Green;
+		cubeSensor.size.y = 0.10f;
+		bodySensor->SetPos(vec.getX(), vec.getY() - 1, vec.getZ());
+	}
+	else if (!win && won)
+	{
+		won = false;
+		btVector3 vec = bodySensor->body->getCenterOfMassPosition();
+		vec3 sizeCube = cubeSensor.size;
+		//	cubeSensor.SetPos(vec.getX(), vec.getY() - 0.25, vec.getZ());
+		cubeSensor.color.Set(1, 0.65, 0.65);
+		cubeSensor.size.y = 0.85f;
+		bodySensor->SetPos(vec.getX(), vec.getY() + 1, vec.getZ());
+
+	}
 }
 
 void ModuleSceneIntro::CubeMoveRender()
@@ -787,21 +817,10 @@ void ModuleSceneIntro::ChangeColor()
 void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 {
 	if ((body1 == bodySensor || body2 == bodySensor)&& !win)
-	{
+	{	
 		win = true;
 		App->audio->PlayMusic("Assets/Music/you_win.ogg");
-		btVector3 vec = bodySensor->body->getCenterOfMassPosition();
-		vec3 sizeCube= cubeSensor.size ;
-	//	cubeSensor.SetPos(vec.getX(), vec.getY() - 0.25, vec.getZ());
-		cubeSensor.color = Green;
-		cubeSensor.size.y = 0.10f;
-		bodySensor->SetPos(vec.getX(),vec.getY()-1,vec.getZ());
 	}
-	if ((physBodyCubes.find(body1) >= 0 || physBodyCubes.find(body2) >= 0))
-	{
-		LOG("En el suelo");
-	}
-
 }
 
 void ModuleSceneIntro::Looping(vec3 position)
@@ -1060,7 +1079,7 @@ void ModuleSceneIntro::Ramp(vec3 position, vec3 size)
 		cube->color = White;
 
 		cube->SetRotation(alpha + (auxAngle / 2), { 1,0,0 });
-		cube->color.Set(40 / posX + 1.65, 40 / posY, 40 / posZ);
+		cube->color.Set(40 / posX + 1.65, 40 / (posY - offsetOfFloor), 40 / posZ);
 
 
 		looping.add(cube);

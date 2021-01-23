@@ -25,7 +25,7 @@ bool ModulePlayer::Start()
 	jumpTime->Start();
 	VehicleInfo car;
 	color.Set(1.0f, 1.0f, 1.0f, 1.0f);
-	camLoop.Set(-8.88, 62.38, 51.7);
+	camLoop.Set(-8.88, 62.38+ offsetFloor, 51.7);
 // ----------------------------------------Vehicle chassis----//
 	car.chassis_size.Set(1, 0.5f, 2);
 	car.chassis_offset.Set(0, 0.125f, 0.05);
@@ -227,7 +227,7 @@ update_status ModulePlayer::Update(float dt)
 	//btVector3 per = { q.getAxis().getX() ,q.getAxis().getY() ,q.getAxis().getZ() };
 	perpendicularVector = { -forwardVector.getZ(), forwardVector.getY(), forwardVector.getX() };
 
-	if(!App->GetDebugMode())PlayerControls();
+	if(!App->GetDebugMode() && !App->scene_intro->win)PlayerControls();
 
 	vehicle->ApplyEngineForce(acceleration);
 	vehicle->Turn(turn);
@@ -253,7 +253,7 @@ void ModulePlayer::PlayerControls()
 		jumpTime->Start();
 		isJumped = true;
 		//vehicle->state = State::IN_AIR;
-		vehicle->vehicle->getRigidBody()->applyCentralForce({ 0,+30000,0 });
+		vehicle->vehicle->getRigidBody()->applyCentralForce({ 0,31000,0 });
 	}
 
 	//if (!vehicle->state == State::IN_AIR) vehicle->state = IDLE;
@@ -396,7 +396,7 @@ void ModulePlayer::CameraPlayer(float dt)
 		float distanceCamara2CM = -12;
 		
 			if (((camLoop.x - 36) < positionCM.getX() && (camLoop.x + 36) > positionCM.getX())
-				&& (((camLoop.y - 54)+ offsetFloor < positionCM.getY()+ offsetFloor && (camLoop.y + 54)+offsetFloor > positionCM.getY()+ offsetFloor))
+				&& (((camLoop.y) - 54 < positionCM.getY() && (camLoop.y + 54) > positionCM.getY()))
 				&& (((camLoop.z - 54) < positionCM.getZ() && (camLoop.z + 54) > positionCM.getZ())))
 			{
 				myCamera = camLoop;
