@@ -20,7 +20,8 @@ bool ModulePlayer::Start()
 	
 	// Load Fx
 	dead = App->audio->LoadFx("Assets/Fx/player_die.wav");
-
+	jumpTime = new Timer();
+	jumpTime->Start();
 	VehicleInfo car;
 	color.Set(1.0f, 1.0f, 1.0f, 1.0f);
 	camLoop.Set(-8.88, 62.38, 51.7);
@@ -128,12 +129,15 @@ bool ModulePlayer::Start()
 	{
 		VehicleInfo sensorInf;
 
-		sensorInf.chassis_size.Set(0.5f, 0.5f, 0.5f);
-		sensorInf.chassis_offset.Set(0, 0.125f, 0.05);
+		sensorInf.sensor_size.Set(0.75f, 0.5f, 0.75f);
+		sensorInf.sensor_offset.Set(0,0,0);
 		sensorInf.mass = 0.001f;
+		sensorInf.num_wheels = 0;
+
 
 		sensorV = App->physics->AddVehicle(sensorInf);
 		sensorV->body->setGravity({0,0,0});
+		sensorV->color.Set(1,0.5,0.5);
 		sensorV->collision_listeners.add(this);
 		sensorV->SetAsSensor(true);
 		sensorV->body->setUserPointer(sensorV);
@@ -148,7 +152,7 @@ bool ModulePlayer::Start()
 		//App->physics->world->addCollisionObject(bodySensor);
 
 		bodySensor->collision_listeners.add(this);
-		bodySensor->body->setUserPointer(bodySensor);
+		//bodySensor->body->setUserPointer(bodySensor);
 		bodySensor->SetAsSensor(true);
 		bodySensor->body->setCollisionFlags(bodySensor->body->getCollisionFlags() | btCollisionObject::CO_GHOST_OBJECT);
 
@@ -190,9 +194,9 @@ update_status ModulePlayer::Update(float dt)
 	{
 		btQuaternion q = vehicle->vehicle->getChassisWorldTransform().getRotation();
 
-		cubeSensor.SetPos(positionCM.getX(), positionCM.getY() - 0.75, positionCM.getZ());
+		cubeSensor.SetPos(positionCM.getX(), positionCM.getY() - 0.55, positionCM.getZ());
 		vehicle->vehicle->getChassisWorldTransform().getOpenGLMatrix(&cubeSensor.transform);
-		btVector3 offset(0, -0.75, 0);
+		btVector3 offset(0, -0.55, 0);
 		offset = offset.rotate(q.getAxis(), q.getAngle());
 
 		cubeSensor.transform.M[12] += offset.getX();
@@ -221,16 +225,6 @@ update_status ModulePlayer::Update(float dt)
 	//btVector3 per = { q.getAxis().getX() ,q.getAxis().getY() ,q.getAxis().getZ() };
 	perpendicularVector = { -forwardVector.getZ(), forwardVector.getY(), forwardVector.getX() };
 
-	if (App->physics->GetCollisions())
-	{
-		vehicle->state = State::IDLE;
-		isJumped = false;
-		//LOG("%d", vehicle->state);
-	} 
-	else
-	{
-		//vehicle->state = State::IN_AIR;
-	}
 	if(!App->GetDebugMode())PlayerControls();
 
 	vehicle->ApplyEngineForce(acceleration);
@@ -251,9 +245,12 @@ update_status ModulePlayer::Update(float dt)
 void ModulePlayer::PlayerControls()
 {
 
+	if(jumpTime->Read()>500)
 	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && vehicle->state != State::IN_AIR && !isJumped)
 	{
-		vehicle->state = State::IN_AIR;
+		jumpTime->Start();
+		isJumped = true;
+		//vehicle->state = State::IN_AIR;
 		vehicle->vehicle->getRigidBody()->applyCentralForce({ 0,+30000,0 });
 	}
 

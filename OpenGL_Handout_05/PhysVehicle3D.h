@@ -13,7 +13,7 @@ class btRaycastVehicle;
 struct PhysBody3D;
 enum State
 {
-	IDLE,
+	IDLE=1,
 	WALK,
 	TURBO,
 	IN_AIR,
@@ -55,8 +55,8 @@ struct VehicleInfo
 	vec3 chassis5_offset;
 
 
-	//vec3 sensor_size;
-	//vec3 sensor_offset;
+	vec3 sensor_size;
+	vec3 sensor_offset;
 	//PhysBody3D sensorBody ;
 // -----------------------------------------------------------//
 

@@ -101,15 +101,17 @@ void PhysVehicle3D::Render()
 	chassis5.color.Set(0.75f, 0.75f, 0.75f, 1.0f);
 
 
-	//Cube sensor(info.sensor_size.x, info.sensor_size.y, info.sensor_size.z);
-	//vehicle->getChassisWorldTransform().getOpenGLMatrix(&sensor.transform);
-	//btVector3 offsetSensor(info.sensor_offset.x, info.sensor_offset.y, info.sensor_offset.z);
-	//offsetSensor = offsetSensor.rotate(q.getAxis(), q.getAngle());
+	Cube sensor(info.sensor_size.x, info.sensor_size.y, info.sensor_size.z);
+	vehicle->getChassisWorldTransform().getOpenGLMatrix(&sensor.transform);
+	btVector3 offsetSensor(info.sensor_offset.x, info.sensor_offset.y, info.sensor_offset.z);
+	offsetSensor = offsetSensor.rotate(q.getAxis(), q.getAngle());
+	sensor.color.Set(1, 0.75f, 0.75f, 1.0f);
 
-	//sensor.transform.M[12] += offsetSensor.getX();
-	//sensor.transform.M[13] += offsetSensor.getY();
-	//sensor.transform.M[14] += offsetSensor.getZ();
-	//sensor.color.Set(0.75f, 0.75f, 0.75f, 1.0f);
+
+	sensor.transform.M[12] += offsetSensor.getX();
+	sensor.transform.M[13] += offsetSensor.getY();
+	sensor.transform.M[14] += offsetSensor.getZ();
+
 	
 
 
@@ -119,7 +121,7 @@ void PhysVehicle3D::Render()
 	chassis3.Render();
 	chassis4.Render();
 	chassis5.Render();
-	//sensor.Render();
+	sensor.Render();
 }
 
 // ----------------------------------------------------------------------------

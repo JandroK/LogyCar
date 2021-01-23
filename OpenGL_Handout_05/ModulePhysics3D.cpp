@@ -20,6 +20,8 @@ ModulePhysics3D::ModulePhysics3D(Application* app, bool start_enabled) : Module(
 {
 	debug = true;
 
+	timeLessCollision = new Timer();
+
 	collision_conf = new btDefaultCollisionConfiguration();
 	dispatcher = new btCollisionDispatcher(collision_conf);
 	broad_phase = new btDbvtBroadphase();
@@ -64,6 +66,12 @@ bool ModulePhysics3D::Start()
 // ---------------------------------------------------------
 update_status ModulePhysics3D::PreUpdate(float dt)
 {
+	
+	if (timeLessCollision->Read() > 400)
+	{
+		App->player->vehicle->state = State::IN_AIR;
+	}
+
 	world->stepSimulation(dt, 15);
 	int numManifolds = world->getDispatcher()->getNumManifolds();
 	for(int i = 0; i<numManifolds; i++)
@@ -73,20 +81,51 @@ update_status ModulePhysics3D::PreUpdate(float dt)
 		btCollisionObject* obB = (btCollisionObject*)(contactManifold->getBody1());
 
 		int numContacts = contactManifold->getNumContacts();
-
+		
 		isCollision = false;
 		if(numContacts > 0)
 		{
+			timeLessCollision->Start();	
+
 			// Collisions check
 			PhysBody3D* pbodyA = (PhysBody3D*)obA->getUserPointer();
 			PhysBody3D* pbodyB = (PhysBody3D*)obB->getUserPointer();
-			if (pbodyA != NULL && pbodyB !=NULL)
+			if (pbodyA != NULL && pbodyB != NULL)
 			{
-				if (pbodyA->body != App->player->vehicle->body
-					&& pbodyB->body != App->player->vehicle->body)
+				PhysBody3D* vehicle = App->player->vehicle;
+				PhysBody3D* bodySen = App->player->bodySensor;
+				PhysBody3D* sensorV = App->player->sensorV;
+
+				if ( (pbodyA != bodySen && pbodyB != bodySen)
+					)
 				{
-					LOG("Floor Touched");
+					if (!(pbodyA ==sensorV  && pbodyB == vehicle) && !(pbodyA ==vehicle  && pbodyB ==sensorV ))
+					{
+						
+							LOG("Antes State  %d ", App->player->vehicle->state);
+							if (App->player->vehicle->state == State::IN_AIR)App->player->vehicle->state = State::IDLE;
+							LOG("Despues State  %d ", App->player->vehicle->state);
+							float a = pbodyA->body->getInvMass();
+							float b = pbodyB->body->getInvMass();
+							App->player->isJumped = false;
+
+							LOG("pbodyA %f ", pbodyA->body->getCenterOfMassPosition().getY());
+							LOG("pbodyB %f ", pbodyB->body->getCenterOfMassPosition().getY());
+							LOG("Floor Touched");					
+					}				
 				}
+				else
+				{
+					App->player->vehicle->state = State::IN_AIR;
+					LOG("Else pbodyA %f ", pbodyA->body->getCenterOfMassPosition().getY());
+					LOG("Else pbodyB %f ", pbodyB->body->getCenterOfMassPosition().getY());
+				}
+			}
+			else
+			{
+				if (App->player->vehicle->state == State::IN_AIR)App->player->vehicle->state = State::IDLE;
+				LOG("Padre Else pbodyA %f ", pbodyA->body->getCenterOfMassPosition().getY());
+				LOG("Padre Else pbodyB %f ", pbodyB->body->getCenterOfMassPosition().getY());
 			}
 			if(pbodyA && pbodyB)
 			{
@@ -106,8 +145,10 @@ update_status ModulePhysics3D::PreUpdate(float dt)
 				}
 			}
 		}
+	
 		
 	}
+	LOG("Despues State  %d ", App->player->vehicle->state);
 
 	return UPDATE_CONTINUE;
 }

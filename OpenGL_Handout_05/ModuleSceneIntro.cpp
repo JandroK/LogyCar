@@ -3,6 +3,7 @@
 #include "ModuleSceneIntro.h"
 #include "Primitive.h"
 #include "PhysBody3D.h"
+#include "PhysVehicle3D.h"
 #include "Globals.h"
 
 #define PI 3.14159265359
@@ -766,12 +767,11 @@ void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 		cubeSensor.size.y = 0.10f;
 		bodySensor->SetPos(vec.getX(),vec.getY()-1,vec.getZ());
 	}
-	if ( (physBodyCubes.find(body1) >= 0 || physBodyCubes.find(body2) >= 0))
+	if ((physBodyCubes.find(body1) >= 0 || physBodyCubes.find(body2) >= 0))
 	{
 		LOG("En el suelo");
 	}
 
-	int i;
 }
 
 void ModuleSceneIntro::Looping(vec3 position)

@@ -45,6 +45,8 @@ public:
 
 private:
 
+	Timer* jumpTime;
+
 	btVector3 forwardVector;
 	btVector3 perpendicularVector;
 	int vel;
