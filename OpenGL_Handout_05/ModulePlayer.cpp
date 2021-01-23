@@ -25,6 +25,7 @@ bool ModulePlayer::Start()
 	jumpTime->Start();
 	VehicleInfo car;
 	color.Set(1.0f, 1.0f, 1.0f, 1.0f);
+	camIntro.Set(180, 62.38+ offsetFloor, 51.7);
 	camLoop.Set(-8.88, 62.38+ offsetFloor, 51.7);
 // ----------------------------------------Vehicle chassis----//
 	car.chassis_size.Set(1, 0.5f, 2);
@@ -238,8 +239,12 @@ update_status ModulePlayer::Update(float dt)
 	sprintf_s(title, "%.1f Km/h", vehicle->GetKmh());
 	App->window->SetTitle(title);
 
-	if (!App->scene_intro->win )CameraPlayer(dt);
-	if (App->scene_intro->win)CameraWin(dt);
+	if (introFinish)
+	{
+		if (!App->scene_intro->win)CameraPlayer(dt);
+		if (App->scene_intro->win)CameraWin(dt);
+	}
+	else CameraIntro(dt);
 
 	return UPDATE_CONTINUE;
 }
@@ -425,7 +430,6 @@ void ModulePlayer::CameraPlayer(float dt)
 
 			}
 
-
 		myCameraLook.x = vehicle->body->getCenterOfMassPosition().getX();
 		myCameraLook.y = vehicle->body->getCenterOfMassPosition().getY() + 4;
 		myCameraLook.z = vehicle->body->getCenterOfMassPosition().getZ();
@@ -434,6 +438,38 @@ void ModulePlayer::CameraPlayer(float dt)
 		App->camera->Position = myCamera;
 		App->camera->LookAt(myCameraLook);
 	}
+}
+
+void ModulePlayer::CameraIntro(float dt)
+{
+	vec3 myCamera = camIntro;
+	vec3 myCameraLook = camIntro;
+	vec3 posTurnCam = { -136, (float)62.38 + offsetFloor, -17.15};
+	float distanceCamara2CM = 68.85;
+
+	if (camIntro.x > -150 && camIntro.y > 1015 && camIntro.z > 50)
+	{
+		camIntro.x -= 50 * dt;
+		myCameraLook.x = camIntro.x - 1;
+	}
+	else if(camIntro.x < -122 || camIntro.y > 1007)
+	{
+		angle -= dt / 2;
+		if (camIntro.x < -122) camIntro.x = distanceCamara2CM * sin(angle) + posTurnCam.x;
+		if (camIntro.y > 1007) camIntro.y -= 14*dt;
+		if (camIntro.z >  -85) camIntro.z = distanceCamara2CM * cos(angle) + posTurnCam.z;
+
+		if (camIntro.x < -122) myCameraLook.x = distanceCamara2CM * sin(angle - (dt/2)) + posTurnCam.x;
+		if (camIntro.z >  -85) myCameraLook.z = distanceCamara2CM * cos(angle - (dt/2)) + posTurnCam.z;
+	}
+	else 
+	{
+		angle = 0;
+		introFinish = true;
+	}
+
+	App->camera->Position = myCamera;
+	App->camera->LookAt(myCameraLook);
 }
 
 void ModulePlayer::CameraWin(float dt)
