@@ -26,7 +26,7 @@ bool ModuleSceneIntro::Start()
 	timer = new Timer();
 
 	//Musica
-	//App->audio->PlayMusic("Assets/Sounds/enemy_airforce.ogg");
+	App->audio->PlayMusic("Assets/Music/fall_guys.ogg");
 
 	App->camera->Move(vec3(1.0f, 1.0f, 0.0f));
 	App->camera->LookAt(vec3(0, 0, 0));

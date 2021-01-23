@@ -53,5 +53,8 @@ private:
 	btVector3 positionCM;
 	bool CPactive = false;
 	bool reset = false;
+	bool falling = false;
 	Color color;
+
+	uint dead;
 };

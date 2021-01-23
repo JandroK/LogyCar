@@ -18,6 +18,9 @@ bool ModulePlayer::Start()
 {
 	LOG("Loading player");
 	
+	// Load Fx
+	dead = App->audio->LoadFx("Assets/Fx/player_die2.wav");
+
 	VehicleInfo car;
 	color.Set(1.0f, 1.0f, 1.0f, 1.0f);
 	camLoop.Set(-8.88, 62.38, 51.7);
@@ -202,7 +205,14 @@ update_status ModulePlayer::Update(float dt)
 		//cubeSensor.Render();
 	}
 	
+	if (vehicle->body->getCenterOfMassPosition().getY() < 0) falling = true;
 	if (vehicle->body->getCenterOfMassPosition().getY() < -10) reset = true;
+	if (falling)
+	{
+		App->audio->PlayFx(dead);
+		falling = false;
+	}
+
 	CheckPoints();
 
 	vehicle->SetColor( color);
