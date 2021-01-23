@@ -89,14 +89,14 @@ bool ModuleSceneIntro::Start()
 			// CheckPoint Reset
 			cube = new Cube(35, 1, 15);
 			cube->SetPos(-110, 0+offsetOfFloor, -86);
-			cube->color = White;
+			cube->color.Set(1,0.93,0.84);
 			cubes.add(cube); 	
 			physBodyCubes.add(App->physics->AddBody(*cube, 0));
 			platformsCheckpoints.add(physBodyCubes.getLast()->data);
 
 
-			cube = new Cube(7, 1, 15);
-			cube->SetPos(-89.5, 1.3f + offsetOfFloor, -86);
+			cube = new Cube(6, 1, 15);
+			cube->SetPos(-90, 1.15f + offsetOfFloor, -86);
 			cube->color = Red;
 			cube->SetRotation(23, { 0,0,1 });
 			cubes.add(cube); 	
@@ -104,14 +104,14 @@ bool ModuleSceneIntro::Start()
 
 			cube = new Cube(26, 1, 20);
 			cube->SetPos(-55.5895, 4.162 + offsetOfFloor, -86);
-			cube->color = White;
-			cubes.add(cube); 
+			cube->color.Set(1, 0.93, 0.84);
+			cubes.add(cube);
 			physBodyCubes.add(App->physics->AddBody(*cube, 0));
 
 			// segunda rampa
 			cube = new Cube(8, 1, 20);
 			cube->SetPos(-39, 5.5f + offsetOfFloor, -86.0f);
-			cube->color = White;
+			cube->color = Red;
 			cube->SetRotation(20, { 0,0,1 });
 			cubes.add(cube); 	
 			physBodyCubes.add(App->physics->AddBody(*cube, 0));
@@ -123,10 +123,10 @@ bool ModuleSceneIntro::Start()
 			{
 				//checkPoint 1
 				angle = -20;
-				cube = new Cube(20, 2, 20);
+				cube = new Cube(25, 2, 20);
 				cube->SetPos(40, 14 + offsetOfFloor, -81);
 				cube->SetRotation(angle, { 0,1,0 });
-				cube->color = Red;
+				cube->color.Set(1, 0.93, 0.84);
 				reference = *cube;
 				cubes.add(cube); 	
 				physBodyCubes.add(App->physics->AddBody(*cube, 0));
@@ -134,10 +134,10 @@ bool ModuleSceneIntro::Start()
 
 
 				// pared de la plataforma 
-				cube = new Cube(reference.size.y, 10, cube->size.z);
-				cube->SetPos(reference.GetPos().x + 9 * cos(-angle * PI / 180), (reference.GetPos().y + (cube->size.y / 2)), reference.GetPos().z + 9 * sin(-angle * PI / 180));
+				cube = new Cube(reference.size.y+9, 11, cube->size.z);
+				cube->SetPos(reference.GetPos().x + 18 * cos(-angle * PI / 180), ((reference.GetPos().y-1) + (cube->size.y / 2)), reference.GetPos().z + 18 * sin(-angle * PI / 180));
 				cube->SetRotation(angle, { 0,1,0 });
-				cube->color = White;
+				cube->color = Red;
 				cubes.add(cube); 		
 				physBodyCubes.add(App->physics->AddBody(*cube, 0));
 
@@ -146,59 +146,55 @@ bool ModuleSceneIntro::Start()
 			radi = 2.5f;
 
 			// Plancha
-			cube = new Cube( 1.3,0.5,20 );
+			cube = new Cube( 1.3,0.5,18 );
 			cube->SetPos(45.7, (reference.GetPos().y + ((reference.size.y/2) - (cube->size.y))), -99.1);
-			cube->color = White;
+			cube->color.Set(0.6, 0.4, 0.2);
 			cube->SetRotation(angle, { 0,1,0 });
 			reference = *cube;
 			cubes.add(cube); 		
 			physBodyCubes.add(App->physics->AddBody(*cube, 0));
 
-			cube = new Cube( 1.3,0.5,20);
+			cube = new Cube( 1.3,0.5,18);
 			cube->SetPos(reference.GetPos().x + radi * cos(-angle * DEG_TO_RAD), reference.GetPos().y, reference.GetPos().z + +radi * sin(-angle * DEG_TO_RAD));
-			cube->color = White;
+			cube->color.Set(0.6, 0.4, 0.2);
 			cube->SetRotation(angle, { 0,1,0 });
 			cubes.add(cube); 		
 			physBodyCubes.add(App->physics->AddBody(*cube, 0));
 
 
 			angle = -20;
-			cube = new Cube();
-			cube->size = { 5,1,5 };
+			cube = new Cube(5,1,5 );
 			cube->SetPos(50.8, 14.5 + offsetOfFloor, -109.5);
 			cube->SetRotation(angle, { 0,1,0 });
-			cube->color = White;
-			cubes.add(cube); 		
+			cube->color.Set(0.3, 0.3, 0.35);
+			cubes.add(cube);
 			physBodyCubes.add(App->physics->AddBody(*cube, 0));
 
 
 			angle = 0;
-			cube = new Cube();
-			cube->size = { 5,1,5 };
+			cube = new Cube( 5,1,5);
 			cube->SetPos(51.8f, 14.5 + offsetOfFloor, -110.2);
 			cube->SetRotation(angle, { 0,1,0 });
-			cube->color = White;
-			cubes.add(cube); 		
+			cube->color.Set(0.3, 0.3, 0.35);
+			cubes.add(cube);
 			physBodyCubes.add(App->physics->AddBody(*cube, 0));
 
 			angle = -90;
 			radi = 2.5f;
-			// Plancha
-			cube = new Cube();
-			cube->size = { 1.3,0.5,20 };
-			cube->SetPos(63, reference.GetPos().y, -111.50);
-			cube->color = White;
+			// Plancha 3
+			cube = new Cube( 1.3,0.5,12.5 );
+			cube->SetPos(60, reference.GetPos().y, -111.50);
+			cube->color.Set(0.6, 0.4, 0.2);
 			cube->SetRotation(angle, { 0,1,0 });
 			cubes.add(cube); 	
 			reference = *cube;
 			physBodyCubes.add(App->physics->AddBody(*cube, 0));
 
 
-			// 
-			cube = new Cube();
-			cube->size = { 1.3,0.5,20 };
+			// Plancha 4
+			cube = new Cube( 1.3,0.5, 12.5);
 			cube->SetPos(reference.GetPos().x + radi * cos(-angle * DEG_TO_RAD), reference.GetPos().y, reference.GetPos().z + radi * sin(-angle * DEG_TO_RAD));
-			cube->color = White;
+			cube->color.Set(0.6, 0.4, 0.2);
 			cube->SetRotation(angle, { 0,1,0 });
 			cubes.add(cube); 	
 			physBodyCubes.add(App->physics->AddBody(*cube, 0));
@@ -209,10 +205,11 @@ bool ModuleSceneIntro::Start()
 				cube = new Cube();
 				cube->SetPos(71.07f, 14.5 + offsetOfFloor, -98.0);
 				cube->size = { 10,1,30 };
-				cube->color = White;
+				cube->color.Set(0.5f, 0.5f, 1.0f);
 				cubes.add(cube);
 				physBodyCubes.add(App->physics->AddBody(*cube, 0));
 				platformsCheckpoints.add(physBodyCubes.getLast()->data);
+				physBodyCubes.getLast()->data->body->setFriction(0.00f);
 
 
 
@@ -221,9 +218,11 @@ bool ModuleSceneIntro::Start()
 				cube->SetPos(74.0f, 14.5 + offsetOfFloor, -82.2);
 				cube->size = { 10,1,12.5 };
 				cube->SetRotation(angle, { 0,1,0 });
-				cube->color = White;
+				cube->color.Set(0.55f, 0.55f, 1.0f);
 				cubes.add(cube);
 				physBodyCubes.add(App->physics->AddBody(*cube, 0));
+				physBodyCubes.getLast()->data->body->setFriction(0.00f);
+
 
 
 				angle = 90;
@@ -231,9 +230,10 @@ bool ModuleSceneIntro::Start()
 				cube->SetPos(80.9f, 14.5 + offsetOfFloor, -79.25);
 				cube->size = { 10,1,12 };
 				cube->SetRotation(angle, { 0,1,0 });
-				cube->color = White;
+				cube->color.Set(0.55f, 0.55f, 1.0f);
 				cubes.add(cube);
 				physBodyCubes.add(App->physics->AddBody(*cube, 0));
+				physBodyCubes.getLast()->data->body->setFriction(0.00f);
 
 
 				angle = -45;
@@ -241,17 +241,19 @@ bool ModuleSceneIntro::Start()
 				cube->SetPos(87.9f, 14.5 + offsetOfFloor, -82.2);
 				cube->size = { 10,1,12.5 };
 				cube->SetRotation(angle, { 0,1,0 });
-				cube->color = White;
-				cubes.add(cube); 	
+				cube->color.Set(0.55f, 0.55f, 1.0f);
+				cubes.add(cube);
 				physBodyCubes.add(App->physics->AddBody(*cube, 0));
+				physBodyCubes.getLast()->data->body->setFriction(0.00f);
 
 
 				cube = new Cube();
 				cube->SetPos(90.8f, 14.5 + offsetOfFloor, -98.0);
 				cube->size = { 10,1,30 };
-				cube->color = White;
+				cube->color.Set(0.6f, 0.6f, 1.0f);
 				cubes.add(cube);
 				physBodyCubes.add(App->physics->AddBody(*cube, 0));
+				physBodyCubes.getLast()->data->body->setFriction(0.00f);
 
 			}
 			//curva horaria
@@ -261,19 +263,21 @@ bool ModuleSceneIntro::Start()
 				cube->SetPos(93.73f, 14.5 + offsetOfFloor, -113.8f);
 				cube->size = { 10,1,12.5 };
 				cube->SetRotation(angle, { 0,1,0 });
-				cube->color = White;
-				cubes.add(cube); 	
+				cube->color.Set(0.65f, 0.65f, 1.0f);
+				cubes.add(cube);
 				physBodyCubes.add(App->physics->AddBody(*cube, 0));
-				;
+				physBodyCubes.getLast()->data->body->setFriction(0.00f);
+
 
 				angle = 90;
 				cube = new Cube();
 				cube->SetPos(100.63f, 14.5 + offsetOfFloor, -116.75f);
 				cube->size = { 10,1,12 };
 				cube->SetRotation(angle, { 0,1,0 });
-				cube->color = White;
-				cubes.add(cube); 	
+				cube->color.Set(0.65f, 0.65f, 1.0f);
+				cubes.add(cube);
 				physBodyCubes.add(App->physics->AddBody(*cube, 0));
+				physBodyCubes.getLast()->data->body->setFriction(0.00f);
 
 
 				angle = 45;
@@ -281,16 +285,18 @@ bool ModuleSceneIntro::Start()
 				cube->SetPos(107.63f , 14.5 + offsetOfFloor, -113.8f);
 				cube->size = { 10,1,12.5 };
 				cube->SetRotation(angle, { 0,1,0 });
-				cube->color = White;
+				cube->color.Set(0.65f, 0.65f, 1.0f);
 				cubes.add(cube);
 				physBodyCubes.add(App->physics->AddBody(*cube, 0));
+				physBodyCubes.getLast()->data->body->setFriction(0.00f);
 
 				cube = new Cube();
 				cube->SetPos(110.53f, 14.5 + offsetOfFloor, -98.0);
 				cube->size = { 10,1,30 };
-				cube->color = White;
-				cubes.add(cube); 	
+				cube->color.Set(0.7f, 0.7f, 1.0f);
+				cubes.add(cube);
 				physBodyCubes.add(App->physics->AddBody(*cube, 0));
+				physBodyCubes.getLast()->data->body->setFriction(0.00f);
 
 				// Semicurva
 				{
@@ -300,9 +306,10 @@ bool ModuleSceneIntro::Start()
 					cube->SetPos(93.73f + 19.73f, 14.5 + offsetOfFloor, -82.2);
 					cube->size = { 10,1,12.5 };
 					cube->SetRotation(angle, { 0,1,0 });
-					cube->color = White;
-					cubes.add(cube); 	
+					cube->color.Set(0.75f, 0.8f, 1.0f);
+					cubes.add(cube);
 					physBodyCubes.add(App->physics->AddBody(*cube, 0));
+					physBodyCubes.getLast()->data->body->setFriction(0.00f);
 
 
 					angle = 90;
@@ -310,9 +317,10 @@ bool ModuleSceneIntro::Start()
 					cube->SetPos(100.63f + 19.73f, 14.5 + offsetOfFloor, -79.25);
 					cube->size = { 10,1,12 };
 					cube->SetRotation(angle, { 0,1,0 });
-					cube->color = White;
-					cubes.add(cube); 	
+					cube->color.Set(0.75f, 0.8f, 1.0f);
+					cubes.add(cube);
 					physBodyCubes.add(App->physics->AddBody(*cube, 0));
+					physBodyCubes.getLast()->data->body->setFriction(0.00f);
 
 
 					angle = 45;
@@ -320,29 +328,29 @@ bool ModuleSceneIntro::Start()
 					cube->SetPos(107.63f + 19.73f, 14.5 + offsetOfFloor, -79.25 + 2.95f);
 					cube->size = { 10,1,12.5 };
 					cube->SetRotation(angle, { 0,1,0 });
-					cube->color = White;
-					cubes.add(cube); 
+					cube->color.Set(0.75f, 0.8f, 1.0f);
+					cubes.add(cube);
 					physBodyCubes.add(App->physics->AddBody(*cube, 0));
+					physBodyCubes.getLast()->data->body->setFriction(0.00f);
 
 
 					angle = 45;
 					cube = new Cube(10,1,30 );
 					cube->SetPos(130, 14.5 + offsetOfFloor, -60);
-					cube->color = White;
-					cubes.add(cube); 	
+					cube->color.Set(0.75f, 0.8f, 1.0f);
+					cubes.add(cube);
 					physBodyCubes.add(App->physics->AddBody(*cube, 0));
+					physBodyCubes.getLast()->data->body->setFriction(0.00f);
 
 				}
 			}
-			//	Obstacles to looping
+
+
+			// WallRide
 			{
 				float radio = 7;
 				Ramp({ 130,14 + offsetOfFloor,-59.2 }, true, { radio,1.5,27 });
 				Ramp({ 130,14 + offsetOfFloor,85 }, false, { radio,1.5,27 });
-
-				//Ramp({ 100,14,109.2 }, true, { radio,1.5,27 });
-				//MidRamp({ 20,14,185 }, false, { 27 ,1.5,radio });
-				
 				// CheckPoint WallRide
 				cube = new Cube();
 				cube->SetPos(121.5, 14 + offsetOfFloor, 89.7);
@@ -351,6 +359,16 @@ bool ModuleSceneIntro::Start()
 				cubes.add(cube);
 				physBodyCubes.add(App->physics->AddBody(*cube, 0));
 				platformsCheckpoints.add(physBodyCubes.getLast()->data);
+			}
+	
+			//	Obstacles to looping
+			{
+				
+
+				//Ramp({ 100,14,109.2 }, true, { radio,1.5,27 });
+				//MidRamp({ 20,14,185 }, false, { 27 ,1.5,radio });
+				
+		
 
 
 				angle = -20;
@@ -460,27 +478,33 @@ bool ModuleSceneIntro::Start()
 				cube->SetPos(-35.5, 11 + offsetOfFloor, -25);
 				cube->size = { 22,1,55 };
 				cube->SetRotation(angle, { 0,0,1 });
-				cube->color = White;
+				cube->color.Set(0.55f, 0.55f, 1.0f);
 				cubes.add(cube);
 				physBodyCubes.add(App->physics->AddBody(*cube, 0));
+				physBodyCubes.getLast()->data->body->setFriction(-0.01f);
+
 
 				angle = 22;
 				cube = new Cube();
 				cube->SetPos(-63, 11 + offsetOfFloor, -42.5);
 				cube->size = { 75,1,22 };
 				cube->SetRotation(angle, { 1,0,0 });
-				cube->color = White;
+				cube->color.Set(0.55f, 0.55f, 1.0f);
 				cubes.add(cube);
 				physBodyCubes.add(App->physics->AddBody(*cube, 0));
+				physBodyCubes.getLast()->data->body->setFriction(-0.1f);
+
 
 				angle = -22;
 				cube = new Cube();
 				cube->SetPos(-90.5, 11 + offsetOfFloor, -25);
 				cube->size = { 22,1,55 };
 				cube->SetRotation(angle, { 0,0,1 });
-				cube->color = White;
+				cube->color.Set(0.55f, 0.55f, 1.0f);
 				cubes.add(cube);
 				physBodyCubes.add(App->physics->AddBody(*cube, 0));
+				physBodyCubes.getLast()->data->body->setFriction(-0.1f);
+
 
 				angle = -20;
 				cube = new Cube();

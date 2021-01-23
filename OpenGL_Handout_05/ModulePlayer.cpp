@@ -253,7 +253,7 @@ void ModulePlayer::PlayerControls()
 		jumpTime->Start();
 		isJumped = true;
 		//vehicle->state = State::IN_AIR;
-		vehicle->vehicle->getRigidBody()->applyCentralForce({ 0,31000,0 });
+		vehicle->vehicle->getRigidBody()->applyCentralForce({ 0,51000,0 });
 	}
 
 	//if (!vehicle->state == State::IN_AIR) vehicle->state = IDLE;
@@ -283,7 +283,7 @@ void ModulePlayer::PlayerControls()
 		if (vehicle->state != State::TURBO && vehicle->state != State::IN_AIR)vehicle->state = State::WALK;
 		vehicle->vehicle->getRigidBody()->applyCentralForce({ 0,-70,0 });
 
-		if (vehicle->vehicle->getCurrentSpeedKmHour() <= -1)
+		if (vehicle->vehicle->getCurrentSpeedKmHour() <= -2.25)
 		{
 			brake = BRAKE_POWER / 1.5f;
 			color.Set(1.0f, 0.0f, 0.0f, 1.0f);
@@ -304,7 +304,7 @@ void ModulePlayer::PlayerControls()
 	{
 		if (vehicle->state != State::TURBO && vehicle->state != State::IN_AIR)vehicle->state = State::WALK;
 
-		if (vehicle->vehicle->getCurrentSpeedKmHour() > +1)
+		if (vehicle->vehicle->getCurrentSpeedKmHour() > +2.25)
 		{
 			brake = BRAKE_POWER / 1.5f;
 			color.Set(1.0f, 0.0f, 0.0f, 1.0f);
