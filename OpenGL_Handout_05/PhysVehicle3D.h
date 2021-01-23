@@ -5,7 +5,11 @@
 
 #include "glmath.h"
 
+
+
+
 class btRaycastVehicle;
+
 struct PhysBody3D;
 enum State
 {
@@ -49,6 +53,11 @@ struct VehicleInfo
 
 	vec3 chassis5_size;
 	vec3 chassis5_offset;
+
+
+	//vec3 sensor_size;
+	//vec3 sensor_offset;
+	//PhysBody3D sensorBody ;
 // -----------------------------------------------------------//
 
 	float mass;

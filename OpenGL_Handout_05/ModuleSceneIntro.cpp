@@ -32,16 +32,16 @@ bool ModuleSceneIntro::Start()
 	App->camera->LookAt(vec3(0, 0, 0));
 
 	// Big plane as ground
-	{
-		btCollisionShape* colShape = new btStaticPlaneShape(btVector3(0, 1, 0), 0);
-		btDefaultMotionState* myMotionState = new btDefaultMotionState();
-		btRigidBody::btRigidBodyConstructionInfo rbInfo(0.0f, myMotionState, colShape);
+	//{
+	//	btCollisionShape* colShape = new btStaticPlaneShape(btVector3(0, 1, 0), 0);
+	//	btDefaultMotionState* myMotionState = new btDefaultMotionState();
+	//	btRigidBody::btRigidBodyConstructionInfo rbInfo(0.0f, myMotionState, colShape);
 
-		btRigidBody* rigidBbody = new btRigidBody(rbInfo);
-		rigidBbody->activate();
-		App->physics->world->addRigidBody(rigidBbody);
-		
-	}
+	//	btRigidBody* rigidBbody = new btRigidBody(rbInfo);
+	//	rigidBbody->activate();
+	//	App->physics->world->addRigidBody(rigidBbody);
+	//	
+	//}
 
 
 	//float height = 0.1f;
@@ -122,10 +122,14 @@ bool ModuleSceneIntro::Start()
 				cube = new Cube(20, 2, 20);
 				cube->SetPos(40, 14, -81);
 				cube->SetRotation(angle, { 0,1,0 });
-				cube->color = White;
+				cube->color = Red;
 				reference = *cube;
-				cubes.add(cube); 		
+			
+				cubes.add(cube); 	
 				physBodyCubes.add(App->physics->AddBody(*cube, 0));
+				physBodyCubes.getLast()->data->collision_listeners.add(App->player);
+				physBodyCubes.getLast()->data->body->setUserPointer(physBodyCubes.getLast()->data);
+				listeners.add(physBodyCubes.getLast()->data);
 
 				// pared de la plataforma 
 				cube = new Cube(reference.size.y, 10, cube->size.z);

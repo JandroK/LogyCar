@@ -1,5 +1,6 @@
 #include "Globals.h"
 #include "Application.h"
+#include "ModulePlayer.h"
 #include "ModulePhysics3D.h"
 #include "PhysBody3D.h"
 #include "PhysVehicle3D.h"
@@ -79,7 +80,14 @@ update_status ModulePhysics3D::PreUpdate(float dt)
 			// Collisions check
 			PhysBody3D* pbodyA = (PhysBody3D*)obA->getUserPointer();
 			PhysBody3D* pbodyB = (PhysBody3D*)obB->getUserPointer();
-//			if( pbodyA->body != App->player->vehicle->body && pbodyB->body  !=App->player->vehicle->body)
+			if (pbodyA != NULL && pbodyB !=NULL)
+			{
+				if (pbodyA->body != App->player->vehicle->body
+					&& pbodyB->body != App->player->vehicle->body)
+				{
+					LOG("Floor Touched");
+				}
+			}
 			if(pbodyA && pbodyB)
 			{
 				isCollision = true;
@@ -280,7 +288,6 @@ PhysVehicle3D* ModulePhysics3D::AddVehicle(const VehicleInfo& info)
 	btCollisionShape* chassis2 = new btBoxShape(btVector3(info.chassis_size.x * 0.5f, info.chassis_size.y * 0.5f, info.chassis_size.z * 0.5f));
 	shapes.add(chassis2);
 	
-
 	btTransform trans;
 	trans.setIdentity();
 	trans.setOrigin(btVector3(info.chassis_offset.x, info.chassis_offset.y, info.chassis_offset.z));
@@ -291,6 +298,42 @@ PhysVehicle3D* ModulePhysics3D::AddVehicle(const VehicleInfo& info)
 
 	comShape->addChildShape(trans, chassis);
 	comShape->addChildShape(trans2, chassis2);
+
+	// Collision Sensor
+	//{
+	//	btCompoundShape* sensorShape = new btCompoundShape();
+	//	shapes.add(sensorShape);
+	//	btTransform startTransform;
+	//	startTransform.setIdentity();
+
+	//	btVector3 localInertia(0, 0, 0);
+	//	sensorShape->calculateLocalInertia(0, localInertia);
+
+	//	btDefaultMotionState* myMotionState = new btDefaultMotionState(startTransform);
+
+	//	btCollisionShape* sensorCar = new btBoxShape(btVector3(App->player->cubeSensor.size.x * 0.5f, App->player->cubeSensor.size.y * 0.5f, App->player->cubeSensor.size.z * 0.5f));
+	//	//shapes.add(sensorCar);
+	//	btTransform sensorTransf;
+	//	sensorTransf.setIdentity();
+	//	sensorTransf.setOrigin(btVector3(0, -0.75, 0));
+	//	comShape->addChildShape(sensorTransf, sensorCar);
+	//
+
+	//	btRigidBody::btRigidBodyConstructionInfo rbInfo(1, myMotionState, comShape, localInertia);
+	////	App->player->bodySensor->body->setCollisionShape(sensorShape);
+	//	//App->player->bodySensor->body->setCollisionFlags(App->player->bodySensor->body->getCollisionFlags() | btCollisionObject::CO_GHOST_OBJECT);
+	//	btRigidBody* body = new btRigidBody(rbInfo);
+	//	body->setContactProcessingThreshold(BT_LARGE_FLOAT);
+	//	body->setActivationState(DISABLE_DEACTIVATION);
+	////	body->setCollisionFlags(App->player->bodySensor->body->getCollisionFlags() | btCollisionObject::CO_GHOST_OBJECT);
+	//	world->addRigidBody(body);
+
+
+	//}
+
+
+
+
 
 	btTransform startTransform;
 	startTransform.setIdentity();

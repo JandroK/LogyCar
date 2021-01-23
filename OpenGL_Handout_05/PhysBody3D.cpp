@@ -48,6 +48,20 @@ void PhysBody3D::SetPos(float x, float y, float z)
 	t.setOrigin(btVector3(x, y, z));
 	body->setWorldTransform(t);
 }
+void PhysBody3D::SetPos(const btVector3& vecPos)
+{
+	btTransform t = body->getWorldTransform();
+	t.setOrigin(vecPos);
+	body->setWorldTransform(t);
+}
+void PhysBody3D::SetPos( vec3& vecPos)
+{
+	btTransform t = body->getWorldTransform();
+	t.setOrigin(btVector3(vecPos.x, vecPos.y, vecPos.z));
+	body->setWorldTransform(t);
+}
+// ---------------------------------------------------------
+
 void PhysBody3D::SetAsSensor(bool pIsSensor)
 {
 	if (this->isSensor != pIsSensor)

@@ -49,7 +49,7 @@ public:
 	p2List<Cube*> checkopints;
 	p2List<PhysBody3D*> physBodyCheckopints;
 
-	p2List<Cube*> lissen;
+	p2List<PhysBody3D*> listeners;
 
 	Cube reference; 
 	Cube ground;

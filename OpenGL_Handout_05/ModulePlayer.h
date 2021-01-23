@@ -21,7 +21,9 @@ public:
 
 	bool Start();
 	update_status Update(float dt);
+	void PlayerControls();
 	void CheckPoints();
+	void Teleport(int num);
 	void CameraPlayer();
 	void AssistDirection(float hardness);
 	bool CleanUp();
@@ -31,6 +33,7 @@ public:
 public:
 
 	PhysVehicle3D* vehicle;
+	PhysVehicle3D* sensorV;
 	float turn;
 	float acceleration;
 	float brake;
@@ -42,11 +45,13 @@ public:
 private:
 
 	btVector3 forwardVector;
+	btVector3 perpendicularVector;
 	int vel;
 	float assistDirection;
 	float calculate;
 	vec3 camLoop;
 	btVector3 positionCM;
 	bool CPactive = false;
+	bool reset = false;
 	Color color;
 };

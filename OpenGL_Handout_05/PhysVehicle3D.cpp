@@ -15,7 +15,7 @@ VehicleInfo::~VehicleInfo()
 PhysVehicle3D::PhysVehicle3D(btRigidBody* body, btRaycastVehicle* vehicle, const VehicleInfo& info) : PhysBody3D(body), vehicle(vehicle), info(info)
 {
 	state = IDLE;
-	//body->setCollisionFlags(body->getCollisionFlags() | btCollisionObject::);
+	//body->setCollisionFlags(body->getCollisionFlags() | btCollisionObject::CO_GHOST_OBJECT);
 
 }
 
@@ -101,12 +101,25 @@ void PhysVehicle3D::Render()
 	chassis5.color.Set(0.75f, 0.75f, 0.75f, 1.0f);
 
 
+	//Cube sensor(info.sensor_size.x, info.sensor_size.y, info.sensor_size.z);
+	//vehicle->getChassisWorldTransform().getOpenGLMatrix(&sensor.transform);
+	//btVector3 offsetSensor(info.sensor_offset.x, info.sensor_offset.y, info.sensor_offset.z);
+	//offsetSensor = offsetSensor.rotate(q.getAxis(), q.getAngle());
+
+	//sensor.transform.M[12] += offsetSensor.getX();
+	//sensor.transform.M[13] += offsetSensor.getY();
+	//sensor.transform.M[14] += offsetSensor.getZ();
+	//sensor.color.Set(0.75f, 0.75f, 0.75f, 1.0f);
+	
+
+
 
 	chassis.Render();
 	chassis2.Render();
 	chassis3.Render();
 	chassis4.Render();
 	chassis5.Render();
+	//sensor.Render();
 }
 
 // ----------------------------------------------------------------------------
