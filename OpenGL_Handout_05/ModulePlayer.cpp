@@ -454,7 +454,7 @@ void ModulePlayer::CameraWin(float dt)
 	App->camera->LookAt(myCameraLook);
 
 	// If camara has gone two laps or press space restart level
-	if (angle > 4 * PI || App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+	if (angle < -(4 * PI) || App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 	{
 		angle = 0;
 		App->scene_intro->win = false;
