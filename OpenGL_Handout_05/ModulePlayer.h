@@ -53,6 +53,7 @@ private:
 	int vel;
 	float assistDirection;
 	float calculate;
+	float offsetFloor;
 	vec3 camLoop;
 	vec3 lastCam;
 	btVector3 positionCM;

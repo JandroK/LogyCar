@@ -17,7 +17,8 @@ ModulePlayer::~ModulePlayer()
 bool ModulePlayer::Start()
 {
 	LOG("Loading player");
-	
+	offsetFloor = App->scene_intro->offsetOfFloor;
+
 	// Load Fx
 	dead = App->audio->LoadFx("Assets/Fx/player_die.wav");
 	jumpTime = new Timer();
@@ -393,10 +394,9 @@ void ModulePlayer::CameraPlayer(float dt)
 		vec3 myCamera;
 		vec3 myCameraLook;
 		float distanceCamara2CM = -12;
-
 		
 			if (((camLoop.x - 36) < positionCM.getX() && (camLoop.x + 36) > positionCM.getX())
-				&& (((camLoop.y - 54) < positionCM.getY() && (camLoop.y + 54) > positionCM.getY()))
+				&& (((camLoop.y - 54)+ offsetFloor < positionCM.getY()+ offsetFloor && (camLoop.y + 54)+offsetFloor > positionCM.getY()+ offsetFloor))
 				&& (((camLoop.z - 54) < positionCM.getZ() && (camLoop.z + 54) > positionCM.getZ())))
 			{
 				myCamera = camLoop;
@@ -438,15 +438,16 @@ void ModulePlayer::CameraPlayer(float dt)
 
 void ModulePlayer::CameraWin(float dt)
 {
+	
 	vehicle->body->setLinearVelocity({ 0,0,0 });
 
 	vec3 myCamera;
-	vec3 myCameraLook = { 0,50,0 };
-	float distanceCamara2CM = -200;
+	vec3 myCameraLook = { -50,50.0f+ offsetFloor,0 };
+	float distanceCamara2CM = -250;
 
-	angle += dt / 2;
+	angle -= dt / 4;
 	myCamera.x = distanceCamara2CM * sin(angle);
-	myCamera.y = 130;
+	myCamera.y = 140+offsetFloor;
 	myCamera.z = distanceCamara2CM * cos(angle);
 
 	App->camera->Position = myCamera;
@@ -473,11 +474,6 @@ void ModulePlayer::AssistDirection(float hardness)
 }
 void ModulePlayer::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 {
-
-	if ((body1 == sensorV || body2 == sensorV) && (body1 != vehicle && body2 != vehicle))
-	{
-
-	}
 
 }
 
