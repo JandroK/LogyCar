@@ -509,7 +509,7 @@ extern DECLSPEC void SDLCALL SDL_RenderGetLogicalSize(SDL_Renderer * renderer, i
  *
  *  \return 0 on success, or -1 on error
  *
- *  \note If the window associated with the renderer is resized, the viewport is automatically reset.
+ *  \note If the window associated with the renderer is resized, the viewport is automatically respawn.
  *
  *  \sa SDL_RenderGetViewport()
  *  \sa SDL_RenderSetLogicalSize()

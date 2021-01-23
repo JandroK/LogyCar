@@ -209,13 +209,14 @@ update_status ModulePlayer::Update(float dt)
 		//cubeSensor.Render();
 	}
 	
-	if (vehicle->body->getCenterOfMassPosition().getY() < 0) falling = true;
-	if (vehicle->body->getCenterOfMassPosition().getY() < -10) reset = true;
-	if (falling)
+	if (vehicle->body->getCenterOfMassPosition().getY() < App->scene_intro->offsetOfFloor-1 )
 	{
-		App->audio->PlayFx(dead);
-		falling = false;
+		if(!falling)App->audio->PlayFx(dead);
+		falling = true;
 	}
+
+	if (vehicle->body->getCenterOfMassPosition().getY() < App->scene_intro->offsetOfFloor - 40) respawn = true;
+
 
 	CheckPoints();
 
@@ -236,7 +237,7 @@ update_status ModulePlayer::Update(float dt)
 	sprintf_s(title, "%.1f Km/h", vehicle->GetKmh());
 	App->window->SetTitle(title);
 
-	if (!App->scene_intro->win)CameraPlayer(dt);
+	if (!App->scene_intro->win )CameraPlayer(dt);
 	if (App->scene_intro->win)CameraWin(dt);
 
 	return UPDATE_CONTINUE;
@@ -356,12 +357,13 @@ void ModulePlayer::PlayerControls()
 
 void ModulePlayer::CheckPoints()
 {
+	if(respawn) Teleport(lastChekPoint);
 	if (App->input->GetKey(SDL_SCANCODE_O) == KEY_DOWN)
 	{
 		vec3 cam = App->camera->Position;
 		vehicle->SetPos(cam.x, cam.y - 5, cam.z);
 	}
-	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN|| reset) Teleport(0);
+	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN) Teleport(0);
 	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN) Teleport(1);
 	if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN) Teleport(2);
 	if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN) Teleport(3);
@@ -373,13 +375,15 @@ void ModulePlayer::CheckPoints()
 
 void ModulePlayer::Teleport(int num)
 {
-	reset = false;
+	respawn = false;
 	vehicle->body->setLinearVelocity({ 0,0,0 });
 	vehicle->body->setAngularVelocity({ 0,0,0 });
 	vec3 cam = App->scene_intro->checkopints.at(num).data->GetPos();
 	float* pos = App->scene_intro->checkopints.at(num).data->transform.M;
 	vehicle->SetTransform(pos);
 	vehicle->SetPos(cam.x, cam.y, cam.z);
+	falling = false;
+
 }
 
 void ModulePlayer::CameraPlayer(float dt)
@@ -390,20 +394,36 @@ void ModulePlayer::CameraPlayer(float dt)
 		vec3 myCameraLook;
 		float distanceCamara2CM = -12;
 
+		
+			if (((camLoop.x - 36) < positionCM.getX() && (camLoop.x + 36) > positionCM.getX())
+				&& (((camLoop.y - 54) < positionCM.getY() && (camLoop.y + 54) > positionCM.getY()))
+				&& (((camLoop.z - 54) < positionCM.getZ() && (camLoop.z + 54) > positionCM.getZ())))
+			{
+				myCamera = camLoop;
+			}
+			else
+			{
+				if (!falling)
+				{
+					myCamera.x = positionCM.getX() + forwardVector.getX() * distanceCamara2CM;
+					myCamera.y = positionCM.getY() + forwardVector.getY() + 6;
+					myCamera.z = positionCM.getZ() + forwardVector.getZ() * distanceCamara2CM;
 
-		if (((camLoop.x - 36) < positionCM.getX() && (camLoop.x + 36) > positionCM.getX()) 
-			&& (((camLoop.y - 54) < positionCM.getY() && (camLoop.y + 54) > positionCM.getY())) 
-			&& (((camLoop.z - 54) < positionCM.getZ() && (camLoop.z + 54) > positionCM.getZ())) )
-		{
-			myCamera = camLoop;
-		}
-		else
-		{
-			myCamera.x = positionCM.getX() + forwardVector.getX() * distanceCamara2CM;
-			myCamera.y = positionCM.getY() + forwardVector.getY() + 6;
-			myCamera.z = positionCM.getZ() + forwardVector.getZ() * distanceCamara2CM;
-		}
-	
+					lastCam = myCamera;
+				}
+				else
+				{
+					if (lastCam.y < 1035)
+					{
+
+					//lastCam.y += 0.25;
+					lastCam.y += 0.50;
+					//lastCam.y = 1005;
+					}
+					myCamera = lastCam;
+				}
+
+			}
 
 
 		myCameraLook.x = vehicle->body->getCenterOfMassPosition().getX();

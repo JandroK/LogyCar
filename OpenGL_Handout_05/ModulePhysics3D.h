@@ -50,6 +50,8 @@ private:
 	DebugDrawer*						debug_draw;
 
 	Timer* timeLessCollision;
+	p2List<PhysBody3D*>* platCheckP;
+
 
 	p2List<btCollisionShape*> shapes;
 	p2List<PhysBody3D*> bodies;

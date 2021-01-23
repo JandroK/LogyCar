@@ -284,7 +284,7 @@ typedef void (*Mix_EffectDone_t)(int chan, void *udata);
  *  so if you are using that, you've already incurred the overhead of a copy
  *  to a separate buffer, and that these effects will be in the queue with
  *  any functions you've registered. The list of registered effects for a
- *  channel is reset when a chunk finishes playing, so you need to explicitly
+ *  channel is respawn when a chunk finishes playing, so you need to explicitly
  *  set them with each call to Mix_PlayChannel*().
  * You may also register a special effect function that is to be run after
  *  final mixing occurs. The rules for these callbacks are identical to those

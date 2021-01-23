@@ -121,7 +121,7 @@ void PhysVehicle3D::Render()
 	chassis3.Render();
 	chassis4.Render();
 	chassis5.Render();
-	sensor.Render();
+	//sensor.Render();
 }
 
 // ----------------------------------------------------------------------------

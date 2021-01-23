@@ -64,7 +64,7 @@ bool ModuleRenderer3D::Init()
 		glClearDepth(1.0f);
 		
 		//Initialize clear color
-		glClearColor(0.80f, 0.88f, 1.f, 1.f);
+		glClearColor(0.78f, 0.95f, 1.f, 1.f);
 
 		//Check for error
 		error = glGetError();
@@ -82,13 +82,13 @@ bool ModuleRenderer3D::Init()
 		lights[0].ref = GL_LIGHT0;
 		lights[0].ambient.Set(0.25f, 0.25f, 0.25f, 1.0f);
 		lights[0].diffuse.Set(0.75f, 0.75f, 0.75f, 1.0f);
-		lights[0].SetPos(0.0f, 100.0f, 2.5f);
+		lights[0].SetPos(0.0f, 1100.0f, 2.5f);
 		lights[0].Init();
 
 		lights[1].ref = GL_LIGHT0;
 		lights[1].ambient.Set(0.25f, 0.25f, 0.25f, 1.0f);
 		lights[1].diffuse.Set(0.75f, 0.75f, 0.75f, 1.0f);
-		lights[1].SetPos(0.0f, 100.0f, 2.5f);
+		lights[1].SetPos(0.0f, 1200.0f, 2.5f);
 		lights[1].Init();
 		
 		GLfloat MaterialAmbient[] = {1.0f, 1.0f, 1.0f, 1.0f};
@@ -122,8 +122,8 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 
 	// light 0 on cam pos
 	//lights[0].SetPos(App->camera->Position.x, App->camera->Position.y, App->camera->Position.z);
-	//lights[0].SetPos(300, 1000, 0);
-	lights[1].SetPos(-2000, 1000, +100);
+	lights[0].SetPos(300, 2000, 0);
+	lights[1].SetPos(-2000, 2000, +100);
 
 	for(uint i = 0; i < MAX_LIGHTS; ++i)
 		lights[i].Render();

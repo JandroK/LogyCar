@@ -42,6 +42,7 @@ public:
 
 	Cube cubeSensor;
 	PhysBody3D* bodySensor;
+	int lastChekPoint=0;
 
 private:
 
@@ -53,9 +54,10 @@ private:
 	float assistDirection;
 	float calculate;
 	vec3 camLoop;
+	vec3 lastCam;
 	btVector3 positionCM;
 	bool CPactive = false;
-	bool reset = false;
+	bool respawn = false;
 	bool falling = false;
 	Color color;
 	//Fx

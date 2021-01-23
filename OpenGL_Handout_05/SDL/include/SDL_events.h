@@ -142,8 +142,8 @@ typedef enum
     SDL_AUDIODEVICEREMOVED,        /**< An audio device has been removed. */
 
     /* Render events */
-    SDL_RENDER_TARGETS_RESET = 0x2000, /**< The render targets have been reset and their contents need to be updated */
-    SDL_RENDER_DEVICE_RESET, /**< The device has been reset and all textures need to be recreated */
+    SDL_RENDER_TARGETS_RESET = 0x2000, /**< The render targets have been respawn and their contents need to be updated */
+    SDL_RENDER_DEVICE_RESET, /**< The device has been respawn and all textures need to be recreated */
 
     /** Events ::SDL_USEREVENT through ::SDL_LASTEVENT are for your use,
      *  and should be allocated with SDL_RegisterEvents()

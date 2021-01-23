@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "ModulePlayer.h"
 #include "ModulePhysics3D.h"
+#include "ModuleSceneIntro.h"
 #include "PhysBody3D.h"
 #include "PhysVehicle3D.h"
 #include "Primitive.h"
@@ -83,10 +84,10 @@ update_status ModulePhysics3D::PreUpdate(float dt)
 		int numContacts = contactManifold->getNumContacts();
 		
 		isCollision = false;
-		if(numContacts > 0)
+		if (numContacts > 0)
 		{
-			timeLessCollision->Start();	
-
+			timeLessCollision->Start();
+			
 			// Collisions check
 			PhysBody3D* pbodyA = (PhysBody3D*)obA->getUserPointer();
 			PhysBody3D* pbodyB = (PhysBody3D*)obB->getUserPointer();
@@ -96,29 +97,57 @@ update_status ModulePhysics3D::PreUpdate(float dt)
 				PhysBody3D* bodySen = App->player->bodySensor;
 				PhysBody3D* sensorV = App->player->sensorV;
 
-				if ( (pbodyA != bodySen && pbodyB != bodySen)
-					)
+				if (pbodyA != bodySen && pbodyB != bodySen)
 				{
-					if (!(pbodyA ==sensorV  && pbodyB == vehicle) && !(pbodyA ==vehicle  && pbodyB ==sensorV ))
+					if (!(pbodyA == sensorV && pbodyB == vehicle) && !(pbodyA == vehicle && pbodyB == sensorV))
 					{
-						
-							LOG("Antes State  %d ", App->player->vehicle->state);
-							if (App->player->vehicle->state == State::IN_AIR)App->player->vehicle->state = State::IDLE;
-							LOG("Despues State  %d ", App->player->vehicle->state);
-							float a = pbodyA->body->getInvMass();
-							float b = pbodyB->body->getInvMass();
-							App->player->isJumped = false;
 
-							LOG("pbodyA %f ", pbodyA->body->getCenterOfMassPosition().getY());
-							LOG("pbodyB %f ", pbodyB->body->getCenterOfMassPosition().getY());
-							LOG("Floor Touched");					
-					}				
+						LOG("Antes State  %d ", App->player->vehicle->state);
+						if (App->player->vehicle->state == State::IN_AIR)App->player->vehicle->state = State::IDLE;
+						LOG("Despues State  %d ", App->player->vehicle->state);
+						float a = pbodyA->body->getInvMass();
+						float b = pbodyB->body->getInvMass();
+						App->player->isJumped = false;
+
+						LOG("pbodyA %f ", pbodyA->body->getCenterOfMassPosition().getY());
+						LOG("pbodyB %f ", pbodyB->body->getCenterOfMassPosition().getY());
+						LOG("Floor Touched");
+					}
 				}
 				else
 				{
 					App->player->vehicle->state = State::IN_AIR;
 					LOG("Else pbodyA %f ", pbodyA->body->getCenterOfMassPosition().getY());
 					LOG("Else pbodyB %f ", pbodyB->body->getCenterOfMassPosition().getY());
+				}
+
+
+				platCheckP = &App->scene_intro->platformsCheckpoints;
+
+				for (size_t i = 0; i < platCheckP->count(); i++)
+				{
+					if (pbodyA == platCheckP->at(i).data || pbodyB == platCheckP->at(i).data)
+						App->player->lastChekPoint = i;
+				}
+
+
+
+				if (pbodyA && pbodyB)
+				{
+					isCollision = true;
+					p2List_item<Module*>* item = pbodyA->collision_listeners.getFirst();
+					while (item)
+					{
+						item->data->OnCollision(pbodyA, pbodyB);
+						item = item->next;
+					}
+
+					item = pbodyB->collision_listeners.getFirst();
+					while (item)
+					{
+						item->data->OnCollision(pbodyB, pbodyA);
+						item = item->next;
+					}
 				}
 			}
 			else
@@ -127,24 +156,8 @@ update_status ModulePhysics3D::PreUpdate(float dt)
 				LOG("Padre Else pbodyA %f ", pbodyA->body->getCenterOfMassPosition().getY());
 				LOG("Padre Else pbodyB %f ", pbodyB->body->getCenterOfMassPosition().getY());
 			}
-			if(pbodyA && pbodyB)
-			{
-				isCollision = true;
-				p2List_item<Module*>* item = pbodyA->collision_listeners.getFirst();
-				while(item)
-				{
-					item->data->OnCollision(pbodyA, pbodyB);
-					item = item->next;
-				}
-
-				item = pbodyB->collision_listeners.getFirst();
-				while(item)
-				{
-					item->data->OnCollision(pbodyB, pbodyA);
-					item = item->next;
-				}
-			}
 		}
+		
 	
 		
 	}

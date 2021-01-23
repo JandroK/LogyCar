@@ -45,15 +45,15 @@ public:
 	/// Resets the initial reference time.
 	void reset();
 
-	/// Returns the time in ms since the last call to reset or since 
+	/// Returns the time in ms since the last call to respawn or since 
 	/// the btClock was created.
 	unsigned long int getTimeMilliseconds();
 
-	/// Returns the time in us since the last call to reset or since 
+	/// Returns the time in us since the last call to respawn or since 
 	/// the Clock was created.
 	unsigned long int getTimeMicroseconds();
 	
-	/// Returns the time in s since the last call to reset or since 
+	/// Returns the time in s since the last call to respawn or since 
 	/// the Clock was created.
 	btScalar getTimeSeconds();
 	

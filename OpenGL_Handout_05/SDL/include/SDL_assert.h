@@ -199,7 +199,7 @@ typedef SDL_AssertState (SDLCALL *SDL_AssertionHandler)(
  *
  *  Setting the callback to NULL restores SDL's original internal handler.
  *
- *  This callback is NOT reset to SDL's internal handler upon SDL_Quit()!
+ *  This callback is NOT respawn to SDL's internal handler upon SDL_Quit()!
  *
  *  \return SDL_AssertState value of how to handle the assertion failure.
  *

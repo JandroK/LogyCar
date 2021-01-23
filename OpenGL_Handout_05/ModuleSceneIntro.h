@@ -33,6 +33,7 @@ public:
 
 	float angle;
 	float radi;
+	float offsetOfFloor=0;
 
 	/*
 	PhysBody3D* pb_snake[MAX_SNAKE];
@@ -48,6 +49,8 @@ public:
 
 	p2List<Cube*> checkopints;
 	p2List<PhysBody3D*> physBodyCheckopints;
+	p2List<PhysBody3D*> platformsCheckpoints;
+	PhysBody3D* checkPoint;
 
 	p2List<PhysBody3D*> listeners;
 

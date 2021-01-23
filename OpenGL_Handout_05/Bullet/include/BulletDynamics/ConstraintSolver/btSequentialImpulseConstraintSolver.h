@@ -119,7 +119,7 @@ public:
 
 	virtual btScalar solveGroup(btCollisionObject** bodies,int numBodies,btPersistentManifold** manifold,int numManifolds,btTypedConstraint** constraints,int numConstraints,const btContactSolverInfo& info, btIDebugDraw* debugDrawer,btDispatcher* dispatcher);
 		
-	///clear internal cached data and reset random seed
+	///clear internal cached data and respawn random seed
 	virtual	void	reset();
 	
 	unsigned long btRand2();
