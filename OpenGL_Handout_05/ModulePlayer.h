@@ -25,6 +25,7 @@ public:
 	void CheckPoints();
 	void Teleport(int num);
 	void CameraPlayer(float dt);
+	void CameraIntro(float dt);
 	void CameraWin(float dt);
 	void AssistDirection(float hardness);
 	bool CleanUp();
@@ -54,14 +55,16 @@ private:
 	float assistDirection;
 	float calculate;
 	float offsetFloor;
+	vec3 camIntro;
 	vec3 camLoop;
 	vec3 lastCam;
 	btVector3 positionCM;
 	bool CPactive = false;
 	bool respawn = false;
 	bool falling = false;
+	bool introFinish = false;
 	Color color;
 	//Fx
 	uint dead;
-	float angle = 0;
+	float angle = -0.2048;
 };
