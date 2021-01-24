@@ -45,7 +45,7 @@ you will have to reach the goal as best you can. Be careful, don't fall!
 - Checkpoints
   + Respawn in last Checkpoint
   + Reset forces
-  + Orientation car
+  + Car orientation
 
 - World
   + Color World blueSky
@@ -55,10 +55,10 @@ you will have to reach the goal as best you can. Be careful, don't fall!
   + Gradien Colors
 
 - Sensor
-  + Calculate position sensor with quaterions
+  + Calculate sensor position with quaterions
   + Ghost Body 
   + Detect floor
-
+  + States control
 
 - Camera
   + Intro animation 
@@ -126,7 +126,4 @@ you will have to reach the goal as best you can. Be careful, don't fall!
 ## License
 
 This project is licensed under an unmodified MIT license, which is an OSI-certified license that allows static linking with closed source software. Check [LICENSE](LICENSE) for further details.
-
-Additional Licenses:
-- Tileset: https://craftpix.net/file-licenses/
 
