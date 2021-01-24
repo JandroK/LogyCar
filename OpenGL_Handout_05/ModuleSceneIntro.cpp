@@ -90,13 +90,14 @@ bool ModuleSceneIntro::Start()
 		{
 			//cube->color.Set(3.87222, 2.73394, 0.842045);
 			//cube->color.Set(3.872222, 2.617242, -0.940117);
-			// CheckPoint Reset
+
+			// CheckPoint Start (R)
 			cube = new Cube(35, 1, 15);
 			cube->SetPos(-110, 0+offsetOfFloor, -86);
 			cube->color.Set( 3.872222,0.979737 , 0.77043);
-			cubes.add(cube);
+			cubes.add(cube);										// Add in array to be rendered
 			physBodyCubes.add(App->physics->AddBody(*cube, 0));
-			platformsCheckpoints.add(physBodyCubes.getLast()->data);
+			platformsCheckpoints.add(physBodyCubes.getLast()->data); // Guardo las plataformas que activan los checpoints, en orden, para asi luego poder saber cual ha pisado el player
 
 
 			cube = new Cube(6, 1, 15);
@@ -631,17 +632,16 @@ bool ModuleSceneIntro::Start()
 		
 		// Haciendo
 		{
-			// checkpoints
+			// Checkpoints respawns
 			{
-				// Checkpoint Reset
+				// Checkpoint Start 
 				cube = new Cube(1,1,1);
 				cube->SetPos(-110, 3 + offsetOfFloor, -86);
-				cube->color = White;
 				cube->SetRotation(90,{ 0,1,0 });
-				checkopints.add(cube);
+				checkopints.add(cube);										// Lo añado en un array que guarda los puntos de reaparicion.
 				physBodyCheckopints.add(App->physics->AddBody(*cube, 0));
 				physBodyCheckopints.getLast()->data->SetAsSensor(true);
-				cube->size = { 0,0,0 };
+				cube->size = { 0,0,0 };										// minimizo el tamaño del cubo que se renderiza, unicamente por si acaso 
 
 				// Checkpoint post Cilynder
 				angle = -200;
@@ -762,6 +762,8 @@ update_status ModuleSceneIntro::Update(float dt)
 
 void ModuleSceneIntro::Win()
 {
+	// Miro si ha pasado 1 segundo y hago PlayMusic.
+	// 
 	if (playMusic->Read() > 1000)
 	{
 		App->audio->PlayMusic("Assets/Music/you_win.ogg");
@@ -795,8 +797,10 @@ void ModuleSceneIntro::Win()
 
 }
 
+	// Actualizo la posicion de la plataforma , haciendole subir gruadualmente hasta un maximo y haciendole bajar hasta un minimo.
 void ModuleSceneIntro::CubeMoveRender()
 {
+
 	cubeMove->Render();
 	cubeMove->color.Set(cX, cY, cZ);
 
@@ -816,6 +820,7 @@ void ModuleSceneIntro::CubeMoveRender()
 	}
 	else
 	{
+		// Utilizo un timer para que espere 3 segundos antes de volver a moverse
 		if (!timerStarted)
 		{
 			timerStarted = true;
@@ -832,6 +837,8 @@ void ModuleSceneIntro::CubeMoveRender()
 
 void ModuleSceneIntro::ChangeColor()
 {
+
+	// itero entre 3 variables que contienen distito valor, estas seran las responsables de sumar y restar el valor RGB
 	if ((cX <= 1.1 || cY <= 1.1 || cZ <= 1.1) && changeColor)
 	{
 		cX += increment1;
@@ -862,7 +869,9 @@ void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 {
 	if ((body1 == bodySensor || body2 == bodySensor)&& !win)
 	{	
+		// Pongo en true la variable win, para que la funcion Win pueda ejercer su funcion
 		win = true;
+		// Inicio un timer para poder esperar 1 segundo antes de que la musica suene.
 		playMusic->Start();
 	}
 }

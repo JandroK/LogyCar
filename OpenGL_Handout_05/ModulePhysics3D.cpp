@@ -102,8 +102,6 @@ update_status ModulePhysics3D::PreUpdate(float dt)
 					if (!(pbodyA == sensorV && pbodyB == vehicle) && !(pbodyA == vehicle && pbodyB == sensorV))
 					{
 						if (App->player->vehicle->state == State::IN_AIR)App->player->vehicle->state = State::IDLE;
-						float a = pbodyA->body->getInvMass();
-						float b = pbodyB->body->getInvMass();
 						App->player->isJumped = false;
 //						LOG("Floor Touched");
 					}
@@ -166,7 +164,7 @@ update_status ModulePhysics3D::Update(float dt)
 
 	if(debug == true)
 	{
-		//world->debugDrawWorld();
+		world->debugDrawWorld();
 
 		// Render vehicles
 		p2List_item<PhysVehicle3D*>* item = vehicles.getFirst();

@@ -45,7 +45,7 @@ bool ModulePlayer::Start()
 	camLoop.Set(-8.88, 62.38+ offsetFloor, 51.7);
 // ----------------------------------------Vehicle chassis----//
 	car.chassis_size.Set(1, 0.5f, 2);
-	car.chassis_offset.Set(0, 0.125f, 0.05);
+	car.chassis_offset.Set(0, 0.125f, 0.05); //FUYM
 
 	car.chassis2_size.Set(0.90, 0.35, 1);
 	car.chassis2_offset.Set(0, car.chassis_offset.y+0.35, car.chassis_offset.z -0.1);
@@ -156,7 +156,7 @@ bool ModulePlayer::Start()
 		sensorV = App->physics->AddVehicle(sensorInf);
 		sensorV->body->setGravity({0,0,0});
 		sensorV->color.Set(1,0.5,0.5);
-		sensorV->collision_listeners.add(this);
+		//sensorV->collision_listeners.add(this);
 		sensorV->SetAsSensor(true);
 		sensorV->body->setUserPointer(sensorV);
 		sensorV->body->setCollisionFlags(sensorV->body->getCollisionFlags() | btCollisionObject::CO_GHOST_OBJECT);
@@ -209,6 +209,8 @@ update_status ModulePlayer::Update(float dt)
 	turn = acceleration = 0.0f;
 	AssistDirection(90.0f);
 	vehicle->vehicle->getChassisWorldTransform();
+
+	// repositioning the sensor relative to the chassis
 	{
 		btQuaternion q = vehicle->vehicle->getChassisWorldTransform().getRotation();
 
@@ -223,19 +225,21 @@ update_status ModulePlayer::Update(float dt)
 		float* pos = cubeSensor.transform.M;
 		bodySensor->SetTransform(pos);
 		sensorV->SetTransform(pos);
-		//sensorV->SetPos(cubeSensor.GetPos().x, cubeSensor.GetPos().y, cubeSensor.GetPos().z);
-		//cubeSensor.Render();
+		
 	}
 	
-	if (vehicle->body->getCenterOfMassPosition().getY() < App->scene_intro->offsetOfFloor-1 )
+	// I check that the player has passed the minimum limit to play fx die. OffsetFloor= distance to the 0,0,0 about the y axis
+	if (vehicle->body->getCenterOfMassPosition().getY() < offsetFloor-1 )
 	{
 		if(!falling)App->audio->PlayFx(dead);
 		falling = true;
 	}
 
-	if (vehicle->body->getCenterOfMassPosition().getY() < App->scene_intro->offsetOfFloor - 40) respawn = true;
+	// I check that the player has passed the minimum limit to die and respawn. OffsetFloor= distance to the 0,0,0 about the y axis
+	if (vehicle->body->getCenterOfMassPosition().getY() < offsetFloor - 40) respawn = true;
 
-
+	// If respawn is true, player respawn in  last checkpoint.
+	// If player press any CheckPoint-Key,  respawn in that checkpoint. 
 	CheckPoints();
 
 	vehicle->SetColor( color);
@@ -389,6 +393,7 @@ void ModulePlayer::PlayerControls()
 
 void ModulePlayer::CheckPoints()
 {
+	// If player press any CheckPoint-Key,  respawn in that checkpoint. 
 	if(respawn) Teleport(lastChekPoint);
 	if (App->input->GetKey(SDL_SCANCODE_O) == KEY_DOWN && App->GetDebugMode())
 	{

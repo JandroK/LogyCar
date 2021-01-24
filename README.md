@@ -112,3 +112,21 @@ you will have to reach the goal as best you can. Be careful, don't fall!
 - Icon in toolbar
 - Randomize sound feedback Jump [1-6] 
 - Randomize sound feedback Break [1-7]
+
+
+## Developers
+
+ - Ismael Tejada - Programmer / Game Designer
+ - Mario Hernández - Lead Programmer
+ - Alejandro Moreno - Programmer / Level Designer
+
+## GitHub 4HD
+- https://github.com/JandroK/LogyCar
+
+## License
+
+This project is licensed under an unmodified MIT license, which is an OSI-certified license that allows static linking with closed source software. Check [LICENSE](LICENSE) for further details.
+
+Additional Licenses:
+- Tileset: https://craftpix.net/file-licenses/
+
