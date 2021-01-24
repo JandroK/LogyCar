@@ -242,7 +242,9 @@ update_status ModulePlayer::Update(float dt)
 	if (introFinish)
 	{
 		if (!App->scene_intro->win)CameraPlayer(dt);
-		if (App->scene_intro->win)CameraWin(dt);
+		if (App->scene_intro->win && App->scene_intro->cameraWin)CameraWin(dt);
+	
+
 	}
 	else CameraIntro(dt);
 
@@ -492,10 +494,12 @@ void ModulePlayer::CameraWin(float dt)
 	// If camara has gone two laps or press space restart level
 	if (angle < -(4 * PI) || App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 	{
+		App->scene_intro->cameraWin = false;
 		angle = 0;
 		App->scene_intro->win = false;
 		App->audio->PlayMusic("Assets/Music/fall_guys.ogg");
 		Teleport(0);
+		
 	}
 }
 

@@ -25,7 +25,9 @@ bool ModuleSceneIntro::Start()
 
 	Cube* cube;
 	timer = new Timer();
-
+	playMusic = new Timer();
+	playMusic->Stop();
+	
 	//Musica
 	App->audio->PlayMusic("Assets/Music/fall_guys.ogg");
 
@@ -594,6 +596,7 @@ bool ModuleSceneIntro::Start()
 				cube->color.Set(0.3, 0.3, 0.35);
 				cubes.add(cube);
 				physBodyCubes.add(App->physics->AddBody(*cube, 0));
+				physBodyCubes.getLast()->data->body->setFriction(1000.0f);
 
 				cubeSensor.SetPos(cube->GetPos().x, cube->GetPos().y + 1.6f, cube->GetPos().z);
 				cubeSensor.size = { cube->size.x - 0.5f,0.85f,cube->size.z - 0.75f };
@@ -752,6 +755,14 @@ update_status ModuleSceneIntro::Update(float dt)
 
 void ModuleSceneIntro::Win()
 {
+	if (playMusic->Read() > 1000)
+	{
+		App->audio->PlayMusic("Assets/Music/you_win.ogg");
+		cameraWin = true;
+		playMusic->Start();
+		playMusic->Stop();
+	}
+
 	if (win && !won)
 	{
 		won = true;
@@ -773,6 +784,8 @@ void ModuleSceneIntro::Win()
 		bodySensor->SetPos(vec.getX(), vec.getY() + 1, vec.getZ());
 
 	}
+	
+
 }
 
 void ModuleSceneIntro::CubeMoveRender()
@@ -843,7 +856,7 @@ void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 	if ((body1 == bodySensor || body2 == bodySensor)&& !win)
 	{	
 		win = true;
-		App->audio->PlayMusic("Assets/Music/you_win.ogg");
+		playMusic->Start();
 	}
 }
 

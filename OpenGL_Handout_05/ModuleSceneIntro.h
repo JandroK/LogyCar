@@ -97,7 +97,11 @@ public:
 
 	bool win=false;
 	bool won=false;
+	bool cameraWin=false;
 	bool timerStarted;
+	Timer* playMusic;
+
+private:
 	Timer* timer;
 
 	// MapPrimitives
