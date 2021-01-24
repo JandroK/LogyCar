@@ -228,7 +228,7 @@ update_status ModulePlayer::Update(float dt)
 	//btVector3 per = { q.getAxis().getX() ,q.getAxis().getY() ,q.getAxis().getZ() };
 	perpendicularVector = { -forwardVector.getZ(), forwardVector.getY(), forwardVector.getX() };
 
-	if(!App->GetDebugMode() && !App->scene_intro->win)PlayerControls();
+	if(!App->GetDebugMode() && !App->scene_intro->win && introFinish)PlayerControls();
 
 	vehicle->ApplyEngineForce(acceleration);
 	vehicle->Turn(turn);
@@ -238,6 +238,11 @@ update_status ModulePlayer::Update(float dt)
 	char title[80];
 	sprintf_s(title, "%.1f Km/h", vehicle->GetKmh());
 	App->window->SetTitle(title);
+	if (App->input->GetKey(SDL_SCANCODE_I) == KEY_DOWN)
+	{
+		introFinish = false;
+		camIntro.Set(180, 62.38 + offsetFloor, 51.7);
+	}
 	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)introFinish = true;
 	if (introFinish)
 	{
@@ -366,7 +371,7 @@ void ModulePlayer::PlayerControls()
 void ModulePlayer::CheckPoints()
 {
 	if(respawn) Teleport(lastChekPoint);
-	if (App->input->GetKey(SDL_SCANCODE_O) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_O) == KEY_DOWN && App->GetDebugMode())
 	{
 		vec3 cam = App->camera->Position;
 		vehicle->SetPos(cam.x, cam.y - 5, cam.z);

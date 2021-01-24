@@ -375,7 +375,7 @@ bool ModuleSceneIntro::Start()
 				cube->SetPos(122, 14 + offsetOfFloor, 128);
 				cube->size = { 20,1,25 };
 				cube->SetRotation(angle, { 1,0,0 });
-				cube->color = Red;
+				cube->color.Set(3.872222, 0.479737, 0.357043);
 				cubes.add(cube);
 				physBodyCubes.add(App->physics->AddBody(*cube, 0));
 
@@ -648,7 +648,6 @@ bool ModuleSceneIntro::Start()
 				cube = new Cube( 1,1,1 );
 				cube->SetPos(40, 17 + offsetOfFloor, -81);
 				cube->SetRotation(angle, { 0,1,0 });
-				cube->color = White;
 				checkopints.add(cube);
 				physBodyCheckopints.add(App->physics->AddBody(*cube, 0));
 				physBodyCheckopints.getLast()->data->SetAsSensor(true);
@@ -657,7 +656,6 @@ bool ModuleSceneIntro::Start()
 				// Checkpoint Curvas
 				cube = new Cube( 1,1,1 );
 				cube->SetPos(71.07f, 17.5 + offsetOfFloor, -98.0);
-				cube->color = White;
 				checkopints.add(cube);
 				physBodyCheckopints.add(App->physics->AddBody(*cube, 0));
 				physBodyCheckopints.getLast()->data->SetAsSensor(true);
@@ -666,7 +664,6 @@ bool ModuleSceneIntro::Start()
 				// Checkpoint WallRide
 				cube = new Cube( 1,1,1 );
 				cube->SetPos(121.5, 17 + offsetOfFloor, 89.7);
-				cube->color = White;
 				checkopints.add(cube);
 				physBodyCheckopints.add(App->physics->AddBody(*cube, 0));
 				physBodyCheckopints.getLast()->data->SetAsSensor(true);
@@ -677,7 +674,6 @@ bool ModuleSceneIntro::Start()
 				cube = new Cube( 1,1,1 );
 				cube->SetPos(19, 39 + offsetOfFloor, 159.7);
 				cube->SetRotation(angle, { 0,1,0 });
-				cube->color = White;
 				checkopints.add(cube);
 				physBodyCheckopints.add(App->physics->AddBody(*cube, 0));
 				physBodyCheckopints.getLast()->data->SetAsSensor(true);
@@ -689,7 +685,6 @@ bool ModuleSceneIntro::Start()
 				cube = new Cube( 1,1,1 );
 				cube->SetPos(-35.8, 19.25 + offsetOfFloor, 30);
 				cube->SetRotation(angle, { 0,1,0 });
-				cube->color = White;
 				checkopints.add(cube);
 				physBodyCheckopints.add(App->physics->AddBody(*cube, 0));
 				physBodyCheckopints.getLast()->data->SetAsSensor(true);
@@ -698,7 +693,6 @@ bool ModuleSceneIntro::Start()
 				// CheckPoint postPeralt
 				cube = new Cube( 1,1,1 );
 				cube->SetPos(-90.3, 19.25 + offsetOfFloor, 32.5);
-				cube->color = White;
 				checkopints.add(cube);
 				physBodyCheckopints.add(App->physics->AddBody(*cube, 0));
 				physBodyCheckopints.getLast()->data->SetAsSensor(true);
@@ -709,7 +703,6 @@ bool ModuleSceneIntro::Start()
 				cube = new Cube(1, 1, 1);
 				cube->SetPos(-260.3, 19.25 + offsetOfFloor, 50.5);
 				cube->SetRotation(angle, { 0,1,0 });
-				cube->color = White;
 				checkopints.add(cube);
 				physBodyCheckopints.add(App->physics->AddBody(*cube, 0));
 				physBodyCheckopints.getLast()->data->SetAsSensor(true);
@@ -718,11 +711,6 @@ bool ModuleSceneIntro::Start()
 
 			}
 		}
-
-
-
-		
-	
 	}
 
 	return ret;
@@ -798,7 +786,7 @@ void ModuleSceneIntro::Win()
 		btVector3 vec = bodySensor->body->getCenterOfMassPosition();
 		vec3 sizeCube = cubeSensor.size;
 		//	cubeSensor.SetPos(vec.getX(), vec.getY() - 0.25, vec.getZ());
-		cubeSensor.color.Set(1, 0.65, 0.65);
+		cubeSensor.color.Set(1, 0.35, 0.35);
 		cubeSensor.size.y = 0.85f;
 		bodySensor->SetPos(vec.getX(), vec.getY() + 1, vec.getZ());
 
