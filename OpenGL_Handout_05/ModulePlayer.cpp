@@ -238,7 +238,7 @@ update_status ModulePlayer::Update(float dt)
 	char title[80];
 	sprintf_s(title, "%.1f Km/h", vehicle->GetKmh());
 	App->window->SetTitle(title);
-
+	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)introFinish = true;
 	if (introFinish)
 	{
 		if (!App->scene_intro->win)CameraPlayer(dt);

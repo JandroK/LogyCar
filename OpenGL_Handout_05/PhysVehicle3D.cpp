@@ -56,7 +56,7 @@ void PhysVehicle3D::Render()
 	chassis.transform.M[12] += offset.getX();
 	chassis.transform.M[13] += offset.getY();
 	chassis.transform.M[14] += offset.getZ();
-	chassis.color.Set(0.90f, 0.5f, 0.2f, 0.5f);
+	chassis.color.Set(3.872222, 0.579737,0.157043);
 
 	Cube chassis2(info.chassis2_size.x, info.chassis2_size.y, info.chassis2_size.z);
 	vehicle->getChassisWorldTransform().getOpenGLMatrix(&chassis2.transform);
@@ -66,7 +66,7 @@ void PhysVehicle3D::Render()
 	chassis2.transform.M[12] += offset2.getX();
 	chassis2.transform.M[13] += offset2.getY();
 	chassis2.transform.M[14] += offset2.getZ();
-	chassis2.color.Set(0.90f, 0.5f, 0.2f, 0.5f);
+	chassis2.color.Set(3.872222, 0.579737, 0.257043);
 
 
 	Cube chassis3(info.chassis3_size.x, info.chassis3_size.y, info.chassis3_size.z);
