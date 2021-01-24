@@ -29,6 +29,14 @@ bool ModulePlayer::Start()
 	boings.add(App->audio->LoadFx("Assets/Fx/boing_5.wav"));
 	boings.add(App->audio->LoadFx("Assets/Fx/boing_6.wav"));
 
+	stops.add(App->audio->LoadFx("Assets/Fx/stop_1.wav"));
+	stops.add(App->audio->LoadFx("Assets/Fx/stop_2.wav"));
+	stops.add(App->audio->LoadFx("Assets/Fx/stop_3.wav"));
+	stops.add(App->audio->LoadFx("Assets/Fx/stop_4.wav"));
+	stops.add(App->audio->LoadFx("Assets/Fx/stop_5.wav"));
+	stops.add(App->audio->LoadFx("Assets/Fx/stop_6.wav"));
+	stops.add(App->audio->LoadFx("Assets/Fx/stop_7.wav"));
+
 	jumpTime = new Timer();
 	jumpTime->Start();
 	VehicleInfo car;
@@ -308,6 +316,7 @@ void ModulePlayer::PlayerControls()
 
 		if (vehicle->vehicle->getCurrentSpeedKmHour() <= -2.25)
 		{
+			if (vehicle->state != State::IN_AIR)App->audio->PlayFx(stops.at((rand() % 7)).data);
 			brake = BRAKE_POWER / 1.5f;
 			color.Set(1.0f, 0.0f, 0.0f, 1.0f);
 			vehicle->vehicle->getRigidBody()->applyCentralForce({ 0,-200,0 });
@@ -332,6 +341,8 @@ void ModulePlayer::PlayerControls()
 			brake = BRAKE_POWER / 1.5f;
 			color.Set(1.0f, 0.0f, 0.0f, 1.0f);
 			vehicle->vehicle->getRigidBody()->applyCentralForce({ 0,-200,0 });
+			if(vehicle->state!= State::IN_AIR)App->audio->PlayFx(stops.at((rand() % 7)).data);
+
 		}
 		else
 			acceleration = vel * -1;

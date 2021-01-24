@@ -74,6 +74,7 @@ private:
 	uint boing5;
 	uint boing6;
 	p2List<uint> boings;
+	p2List<uint> stops;
 
 
 	float angle = -0.2048;
