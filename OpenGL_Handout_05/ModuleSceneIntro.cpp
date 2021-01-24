@@ -412,14 +412,14 @@ bool ModuleSceneIntro::Start()
 				cube->SetPos(18, 24.7 + offsetOfFloor, 99);
 				cube->size = { 19.5,1,104 };
 				cube->SetRotation(angle, { 1,0,0 });
-				cube->color.Set(3.87222, 2.73394, 0.842045);
+				cube->color.Set(3.872222, 0.896241, -0.842045);
 				cubes.add(cube);
 				physBodyCubes.add(App->physics->AddBody(*cube, 0));
 
 				cube = new Cube();
 				cube->SetPos(18, 15 + offsetOfFloor, 47);
 				cube->size = { 19.5,1,6 };
-				cube->color.Set(3.87222, 2.73394, 0.992045);
+				cube->color.Set(3.872222, 0.896241, -0.842045);
 				cubes.add(cube);
 				physBodyCubes.add(App->physics->AddBody(*cube, 0));
 
@@ -434,7 +434,16 @@ bool ModuleSceneIntro::Start()
 			Looping({ 18.0f, 14.5f + offsetOfFloor, 50.0 });
 
 			// peralt
-			{
+			{			
+				// check point peralt
+				cube = new Cube();
+				cube->SetPos(-35.8, 15.25 + offsetOfFloor, 30);
+				cube->size = { 19.5,1,60 };
+				cube->color.Set(3.872222, 0.896241, -0.842045);
+				cubes.add(cube);
+				physBodyCubes.add(App->physics->AddBody(*cube, 0));
+				platformsCheckpoints.add(physBodyCubes.getLast()->data);
+
 				cube = new Cube();
 				cube->SetPos(-35.15, 10.40 + offsetOfFloor, 3);
 				cube->size = { 20.8,8.8, 1.5};
@@ -463,14 +472,7 @@ bool ModuleSceneIntro::Start()
 				cubes.add(cube);
 				physBodyCubes.add(App->physics->AddBody(*cube, 0));
 
-				// check point peralt
-				cube = new Cube();
-				cube->SetPos(-35.8, 15.25 + offsetOfFloor, 30);
-				cube->size = { 19.5,1,60 };
-				cube->color.Set(3.872222, 0.979737, 0.77043);
-				cubes.add(cube);
-				physBodyCubes.add(App->physics->AddBody(*cube, 0));
-				platformsCheckpoints.add(physBodyCubes.getLast()->data);
+
 
 				angle = -20;
 				cube = new Cube();
@@ -910,9 +912,10 @@ void ModuleSceneIntro::Looping(vec3 position)
 		cube = new Cube();
 		cube->SetPos(posX+offset, posY, -posZ);
 		cube->size = size;
-		cube->color.Set(30 / posX+0.5 , 30 /( (posY- offsetOfFloor)+15), 30 / posZ+1.35);
+		cube->color.Set(40 / posX + 1.65, 40 / (posY - offsetOfFloor+30), 40 / posZ);
+		//cube->color.Set(30 / posX+0.5 , 30 /( (posY- offsetOfFloor)+15), 30 / posZ+1.35);
 	//	cube->color.Set(20 / posX - 0.4, 20 / ((posY - offsetOfFloor) + 5) + 1.8, 20 / posZ + 1.65);
-		LOG("Position Player \n x: %f \t y: %f \t z: %f ", 40 / posX , 40 / (posY - offsetOfFloor), 40 / posZ+ 1.65);
+		LOG("Position Player \n x: %f \t y: %f \t z: %f ", 40 / posX + 1.65, 40 / (posY - offsetOfFloor + 30), 40 / posZ);
 
 
 		cube->SetRotation(alpha+1.5f, { 1,0,0 });
@@ -1021,7 +1024,12 @@ void ModuleSceneIntro::Ramp(vec3 position,bool inverse,  vec3 size)
 		else
 		cube->size = { size.x,size.y,size.z +(i*4)+(10-((posY - offsetOfFloor) /10))};;
 		//cube->color.Set(3.872222, 0.979737, 0.67043);
-		cube->color.Set(10 / posX, 17 / ((posY - offsetOfFloor - 10) + 1.3), 25 / posX + 0.4);
+		if(posZ <0)
+			cube->color.Set(40 / posX + 1.65, 40 / (posY - offsetOfFloor+35), 40 / posZ );
+		else
+			cube->color.Set(40 / posX + 1.65, 40 / (posY - offsetOfFloor+35), 40 / -posZ +0.7);
+
+		//cube->color.Set(10 / posX, 17 / ((posY - offsetOfFloor - 10) + 1.3), 25 / posX + 0.4);
 		//cube->color.Set(30 / posX+0.55, 30 / ((posY - offsetOfFloor) + 5), 30 / posX +0.45);
 
 
@@ -1136,8 +1144,8 @@ void ModuleSceneIntro::Ramp(vec3 position, vec3 size)
 		cube->color = White;
 
 		cube->SetRotation(alpha + (auxAngle / 2), { 1,0,0 });
-		cube->color.Set(40 / posX + 1.65, 40 / (posY - offsetOfFloor), 40 / posZ);
-		cube->color.Set(40 / posX, 40 / ((posY - offsetOfFloor) + 15), 40 / posZ + 1.65);
+		cube->color.Set(40 / posX + 1.65, 40 / (posY - offsetOfFloor+30), 40 / posZ);
+	//	cube->color.Set(40 / posX, 40 / ((posY - offsetOfFloor) + 15), 40 / posZ + 1.65);
 
 
 		looping.add(cube);
@@ -1183,8 +1191,8 @@ void ModuleSceneIntro::RampFlip(vec3 position, vec3 size)
 		cube->color = White;
 
 		cube->SetRotation(-alpha - (auxAngle / 2), { 1,0,0 });
-		cube->color.Set(40 / posX + 1.65, 40 / (posY - offsetOfFloor), 40 / posZ);
-		cube->color.Set(40 / posX, 40 / ((posY - offsetOfFloor) + 15), 40 / posZ + 1.65);
+		cube->color.Set(40 / posX + 1.65, 40 / (posY - offsetOfFloor+30), 40 / posZ);
+		//cube->color.Set(40 / posX, 40 / ((posY - offsetOfFloor) + 15), 40 / posZ + 1.65);
 
 
 		looping.add(cube);
