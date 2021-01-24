@@ -8,16 +8,16 @@ you will have to reach the goal as best you can. Be careful, don't fall!
 ## Key Features
 
 - Physics:
- + Move car
- + Jump with force
- + Bearing friction
- + Assist Direction
- + Sides with torques
- + Parkour physics
- + Reverse direction
- + Turbo 
- + Apply forces by states
- + Orientation car in air
+  + Move car
+  + Jump with force
+  + Bearing friction
+  + Assist Direction
+  + Sides with torques
+  + Parkour physics
+  + Reverse direction
+  + Turbo 
+  + Apply forces by states
+  + Orientation car in air
 
 - State Machine
 - Game Loop
@@ -29,44 +29,44 @@ you will have to reach the goal as best you can. Be careful, don't fall!
 - Brake feedback fx
 
 - Platforms
- + Looping
- + Ice peralta
- + WallRide
- + Spiral cylinder
- + Dynamic platforms 
- + Dynamic change color
- + Platforms with different coefficient of friction
- + Wood friction
- + Ice friction
- + Grip friction
- + Ground friction
- + Dynamic button 
+  + Looping
+  + Ice peralta
+  + WallRide
+  + Spiral cylinder
+  + Dynamic platforms 
+  + Dynamic change color
+  + Platforms with different coefficient of friction
+  + Wood friction
+  + Ice friction
+  + Grip friction
+  + Ground friction
+  + Dynamic button 
 
 - Checkpoints
- + Respawn in last Checkpoint
- + Reset forces
- + Orientation car
+  + Respawn in last Checkpoint
+  + Reset forces
+  + Orientation car
 
 - World
- + Color World blueSky
- + Reposition Lights
- + Two lights in world
- + Colors Platforms
- + Gradien Colors
+  + Color World blueSky
+  + Reposition Lights
+  + Two lights in world
+  + Colors Platforms
+  + Gradien Colors
 
 - Sensor
- + Calculate position sensor with quaterions
- + Ghost Body 
- + Detect floor
+  + Calculate position sensor with quaterions
+  + Ghost Body 
+  + Detect floor
 
 
 - Camera
- + Intro animation 
- + Win animation 
- + Lose animtion 
- + Position camera in center of Looping
- + Look at Player
- + Follow Player
+  + Intro animation 
+  + Win animation 
+  + Lose animtion 
+  + Position camera in center of Looping
+  + Look at Player
+  + Follow Player
 
 ## Controls
 - W to accelerate
@@ -80,22 +80,22 @@ you will have to reach the goal as best you can. Be careful, don't fall!
 
 ## DEBUG keys
 - Keys Respawn:
- + R respawn in start
- + 1 respawn post cylinder (checkpoint 1)
- + 2 respawn in ice curves (checkpoint 2)
- + 3 respawn post Wallride (checkpoint 3)
- + 4 respawn pre Looping  (checkpoint 4)
- + 5 respawn post Looping (checkpoint 5)
- + 6 respawn post Peralta (checkpoint 6)
- + 7 respawn post Ramps  (checkpoint 7)
+  + R respawn in start
+  + 1 respawn post cylinder (checkpoint 1)
+  + 2 respawn in ice curves (checkpoint 2)
+  + 3 respawn post Wallride (checkpoint 3)
+  + 4 respawn pre Looping  (checkpoint 4)
+  + 5 respawn post Looping (checkpoint 5)
+  + 6 respawn post Peralta (checkpoint 6)
+  + 7 respawn post Ramps  (checkpoint 7)
 
 - F1 to free camera
- + 'O' spawn car in position camera
- + W/A/S/D Move camera
- + Mouse Right-button drag orientaiton camera 
- + Space Up camera
- + LAlat Down camera
- + LShift speed up camera 
+  + 'O' spawn car in position camera
+  + W/A/S/D Move camera
+  + Mouse Right-button drag orientaiton camera 
+  + Space Up camera
+  + LAlat Down camera
+  + LShift speed up camera 
 
 - I intro animation camera
 - Space to skip animation camera Win/Intro 
