@@ -21,6 +21,14 @@ bool ModulePlayer::Start()
 
 	// Load Fx
 	dead = App->audio->LoadFx("Assets/Fx/player_die.wav");
+
+	boings.add(App->audio->LoadFx("Assets/Fx/boing_1.wav"));
+	boings.add(App->audio->LoadFx("Assets/Fx/boing_2.wav"));
+	boings.add(App->audio->LoadFx("Assets/Fx/boing_3.wav"));
+	boings.add(App->audio->LoadFx("Assets/Fx/boing_4.wav"));
+	boings.add(App->audio->LoadFx("Assets/Fx/boing_5.wav"));
+	boings.add(App->audio->LoadFx("Assets/Fx/boing_6.wav"));
+
 	jumpTime = new Timer();
 	jumpTime->Start();
 	VehicleInfo car;
@@ -266,6 +274,9 @@ void ModulePlayer::PlayerControls()
 		isJumped = true;
 		//vehicle->state = State::IN_AIR;
 		vehicle->vehicle->getRigidBody()->applyCentralForce({ 0,51000,0 });
+	
+		LOG("Boing: %d", (rand() % 6));
+		App->audio->PlayFx(boings.at((rand() % 6) ).data);
 	}
 
 	//if (!vehicle->state == State::IN_AIR) vehicle->state = IDLE;

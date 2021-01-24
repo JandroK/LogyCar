@@ -66,5 +66,15 @@ private:
 	Color color;
 	//Fx
 	uint dead;
+
+	uint boing1;
+	uint boing2;
+	uint boing3;
+	uint boing4;
+	uint boing5;
+	uint boing6;
+	p2List<uint> boings;
+
+
 	float angle = -0.2048;
 };

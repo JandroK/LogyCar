@@ -903,7 +903,7 @@ void ModuleSceneIntro::Looping(vec3 position)
 		cube->color.Set(40 / posX + 1.65, 40 / (posY - offsetOfFloor+30), 40 / posZ);
 		//cube->color.Set(30 / posX+0.5 , 30 /( (posY- offsetOfFloor)+15), 30 / posZ+1.35);
 	//	cube->color.Set(20 / posX - 0.4, 20 / ((posY - offsetOfFloor) + 5) + 1.8, 20 / posZ + 1.65);
-		LOG("Position Player \n x: %f \t y: %f \t z: %f ", 40 / posX + 1.65, 40 / (posY - offsetOfFloor + 30), 40 / posZ);
+		//LOG("Position Player \n x: %f \t y: %f \t z: %f ", 40 / posX + 1.65, 40 / (posY - offsetOfFloor + 30), 40 / posZ);
 
 
 		cube->SetRotation(alpha+1.5f, { 1,0,0 });

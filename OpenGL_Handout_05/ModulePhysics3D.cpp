@@ -101,24 +101,18 @@ update_status ModulePhysics3D::PreUpdate(float dt)
 				{
 					if (!(pbodyA == sensorV && pbodyB == vehicle) && !(pbodyA == vehicle && pbodyB == sensorV))
 					{
-
-						LOG("Antes State  %d ", App->player->vehicle->state);
 						if (App->player->vehicle->state == State::IN_AIR)App->player->vehicle->state = State::IDLE;
-						LOG("Despues State  %d ", App->player->vehicle->state);
 						float a = pbodyA->body->getInvMass();
 						float b = pbodyB->body->getInvMass();
 						App->player->isJumped = false;
-
-						LOG("pbodyA %f ", pbodyA->body->getCenterOfMassPosition().getY());
-						LOG("pbodyB %f ", pbodyB->body->getCenterOfMassPosition().getY());
-						LOG("Floor Touched");
+//						LOG("Floor Touched");
 					}
 				}
 				else
 				{
 					App->player->vehicle->state = State::IN_AIR;
-					LOG("Else pbodyA %f ", pbodyA->body->getCenterOfMassPosition().getY());
-					LOG("Else pbodyB %f ", pbodyB->body->getCenterOfMassPosition().getY());
+					//LOG("Else pbodyA %f ", pbodyA->body->getCenterOfMassPosition().getY());
+					//LOG("Else pbodyB %f ", pbodyB->body->getCenterOfMassPosition().getY());
 				}
 
 
@@ -153,15 +147,13 @@ update_status ModulePhysics3D::PreUpdate(float dt)
 			else
 			{
 				if (App->player->vehicle->state == State::IN_AIR)App->player->vehicle->state = State::IDLE;
-				LOG("Padre Else pbodyA %f ", pbodyA->body->getCenterOfMassPosition().getY());
-				LOG("Padre Else pbodyB %f ", pbodyB->body->getCenterOfMassPosition().getY());
 			}
 		}
 		
 	
 		
 	}
-	LOG("Despues State  %d ", App->player->vehicle->state);
+	//LOG("Despues State  %d ", App->player->vehicle->state);
 
 	return UPDATE_CONTINUE;
 }
