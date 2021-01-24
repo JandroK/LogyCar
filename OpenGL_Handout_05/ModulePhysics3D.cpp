@@ -166,7 +166,7 @@ update_status ModulePhysics3D::Update(float dt)
 
 	if(debug == true)
 	{
-		world->debugDrawWorld();
+		//world->debugDrawWorld();
 
 		// Render vehicles
 		p2List_item<PhysVehicle3D*>* item = vehicles.getFirst();

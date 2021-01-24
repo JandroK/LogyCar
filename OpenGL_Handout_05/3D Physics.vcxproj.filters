@@ -141,4 +141,7 @@
       <Filter>Sources\Modules\Game</Filter>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="LogyCar.rc" />
+  </ItemGroup>
 </Project>
