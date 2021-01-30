@@ -210,7 +210,7 @@ update_status ModulePlayer::Update(float dt)
 	AssistDirection(90.0f);
 	vehicle->vehicle->getChassisWorldTransform();
 
-	// repositioning the sensor relative to the chassis
+	// reposiciono el sensor con respecto al chasis	
 	{
 		btQuaternion q = vehicle->vehicle->getChassisWorldTransform().getRotation();
 
@@ -228,18 +228,19 @@ update_status ModulePlayer::Update(float dt)
 		
 	}
 	
-	// I check that the player has passed the minimum limit to play fx die. OffsetFloor= distance to the 0,0,0 about the y axis
+	// Verifico que el jugador haya pasado el límite mínimo jugable y repoduzco fx die.
+	// OffsetFloor = distancia al 0,0,0 sobre el eje y
 	if (vehicle->body->getCenterOfMassPosition().getY() < offsetFloor-1 )
 	{
 		if(!falling)App->audio->PlayFx(dead);
 		falling = true;
 	}
-
-	// I check that the player has passed the minimum limit to die and respawn. OffsetFloor= distance to the 0,0,0 about the y axis
+	// Verifico que el jugador haya pasado el límite mínimo para morir, entonces le hago reaparecer. 
+	//OffsetFloor = distancia al 0,0,0 sobre el eje y
 	if (vehicle->body->getCenterOfMassPosition().getY() < offsetFloor - 40) respawn = true;
 
-	// If respawn is true, player respawn in  last checkpoint.
-	// If player press any CheckPoint-Key,  respawn in that checkpoint. 
+	// Si la reaparición es verdadera, el jugador reaparece en el último punto de control.
+	// Si el jugador presiona cualquier tecla de punto de control, reaparecerá en ese punto de control.
 	CheckPoints();
 
 	vehicle->SetColor( color);
@@ -255,9 +256,7 @@ update_status ModulePlayer::Update(float dt)
 	vehicle->Brake(brake);
 	vehicle->Render();
 
-	//char title[80];
-	//sprintf_s(title, "%.1f Km/h", vehicle->GetKmh());
-	//App->window->SetTitle(title);
+	// Resetea la escena Intro por si el jugador quiere volver a verla
 	if (App->input->GetKey(SDL_SCANCODE_I) == KEY_DOWN)
 	{
 		introFinish = false;
@@ -284,23 +283,22 @@ void ModulePlayer::PlayerControls()
 	{
 		jumpTime->Start();
 		isJumped = true;
-		//vehicle->state = State::IN_AIR;
+		// FUYM simula un salto de amortiguación, este salto se puede realizar únicamente mientras el sensor este colisionando
 		vehicle->vehicle->getRigidBody()->applyCentralForce({ 0,51000,0 });
-	
-		LOG("Boing: %d", (rand() % 6));
+		// Reproduce un efecto de sonido de salto diferente de forma aleatoria del 0 al 6 por salto
 		App->audio->PlayFx(boings.at((rand() % 6) ).data);
 	}
 
 	//if (!vehicle->state == State::IN_AIR) vehicle->state = IDLE;
 
-
-
+	// Duplica la velocidad en estado turbo
 	if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT &&
 		(vehicle->state != State::IN_AIR || vehicle->state == State::TURBO) &&
 		App->input->GetKey(SDL_SCANCODE_S) != KEY_REPEAT)
 	{
 		vel = MAX_ACCELERATION * 2;
 		vehicle->state = TURBO;
+		// FUYM inclinacion del coche
 		vehicle->vehicle->getRigidBody()->applyCentralForce({ 0,-99,0 });
 		//vehicle->body->applyTorque(per * 80);
 	}
@@ -316,31 +314,34 @@ void ModulePlayer::PlayerControls()
 		if (vehicle->state != State::TURBO && vehicle->state != State::IN_AIR)vehicle->state = State::WALK;
 		vehicle->vehicle->getRigidBody()->applyCentralForce({ 0,-70,0 });
 
+		// Si el jugador cambia de dirección de marcha atrás hacia delante, se aplica un freno para simular el comportamiento de un coche radiocontrol
 		if (vehicle->vehicle->getCurrentSpeedKmHour() <= -2.25)
 		{
+			// Se reproduce un sonido de frenada aleatorio del 0 al 7
 			if (vehicle->state != State::IN_AIR)App->audio->PlayFx(stops.at((rand() % 7)).data);
 			brake = BRAKE_POWER / 1.5f;
+			// Cambia el color del alerón para simular la frenada
 			color.Set(1.0f, 0.0f, 0.0f, 1.0f);
+			// FUYM para simular el rebote de la amortiguación de un radiocontrol	
 			vehicle->vehicle->getRigidBody()->applyCentralForce({ 0,-200,0 });
 		}
 		else
 			acceleration = vel;
 		vehicle->body->applyTorque(perpendicularVector * -40);
 
-		//if (vehicle->body->getVelocityInLocalPoint(vehicle->body->getCenterOfMassPosition()).length() >150)
-		//{
-		//	vehicle->body->setLinearVelocity({0,0,0});
-		//}
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
 	{
 		if (vehicle->state != State::TURBO && vehicle->state != State::IN_AIR)vehicle->state = State::WALK;
 
+		// Si el jugador cambia de dirección de marcha delante hacia atras, se aplica un freno para simular el comportamiento de un coche radiocontrol
 		if (vehicle->vehicle->getCurrentSpeedKmHour() > +2.25)
 		{
 			brake = BRAKE_POWER / 1.5f;
+			// Cambia el color del alerón para simular la frenada
 			color.Set(1.0f, 0.0f, 0.0f, 1.0f);
+			// FUYM para simular el rebote de la amortiguación de un radiocontrol	
 			vehicle->vehicle->getRigidBody()->applyCentralForce({ 0,-200,0 });
 			if(vehicle->state!= State::IN_AIR)App->audio->PlayFx(stops.at((rand() % 7)).data);
 
@@ -348,8 +349,6 @@ void ModulePlayer::PlayerControls()
 		else
 			acceleration = vel * -1;
 		vehicle->body->applyTorque(perpendicularVector * 80);
-
-
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
@@ -365,8 +364,6 @@ void ModulePlayer::PlayerControls()
 		else
 		{
 			vehicle->body->applyTorque(forwardVector * -200);
-			//	vehicle->vehicle->getRigidBody()->applyCentralForce({ 1000,0,0 });
-
 		}
 
 	}
@@ -445,6 +442,7 @@ void ModulePlayer::CameraPlayer(float dt)
 			{
 				if (!falling)
 				{
+					// Posiciono la cámara detrás del jugador en esta variable 
 					myCamera.x = positionCM.getX() + forwardVector.getX() * distanceCamara2CM;
 					myCamera.y = positionCM.getY() + forwardVector.getY() + 6;
 					myCamera.z = positionCM.getZ() + forwardVector.getZ() * distanceCamara2CM;
@@ -453,24 +451,22 @@ void ModulePlayer::CameraPlayer(float dt)
 				}
 				else
 				{
-					if (lastCam.y < 1035)
-					{
-
-					//lastCam.y += 0.25;
-					lastCam.y += 0.50;
-					//lastCam.y = 1005;
-					}
+					// Aquí hago la animación encargada del efecto derrota
+					if (lastCam.y < 1035) lastCam.y += 0.50;
 					myCamera = lastCam;
 				}
 
 			}
 
+		// Oriento la cámara para que mire al coche y guardo el valor en esta variable para después setearlo	
 		myCameraLook.x = vehicle->body->getCenterOfMassPosition().getX();
 		myCameraLook.y = vehicle->body->getCenterOfMassPosition().getY() + 4;
 		myCameraLook.z = vehicle->body->getCenterOfMassPosition().getZ();
 		if(App->input->GetKey(SDL_SCANCODE_P)== KEY_DOWN)LOG("Position Player \n x: %f \t z: %f ", myCamera.x, myCamera.z);
 
+		// Utilizo la variable myCamera cambiada anteriormente para setear la posición	
 		App->camera->Position = myCamera;
+		// Utilizo la variable myCameraLook cambiada anteriormente para setear la orientación
 		App->camera->LookAt(myCameraLook);
 	}
 }
@@ -482,11 +478,13 @@ void ModulePlayer::CameraIntro(float dt)
 	vec3 posTurnCam = { -136, (float)62.38 + offsetFloor, -17.15};
 	float distanceCamara2CM = 68.85;
 
+	// Mientras no ha llegado a la posición, se mueve en línea recta1
 	if (camIntro.x > -150 && camIntro.y > 1015 && camIntro.z > 50)
 	{
 		camIntro.x -= 50 * dt;
 		myCameraLook.x = camIntro.x - 1;
 	}
+	// Una vez llegada la posición, dibujo media circunferencia reduciendo al mismo tiempo mi eje Y
 	else if(camIntro.x < -122 || camIntro.y > 1007)
 	{
 		angle -= dt / 2;
@@ -524,7 +522,7 @@ void ModulePlayer::CameraWin(float dt)
 	App->camera->Position = myCamera;
 	App->camera->LookAt(myCameraLook);
 
-	// If camara has gone two laps or press space restart level
+	// Si la cámara ha dado dos vueltas o pulsa espacio, reinicia el nivel
 	if (angle < -(4 * PI) || App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 	{
 		App->scene_intro->cameraWin = false;
@@ -538,6 +536,7 @@ void ModulePlayer::CameraWin(float dt)
 
 void ModulePlayer::AssistDirection(float hardness)
 {
+	// FUYM que reduce la cantidad de giro que puede ejercer la rueda respecto a la cantidad de velocidad
 	float turnDegrees = (TURN_DEGREES / DEGTORAD);
 	calculate = (vehicle->GetKmh() / 16) * (hardness/100.0f);
 	if (calculate <= turnDegrees-5)
@@ -550,6 +549,7 @@ void ModulePlayer::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 
 }
 
+// Aquí hice la normal antes de averiguar que el motor ya la podía calcular
 //btVector3 ModulePlayer::Norm(btVector3 vec)
 //{
 //	btVector3 vecNorm = vec;
