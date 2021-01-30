@@ -67,7 +67,7 @@ bool ModulePhysics3D::Start()
 // ---------------------------------------------------------
 update_status ModulePhysics3D::PreUpdate(float dt)
 {
-	
+	// Compruebo si lleva cierto tiempo sin estar en colisión y lo situó en estado in_air en caso afirmativo
 	if (timeLessCollision->Read() > 400)
 	{
 		App->player->vehicle->state = State::IN_AIR;
@@ -115,7 +115,7 @@ update_status ModulePhysics3D::PreUpdate(float dt)
 
 
 				platCheckP = &App->scene_intro->platformsCheckpoints;
-
+				// Guarda el ultimo check Point tocado 
 				for (size_t i = 0; i < platCheckP->count(); i++)
 				{
 					if (pbodyA == platCheckP->at(i).data || pbodyB == platCheckP->at(i).data)

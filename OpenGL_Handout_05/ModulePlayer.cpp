@@ -393,13 +393,15 @@ void ModulePlayer::PlayerControls()
 
 void ModulePlayer::CheckPoints()
 {
-	// If player press any CheckPoint-Key,  respawn in that checkpoint. 
+	// Si el jugador muere, respawneara en el ultimo checkpoint activado
 	if(respawn) Teleport(lastChekPoint);
+	// Si el jugador pulsa la letra O mientras esta en freeCam, spawneara el coche ne su posicion 
 	if (App->input->GetKey(SDL_SCANCODE_O) == KEY_DOWN && App->GetDebugMode())
 	{
 		vec3 cam = App->camera->Position;
 		vehicle->SetPos(cam.x, cam.y - 5, cam.z);
 	}
+	// Si el jugador pulsa cualquier tecla de respawn, se le teletransportara a la asociada a esta
 	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN) Teleport(0);
 	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN) Teleport(1);
 	if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN) Teleport(2);
@@ -413,8 +415,10 @@ void ModulePlayer::CheckPoints()
 void ModulePlayer::Teleport(int num)
 {
 	respawn = false;
+	// seteo tanto la velocidad lineal como la angular a 0
 	vehicle->body->setLinearVelocity({ 0,0,0 });
 	vehicle->body->setAngularVelocity({ 0,0,0 });
+	// Copio la direccion del CheckPoint y su posicion en el vehiculo 
 	vec3 cam = App->scene_intro->checkopints.at(num).data->GetPos();
 	float* pos = App->scene_intro->checkopints.at(num).data->transform.M;
 	vehicle->SetTransform(pos);

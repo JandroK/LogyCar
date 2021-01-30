@@ -893,6 +893,8 @@ void ModuleSceneIntro::Looping(vec3 position)
 	vec3 axis = { size.x,size.z,size.z};
 
 
+	//Aquí generamos el looping calculando la posición en circunferencia y dividiendo el 
+	//ángulo por la cantidad de número de cubos para conocer la inclinación pertinente de cada uno
 	for (int i = 0; i < numCubes; i++)
 	{
 		
