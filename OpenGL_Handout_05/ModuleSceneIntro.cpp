@@ -772,6 +772,7 @@ void ModuleSceneIntro::Win()
 		playMusic->Stop();
 	}
 
+	// Mira si has ganado y si ya ha terminado la animación de ganar
 	if (win && !won)
 	{
 		won = true;
@@ -782,6 +783,7 @@ void ModuleSceneIntro::Win()
 		cubeSensor.size.y = 0.10f;
 		bodySensor->SetPos(vec.getX(), vec.getY() - 1, vec.getZ());
 	}
+	// Una vez ha terminado la animación de ganar y solamente si habías ganado, se reposiciona el botón de win en su posición
 	else if (!win && won)
 	{
 		won = false;
@@ -911,10 +913,10 @@ void ModuleSceneIntro::Looping(vec3 position)
 		cube = new Cube();
 		cube->SetPos(posX+offset, posY, -posZ);
 		cube->size = size;
+
+		//Le estoy dando un valor al color respecto a su posición en el mundo
 		cube->color.Set(40 / posX + 1.65, 40 / (posY - offsetOfFloor+30), 40 / posZ);
-		//cube->color.Set(30 / posX+0.5 , 30 /( (posY- offsetOfFloor)+15), 30 / posZ+1.35);
-	//	cube->color.Set(20 / posX - 0.4, 20 / ((posY - offsetOfFloor) + 5) + 1.8, 20 / posZ + 1.65);
-		//LOG("Position Player \n x: %f \t y: %f \t z: %f ", 40 / posX + 1.65, 40 / (posY - offsetOfFloor + 30), 40 / posZ);
+
 
 
 		cube->SetRotation(alpha+1.5f, { 1,0,0 });
@@ -930,7 +932,8 @@ void ModuleSceneIntro::Looping(vec3 position)
 
 void ModuleSceneIntro::CylinderWalls(vec3 position)
 {
-#define PI 3.14159265358979323846
+
+
 	Cube* cube;
 	float numCubes = 84;
 	float alpha = 0;
@@ -942,8 +945,9 @@ void ModuleSceneIntro::CylinderWalls(vec3 position)
 	float posY = position.y+radio * cos(rad);
 	float posZ = -position.z+ radio * cos(rad);
 	vec3 size = { 5.0f,0.75f,radio+0.15f  };
-	vec3 axis = { size.x,size.z,size.z };
 
+	//Aquí generamos el looping calculando la posición en circunferencia y dividiendo el 
+//ángulo por la cantidad de número de cubos para conocer la inclinación pertinente de cada uno
 	for (int i = 0; i < numCubes; i++)
 	{
 
@@ -997,7 +1001,8 @@ void ModuleSceneIntro::Ramp(vec3 position,bool inverse,  vec3 size)
 	float posZ = -position.z;
 	vec3 axis = { size.x,size.z,size.z };
 
-
+	//Aquí generamos el looping calculando la posición en circunferencia y dividiendo el 
+//ángulo por la cantidad de número de cubos para conocer la inclinación pertinente de cada uno
 	for (int i = 0; i < numCubes; i++)
 	{
 
@@ -1028,6 +1033,7 @@ void ModuleSceneIntro::Ramp(vec3 position,bool inverse,  vec3 size)
 		else
 			cube->color.Set(40 / posX + 1.65, 40 / (posY - offsetOfFloor+35), 40 / -posZ +0.7);
 
+	
 		//cube->color.Set(10 / posX, 17 / ((posY - offsetOfFloor - 10) + 1.3), 25 / posX + 0.4);
 		//cube->color.Set(30 / posX+0.55, 30 / ((posY - offsetOfFloor) + 5), 30 / posX +0.45);
 
@@ -1062,7 +1068,8 @@ void ModuleSceneIntro::MidRamp(vec3 position, bool inverse, vec3 size)
 	float posZ = -position.z;
 	vec3 axis = { size.x,size.z,size.z };
 
-
+	//Aquí generamos el looping calculando la posición en circunferencia y dividiendo el 
+	//ángulo por la cantidad de número de cubos para conocer la inclinación pertinente de cada uno
 	for (int i = 0; i < numCubes; i++)
 	{
 
@@ -1111,7 +1118,6 @@ void ModuleSceneIntro::Ramp(vec3 position, vec3 size)
 	Cube* cube;
 	float numCubes = 10;
 	float alpha = 0;
-	float auxAngle = 90.0f / numCubes;
 	float offset = 0;
 	float rad = 0;
 	float radio = size.z;
@@ -1122,7 +1128,8 @@ void ModuleSceneIntro::Ramp(vec3 position, vec3 size)
 	float posZ = -position.z;
 
 
-
+	//Aquí generamos el looping calculando la posición en circunferencia y dividiendo el 
+	//ángulo por la cantidad de número de cubos para conocer la inclinación pertinente de cada uno
 
 	for (int i = 0; i < numCubes; i++)
 	{
@@ -1167,10 +1174,9 @@ void ModuleSceneIntro::RampFlip(vec3 position, vec3 size)
 	float posX = position.x;
 	float posY = position.y;
 	float posZ = -position.z;
-
-
-
-
+	
+	//Aquí generamos el looping calculando la posición en circunferencia y dividiendo el 
+	//ángulo por la cantidad de número de cubos para conocer la inclinación pertinente de cada uno
 	for (int i = 0; i < numCubes; i++)
 	{
 
