@@ -286,7 +286,7 @@ void ModulePlayer::PlayerControls()
 		// FUYM simula un salto de amortiguación, este salto se puede realizar únicamente mientras el sensor este colisionando
 		vehicle->vehicle->getRigidBody()->applyCentralForce({ 0,51000,0 });
 		// Reproduce un efecto de sonido de salto diferente de forma aleatoria del 0 al 6 por salto
-		App->audio->PlayFx(boings.at((rand() % 6) ).data);
+		App->audio->PlayFx(boings.at((rand() % 5) ).data);
 	}
 
 	//if (!vehicle->state == State::IN_AIR) vehicle->state = IDLE;
@@ -318,7 +318,7 @@ void ModulePlayer::PlayerControls()
 		if (vehicle->vehicle->getCurrentSpeedKmHour() <= -2.25)
 		{
 			// Se reproduce un sonido de frenada aleatorio del 0 al 7
-			if (vehicle->state != State::IN_AIR)App->audio->PlayFx(stops.at((rand() % 7)).data);
+			if (vehicle->state != State::IN_AIR)App->audio->PlayFx(stops.at((rand() % 6)).data);
 			brake = BRAKE_POWER / 1.5f;
 			// Cambia el color del alerón para simular la frenada
 			color.Set(1.0f, 0.0f, 0.0f, 1.0f);
