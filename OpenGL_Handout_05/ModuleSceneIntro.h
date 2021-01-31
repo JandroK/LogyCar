@@ -44,10 +44,10 @@ public:
 	Sphere s_snake2[MAX_SNAKE];
 	*/
 	p2List<Cube*> looping;
-	p2List<Cube*> cilinderWall;
+	p2List<Cube*> cylinderWall;
 	p2List<Cube*> cubes;
 	p2List<PhysBody3D*> physBodyCubes;
-
+	 
 	p2List<Cube*> checkopints;
 	p2List<PhysBody3D*> physBodyCheckopints;
 	p2List<PhysBody3D*> platformsCheckpoints;

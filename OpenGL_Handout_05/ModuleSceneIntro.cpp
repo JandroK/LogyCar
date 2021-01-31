@@ -743,12 +743,12 @@ update_status ModuleSceneIntro::Update(float dt)
 	Win();
 	
 
-
-	for (p2List_item<Cube*>* cube = looping.getFirst(); cube; cube = cube->next)
+	// Hago el render de los array de cubos en los que he ido almacenando los cubos para una mayor optimizacion 
+	for (p2List_item<Cube*>* cubesLooping = looping.getFirst(); cubesLooping; cubesLooping = cubesLooping->next)
 	{
-		cube->data->Render();
+		cubesLooping->data->Render();
 	}
-	for (p2List_item<Cube*>* cube = cilinderWall.getFirst(); cube; cube = cube->next)
+	for (p2List_item<Cube*>* cube = cylinderWall.getFirst(); cube; cube = cube->next)
 	{
 		cube->data->Render();
 	}
@@ -968,7 +968,7 @@ void ModuleSceneIntro::CylinderWalls(vec3 position)
 		
 
 		cube->SetRotation(alpha- (auxAngle/2), { 1,0,0 });
-		cilinderWall.add(cube);
+		cylinderWall.add(cube);
 		physBodyCubes.add(App->physics->AddBody(*cube, 0));
 
 		cube = new Cube();
@@ -976,7 +976,7 @@ void ModuleSceneIntro::CylinderWalls(vec3 position)
 		cube->size = size;
 		cube->color = Red;
 		cube->SetRotation(alpha-8.5 , { 1,0,0 });
-		cilinderWall.add(cube);
+		cylinderWall.add(cube);
 		physBodyCubes.add(App->physics->AddBody(*cube, 0));
 
 		offset -= size.x*8 / numCubes;
