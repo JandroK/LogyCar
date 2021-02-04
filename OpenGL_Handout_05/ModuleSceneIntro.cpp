@@ -1122,6 +1122,7 @@ void ModuleSceneIntro::Ramp(vec3 position, vec3 size)
 	float rad = 0;
 	float radio = size.z;
 	//vec3 size = size;
+	float auxAngle = 90.0f / numCubes;
 
 	float posX = position.x;
 	float posY = position.y;
