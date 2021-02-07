@@ -21,7 +21,7 @@ bool ModuleSceneIntro::Start()
 {
 	LOG("Loading Intro assets");
 	bool ret = true;
-	offsetOfFloor = 1000;
+	offsetOfFloor = 1;
 
 	Cube* cube;
 	timer = new Timer();
@@ -730,10 +730,10 @@ update_status ModuleSceneIntro::Update(float dt)
 
 	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)App->SetDebugMode();
 
-	Plane p(0, 1, 0, 0);
-	p.axis = true;
-	p.Render();
-	ground.Render();
+//	Plane p(0, 1, 0, 0);
+//p.axis = true;
+//	p.Render();
+//	ground.Render();
 	cubeSensor.Render();
 
 	CubeMoveRender();
@@ -1123,7 +1123,7 @@ void ModuleSceneIntro::Ramp(vec3 position, vec3 size)
 	float radio = size.z;
 	//vec3 size = size;
 	float auxAngle = 90.0f / numCubes;
-
+ 
 	float posX = position.x;
 	float posY = position.y;
 	float posZ = -position.z;
